@@ -1,0 +1,23 @@
+{
+    "name": "server",
+    "version": "0.0.1",
+    "author": "Makoto Sakaguchi",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "engines": {
+        "node": "*"
+    },
+    "dependencies": {
+        "vscode-languageserver": "^3.5.0",
+        "vnu-jar": "^17.11.1",
+        "request": "^2.83.0",
+        "tar-fs": "^1.16.0"
+    },
+    "devDependencies": {
+        "@types/request": "^2.47.0",
+        "@types/tar-fs": "^1.16.0"
+    }
+}

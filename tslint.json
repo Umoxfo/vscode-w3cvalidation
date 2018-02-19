@@ -1,0 +1,18 @@
+{
+    "extends": [
+        "tslint:recommended"
+    ],
+    "rules": {
+        "object-literal-sort-keys": [
+            true,
+            "ignore-case",
+            "match-declaration-order",
+            "shorthand-first"
+        ],
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
+        "no-import-side-effect": true
+    }
+}

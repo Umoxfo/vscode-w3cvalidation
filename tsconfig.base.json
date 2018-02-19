@@ -1,0 +1,16 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2016",
+        "lib": [
+            "es2016"
+        ],
+        "strict": true,
+        "strictNullChecks": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "sourceMap": true
+    }
+}
