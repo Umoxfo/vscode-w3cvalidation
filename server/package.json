@@ -1,4 +1,5 @@
 {
+    "private": true,
     "name": "server",
     "version": "0.0.1",
     "author": "Makoto Sakaguchi",
