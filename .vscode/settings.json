@@ -3,4 +3,5 @@
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "typescript.tsdk": "node_modules/typescript/lib",
+    "tslint.nodePath": "node_modules/tslint"
 }
