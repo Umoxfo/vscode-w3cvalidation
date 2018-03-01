@@ -1,2 +1,4 @@
 **/out
 **/node_modules
+server/service/vnu/webapps/vnu/
+server/service/jetty-home/
