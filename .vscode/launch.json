@@ -13,7 +13,7 @@
                 "${workspaceFolder}/client/out/**/*.js"
             ],
             "internalConsoleOptions": "openOnSessionStart",
-            "preLaunchTask": "compile"
+            "preLaunchTask": "watch"
         },
         {
             "type": "node",

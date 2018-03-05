@@ -9,6 +9,10 @@
                 "compile:client",
                 "compile:server"
             ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": []
         },
         {
@@ -33,6 +37,7 @@
                 "watch:client",
                 "watch:server"
             ],
+            "isBackground": true,
             "problemMatcher": []
         },
         {
@@ -40,6 +45,9 @@
             "type": "typescript",
             "tsconfig": "client\\tsconfig.json",
             "option": "watch",
+            "presentation": {
+                "reveal": "silent"
+            },
             "problemMatcher": [
                 "$tsc-watch"
             ]
@@ -49,6 +57,9 @@
             "type": "typescript",
             "tsconfig": "server\\tsconfig.json",
             "option": "watch",
+            "presentation": {
+                "reveal": "silent"
+            },
             "problemMatcher": [
                 "$tsc-watch"
             ]
