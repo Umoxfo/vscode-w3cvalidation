@@ -142,7 +142,6 @@ const RequestOptions: http.RequestOptions = {
  */
 function checkValidation(htmlDocument: string): Promise<ValidationResult[]> {
     return new Promise((resolve, reject) => {
-        // tslint:disable-next-line:no-shadowed-variable
         const request = http.request(RequestOptions, (response) => {
             // handle http errors
             if (response.statusCode < 200 || response.statusCode > 299) { reject(); }
