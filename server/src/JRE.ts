@@ -46,8 +46,8 @@ export function checkJRE(): Thenable<{}> {
 }// checkJRE
 
 function install() {
-    let arch: string;
-    switch (process.arch) {
+    let arch: string = process.arch;
+    switch (arch) {
         case "x64": break;
         case "x86":
         case "ia32":
