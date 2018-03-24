@@ -67,7 +67,6 @@ function install() {
 
     return new Promise((resolve, reject) => {
         request.get(options)
-            .on("error", reject)
             .pipe(zlib.createUnzip())
             .pipe(tar.extract(jreDir, {
                 map: (header) => {
@@ -77,6 +76,7 @@ function install() {
                 readable: true,
                 writable: true,
             }))
-            .on("finish", resolve);
+            .on("finish", resolve)
+            .on("error", reject);
     });
 }// install
