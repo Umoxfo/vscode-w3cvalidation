@@ -3,15 +3,6 @@
     "name": "client",
     "description": "W3C validation client",
     "version": "0.0.1",
-    "publisher": "Umoxfo",
-    "author": {
-        "name": "Makoto Sakaguchi"
-    },
-    "repository": {
-        "type": "git",
-        "url": ""
-    },
-    "license": "MIT",
     "engines": {
         "vscode": "^1.19.0"
     },
