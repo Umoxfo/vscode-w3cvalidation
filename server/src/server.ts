@@ -38,8 +38,7 @@ connection.onInitialize((_params: InitializeParams) => {
 
     /* Ready for the server */
     checkJRE().then(() => {
-        validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`, `${JETTY_BASE}/config.xml`],
-            { cwd: JETTY_BASE });
+        validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });
     });
 
     return {
