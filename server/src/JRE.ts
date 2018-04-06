@@ -47,7 +47,10 @@ export function checkJRE(): Thenable<{}> {
     }).catch(() => install());
 }// checkJRE
 
-function install() {
+/*
+ * Set the JRE download URL
+ */
+const options = () => {
     let arch: string = process.arch;
     switch (arch) {
         case "x64": break;
@@ -57,7 +60,7 @@ function install() {
             break;
     }
 
-    const options = {
+    return {
         // tslint:disable-next-line:max-line-length
         url: `https://download.oracle.com/otn-pub/java/jdk/${JRE.product_version}-b${JRE.build_number}/${JRE.hash}/jre-${JRE.product_version}-${platform}-${arch}.tar.gz`,
         rejectUnauthorized: false,
@@ -66,9 +69,11 @@ function install() {
             Cookie: "gpw_e24=http://www.oracle.com/; oraclelicense=accept-securebackup-cookie",
         },
     };
+};
 
+function install() {
     return new Promise((resolve, reject) => {
-        request.get(options)
+        request.get(options())
             .pipe(zlib.createUnzip())
             .pipe(tar.extract(jreDir, {
                 map: (header) => {
