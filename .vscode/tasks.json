@@ -2,6 +2,9 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
+    "presentation": {
+        "reveal": "silent"
+    },
     "tasks": [
         {
             "label": "compile",
@@ -45,9 +48,6 @@
             "type": "typescript",
             "tsconfig": "client\\tsconfig.json",
             "option": "watch",
-            "presentation": {
-                "reveal": "silent"
-            },
             "problemMatcher": [
                 "$tsc-watch"
             ]
@@ -57,9 +57,6 @@
             "type": "typescript",
             "tsconfig": "server\\tsconfig.json",
             "option": "watch",
-            "presentation": {
-                "reveal": "silent"
-            },
             "problemMatcher": [
                 "$tsc-watch"
             ]
