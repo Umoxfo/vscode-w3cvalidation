@@ -9,7 +9,6 @@ import {
     Diagnostic,
     DiagnosticSeverity,
     IConnection,
-    InitializeParams,
     ProposedFeatures,
     TextDocument,
     TextDocuments,
@@ -30,8 +29,7 @@ const connection: IConnection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments = new TextDocuments();
 
 // After the server has started the client sends an initialize request.
-// tslint:disable-next-line:variable-name
-connection.onInitialize((_params: InitializeParams) => {
+connection.onInitialize(() => {
     const JETTY_HOME = path.resolve(__dirname, "../service/jetty-home");
     const JETTY_BASE = path.resolve(__dirname, "../service/vnu");
 
