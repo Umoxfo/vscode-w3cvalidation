@@ -6,11 +6,12 @@
         "lib": [
             "es2016"
         ],
+        "sourceMap": true,
         "strict": true,
         "strictNullChecks": false,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
-        "sourceMap": true
+        "pretty": true
     }
 }
