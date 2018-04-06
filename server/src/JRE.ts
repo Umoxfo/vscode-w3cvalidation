@@ -22,7 +22,9 @@ switch (process.platform) {
     case "win32":
         platform = "windows";
         break;
-    case "linux": break;
+    case "linux":
+        platform = "linux";
+        break;
 }
 
 const jreDir = path.join(__dirname, "jre");
