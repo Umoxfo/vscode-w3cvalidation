@@ -26,17 +26,16 @@ let validationService: ChildProcess;
 // Create a connection for the server. The connection uses Node's IPC as a transport
 const connection: IConnection = createConnection(ProposedFeatures.all);
 
-// Create a simple text document manager. The text document manager supports full document sync only
+// Create a simple text document manager.
 const documents: TextDocuments = new TextDocuments();
 
 // After the server has started the client sends an initialize request.
-// The server receives in the passed params the rootPath of the workspace plus the client capabilities.
 // tslint:disable-next-line:variable-name
 connection.onInitialize((_params: InitializeParams) => {
     const JETTY_HOME = path.resolve(__dirname, "../service/jetty-home");
     const JETTY_BASE = path.resolve(__dirname, "../service/vnu");
 
-    /* Ready for the server */
+    // Start the validation server
     checkJRE().then(() => {
         validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });
     });
@@ -48,11 +47,10 @@ connection.onInitialize((_params: InitializeParams) => {
     };
 });
 
-// Shutdown the server.
+// Shutdown the validation server.
 connection.onShutdown(() => validationService.kill("SIGINT"));
 
 // The content of a text document has changed.
-// This event is emitted when the text document first opened or when its content has changed.
 documents.onDidChangeContent((change) => validateHtmlDocument(change.document));
 
 interface ValidationResult {
