@@ -91,12 +91,10 @@ function validateHtmlDocument(textDocument: TextDocument): void {
                     break;
             }// switch
 
-            if (!item.firstLine) { item.firstLine = item.lastLine; }
-
             diagnostics.push({
                 range: {
                     start: {
-                        line: item.firstLine - 1,
+                        line: (item.firstLine || item.lastLine) - 1,
                         character: item.firstColumn,
                     },
                     end: {
