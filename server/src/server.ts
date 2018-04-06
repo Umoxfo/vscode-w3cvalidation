@@ -76,11 +76,11 @@ function validateHtmlDocument(textDocument: TextDocument): void {
     const diagnostics: Diagnostic[] = [];
 
     checkValidation(textDocument.getText()).then((results) => {
-        results.forEach((element) => {
+        results.forEach((item) => {
             let type: DiagnosticSeverity;
-            switch (element.type) {
+            switch (item.type) {
                 case "info":
-                    if (element.subtype === "warning") {
+                    if (item.subtype === "warning") {
                         type = DiagnosticSeverity.Warning;
                     } else {
                         type = DiagnosticSeverity.Information;
@@ -91,22 +91,22 @@ function validateHtmlDocument(textDocument: TextDocument): void {
                     break;
             }// switch
 
-            if (!element.firstLine) { element.firstLine = element.lastLine; }
+            if (!item.firstLine) { item.firstLine = item.lastLine; }
 
             diagnostics.push({
-                severity: type,
                 range: {
                     start: {
-                        line: element.firstLine - 1,
-                        character: element.firstColumn,
+                        line: item.firstLine - 1,
+                        character: item.firstColumn,
                     },
                     end: {
-                        line: element.lastLine - 1,
-                        character: element.lastColumn,
+                        line: item.lastLine - 1,
+                        character: item.lastColumn,
                     },
                 },
-                message: element.message,
+                severity: type,
                 source: "W3C Validator",
+                message: item.message,
             });
         });
     }).then(() => {
@@ -135,13 +135,14 @@ const RequestOptions: http.RequestOptions = {
 /*
  * Sends document to the local validation server
  */
-function checkValidation(htmlDocument: string): Promise<ValidationResult[]> {
+function checkValidation(document: string): Promise<ValidationResult[]> {
     return new Promise((resolve, reject) => {
         const request = http.request(RequestOptions, (response) => {
             // handle http errors
             if (response.statusCode < 200 || response.statusCode > 299) { reject(); }
 
             // temporary data holder
+            response.setEncoding("utf8");
             let body = "";
 
             // on every content chunk, push it to the data array
@@ -152,10 +153,10 @@ function checkValidation(htmlDocument: string): Promise<ValidationResult[]> {
         });
 
         // handle connection errors of the request
-        request.on("error", reject);
+        request.on("error", (err) => reject(err));
 
         // write data to request body
-        request.write(htmlDocument);
+        request.write(document);
         request.end();
     });
 }
