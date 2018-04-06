@@ -29,7 +29,7 @@ export function activate(context: ExtensionContext) {
     // Options to control the language client
     const clientOptions: LanguageClientOptions = {
         // Register the server for HTML documents
-        documentSelector: [{ scheme: "file", language: "html" }],
+        documentSelector: [{ language: "html" }],
     };
 
     // Create the language client and start the client.
@@ -39,7 +39,7 @@ export function activate(context: ExtensionContext) {
 }
 
 export function deactivate(): Thenable<void> {
-    if (!client) { return undefined; }
+    if (!client) { return Promise.resolve(); }
 
     return client.stop();
 }
