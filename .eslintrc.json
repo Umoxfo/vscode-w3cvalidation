@@ -1,0 +1,40 @@
+{
+    "root": true,
+    "env": {
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "parser": "typescript-eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": 2016,
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-const-assign": "warn",
+        "no-this-before-super": "warn",
+        "no-undef": "off",
+        "no-unreachable": "warn",
+        "no-unused-vars": "off",
+        "constructor-super": "warn",
+        "valid-typeof": "warn"
+    }
+}
