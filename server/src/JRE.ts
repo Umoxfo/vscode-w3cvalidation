@@ -40,7 +40,7 @@ export function checkJRE(): Thenable<{}> {
     return new Promise((resolve, reject) => {
         // tslint:disable-next-line:variable-name
         execFile("java", ["-version"], (_error, _stdout, stderr) => {
-            const currentVersion = stderr.substring(14, stderr.lastIndexOf('"'));
+            const currentVersion = stderr.substring(14, stderr.lastIndexOf("\""));
 
             (currentVersion >= JRE.version) ? resolve() : reject();
         });

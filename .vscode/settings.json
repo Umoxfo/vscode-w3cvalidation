@@ -5,7 +5,11 @@
     "files.trimFinalNewlines": true,
     "typescript.tsdk": "node_modules/typescript/lib",
     "tslint.nodePath": "node_modules/tslint",
+    "eslint.validate": [
+        "javascript",
+        "typescript"
+    ],
     "cSpell.words": [
         "cvalidation"
-    ]
+    ],
 }
