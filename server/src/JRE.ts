@@ -84,6 +84,6 @@ function install() {
                 writable: true,
             }))
             .on("finish", () => resolve())
-            .on("error", (err: any) => reject(err));
+            .on("error", (err) => reject(err));
     });
 }// install
