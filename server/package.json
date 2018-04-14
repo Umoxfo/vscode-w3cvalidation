@@ -12,6 +12,6 @@
     },
     "devDependencies": {
         "@types/request": "^2.47.0",
-        "@types/tar-fs": "^1.16.0"
+        "@types/tar-fs": "^1.16.1"
     }
 }
