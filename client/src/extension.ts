@@ -4,7 +4,7 @@
  */
 "use strict";
 
-import { ExtensionContext } from "vscode";
+import { commands, ExtensionContext, Uri, window } from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
 
 import * as path from "path";
@@ -39,6 +39,15 @@ export function activate(context: ExtensionContext) {
         client = new LanguageClient("w3cvalidation", "HTML Validation Service", serverOptions, clientOptions);
         client.registerProposedFeatures();
         client.start();
+    }).catch(() => {
+        window.showErrorMessage("Java runtime could not be located.", "Get Java Runtime Environment")
+            .then(() => {
+                // tslint:disable-next-line:max-line-length
+                commands.executeCommand("vscode.open", Uri.parse("http://www.oracle.com/technetwork/java/javase/downloads/index.html"));
+            });
+
+        // tslint:disable-next-line:max-line-length
+        window.showInformationMessage("Install it and set its location using 'vscode-w3cvalidation.javaHome' variable in VS Code settings.");
     });
 }
 
