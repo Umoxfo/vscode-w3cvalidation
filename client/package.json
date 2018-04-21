@@ -2,7 +2,7 @@
     "private": true,
     "name": "client",
     "description": "W3C validation client",
-    "version": "0.2.0",
+    "version": "1.0.0",
     "engines": {
         "vscode": "^1.19.0"
     },
