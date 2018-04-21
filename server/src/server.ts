@@ -72,7 +72,7 @@ interface ValidationResult {
 function validateHtmlDocument(textDocument: TextDocument): void {
     const diagnostics: Diagnostic[] = [];
 
-    checkValidation(textDocument.getText()).then((results) => {
+    sendDocument(textDocument.getText()).then((results) => {
         results.forEach((item) => {
             let type: DiagnosticSeverity;
             switch (item.type) {
@@ -130,7 +130,7 @@ const RequestOptions: http.RequestOptions = {
 /*
  * Sends document to the local validation server
  */
-function checkValidation(document: string): Promise<ValidationResult[]> {
+function sendDocument(document: string): Promise<ValidationResult[]> {
     return new Promise((resolve, reject) => {
         const request = http.request(RequestOptions, (response) => {
             // handle http errors
@@ -154,7 +154,7 @@ function checkValidation(document: string): Promise<ValidationResult[]> {
         request.write(document);
         request.end();
     });
-}
+}// sendDocument
 
 // Make the text document manager listen on the connection for change text document events
 documents.listen(connection);
