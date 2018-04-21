@@ -106,15 +106,12 @@ function validateHtmlDocument(textDocument: TextDocument): void {
         });
     }).then(() => {
         // Send the computed diagnostics to VSCode.
-        connection.sendDiagnostics({
-            uri: textDocument.uri,
-            diagnostics,
-        });
+        connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     }).catch(() => {
-        new Promise((resolve) => setTimeout(resolve, (Math.random() + 1) * 1000))
+        return new Promise((resolve) => setTimeout(resolve, (Math.random() + 1) * 1000))
             .then(() => validateHtmlDocument(textDocument));
     });
-}
+}// validateHtmlDocument
 
 const RequestOptions: http.RequestOptions = {
     hostname: "localhost",
