@@ -12,9 +12,7 @@ if (process.platform === "darwin") {
     javaBinDir = "Contents/Home/bin";
 }
 
-const jreDir = path.join(__dirname, "jre");
 
-process.env.PATH += path.join(path.delimiter, jreDir, javaBinDir);
 
 /**
  * Checks JRE version

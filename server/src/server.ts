@@ -17,7 +17,6 @@ import {
 import { ChildProcess, spawn } from "child_process";
 import * as http from "http";
 import * as path from "path";
-import { checkJRE } from "./JRE";
 
 // Start a HTML validation server.
 let validationService: ChildProcess;
@@ -34,9 +33,7 @@ connection.onInitialize(() => {
     const JETTY_BASE = path.resolve(__dirname, "../service/vnu");
 
     // Start the validation server
-    checkJRE().then(() => {
-        validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });
-    });
+    validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });
 
     return {
         capabilities: {
