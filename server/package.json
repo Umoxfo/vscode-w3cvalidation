@@ -6,12 +6,6 @@
         "node": "*"
     },
     "dependencies": {
-        "vscode-languageserver": "^4.1.2",
-        "request": "^2.85.0",
-        "tar-fs": "^1.16.0"
-    },
-    "devDependencies": {
-        "@types/request": "^2.47.0",
-        "@types/tar-fs": "^1.16.1"
+        "vscode-languageserver": "^4.1.2"
     }
 }
