@@ -1,6 +1,6 @@
 ## 1.8.0
 * Update TypeScript to v2.8.3
-* Delete the Java rantime download
+* Delete the Java rantime download if not exist
 
 ## 1.7.0
 * Update request to v2.85.0
