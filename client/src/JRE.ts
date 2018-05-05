@@ -14,7 +14,7 @@ if (process.platform === "darwin") {
     javaBinDir = "Contents/Home/bin";
 }// if
 
-const userJavaHome: string = workspace.getConfiguration("vscode-w3cvalidation").get("javaHome");
+const userJavaHome: string | undefined = workspace.getConfiguration("vscode-w3cvalidation").get("javaHome");
 if (userJavaHome) {
     process.env.PATH += path.join(path.delimiter, userJavaHome, javaBinDir);
 }
