@@ -52,7 +52,7 @@ documents.onDidChangeContent((change) => validateHtmlDocument(change.document));
 documents.onDidClose((event) => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
 
 interface ValidationResult {
-    type?: string;
+    type: string;
     subtype?: string;
     message?: string;
 
