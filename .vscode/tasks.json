@@ -22,17 +22,13 @@
             "identifier": "compile:client",
             "type": "typescript",
             "tsconfig": "client\\tsconfig.json",
-            "problemMatcher": [
-                "$tsc"
-            ]
+            "problemMatcher": "$tsc"
         },
         {
             "identifier": "compile:server",
             "type": "typescript",
             "tsconfig": "server\\tsconfig.json",
-            "problemMatcher": [
-                "$tsc"
-            ]
+            "problemMatcher": "$tsc"
         },
         {
             "label": "watch",
@@ -48,18 +44,14 @@
             "type": "typescript",
             "tsconfig": "client\\tsconfig.json",
             "option": "watch",
-            "problemMatcher": [
-                "$tsc-watch"
-            ]
+            "problemMatcher": "$tsc-watch"
         },
         {
             "identifier": "watch:server",
             "type": "typescript",
             "tsconfig": "server\\tsconfig.json",
             "option": "watch",
-            "problemMatcher": [
-                "$tsc-watch"
-            ]
+            "problemMatcher": "$tsc-watch"
         },
     ]
 }
