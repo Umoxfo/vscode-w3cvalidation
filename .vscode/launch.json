@@ -8,10 +8,11 @@
             "runtimeExecutable": "${execPath}",
             "args": [
                 "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceFolder}"
+                "--extensionDevelopmentPath=${workspaceRoot}"
             ],
             "outFiles": [
-                "${workspaceFolder}/client/out/**/*.js"
+                "${workspaceRoot}/client/out/**/*.js",
+                "${workspaceRoot}/server/out/**/*.js"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "watch"
