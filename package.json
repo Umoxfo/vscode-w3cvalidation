@@ -36,7 +36,7 @@
                         "null"
                     ],
                     "default": null,
-                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\\\Program Files\\\\Java\\\\jre1.8.0_171\""
+                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jre1.8.0_171\""
                 }
             }
         }
