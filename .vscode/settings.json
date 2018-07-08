@@ -3,7 +3,9 @@
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
+    "files.eol": "\n",
     "typescript.tsdk": "./node_modules/typescript/lib",
+    "typescript.preferences.quoteStyle": "double",
     "eslint.validate": [
         "javascript",
         "typescript"
