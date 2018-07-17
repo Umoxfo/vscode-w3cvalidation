@@ -50,7 +50,7 @@
     "devDependencies": {
         "@types/node": "^7.0.67",
         "eslint": "^5.1.0",
-        "tslint": "^5.10.0",
+        "tslint": "^5.11.0",
         "typescript": "^2.9.2",
         "typescript-eslint-parser": "^16.0.1"
     }
