@@ -44,7 +44,7 @@
     "main": "./client/out/extension",
     "scripts": {
         "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
-        "compile": "tsc -p client/tsconfig.json && tsc -p server/tsconfig.json",
+        "compile": "tsc -p client && tsc -p server",
         "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile"
     },
     "devDependencies": {
