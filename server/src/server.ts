@@ -53,7 +53,7 @@ documents.onDidClose((event) => connection.sendDiagnostics({ uri: event.document
 
 interface ValidationResult {
     type: string;
-    subtype?: string;
+    subType?: string;
     message?: string;
 
     /*
@@ -80,7 +80,7 @@ function validateHtmlDocument(textDocument: TextDocument): void {
             let type: DiagnosticSeverity;
             switch (item.type) {
                 case "info":
-                    if (item.subtype === "warning") {
+                    if (item.subType === "warning") {
                         type = DiagnosticSeverity.Warning;
                     } else {
                         type = DiagnosticSeverity.Information;
