@@ -39,7 +39,19 @@
                     "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jre1.8.0_171\""
                 }
             }
-        }
+        },
+        "languages": [
+            {
+                "id": "svg",
+                "extensions": [
+                    ".svg"
+                ],
+                "aliases": [
+                    "SVG",
+                    "svg"
+                ]
+            }
+        ]
     },
     "main": "./client/out/extension",
     "scripts": {
