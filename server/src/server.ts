@@ -75,7 +75,7 @@ interface ValidationResult {
 function validateHtmlDocument(textDocument: TextDocument): void {
     const diagnostics: Diagnostic[] = [];
 
-    sendDocument(textDocument.getText()).then((results) => {
+    sendDocument(textDocument).then((results) => {
         results.forEach((item) => {
             let type: DiagnosticSeverity;
             switch (item.type) {
@@ -121,17 +121,16 @@ const RequestOptions: http.RequestOptions = {
     port: 8888,
     path: "/?out=json",
     method: "POST",
-    headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "User-Agent": "Validator.nu/LV",
-    },
 };
 
 /*
  * Sends document to the local validation server
  */
-function sendDocument(document: string): Promise<ValidationResult[]> {
+function sendDocument(document: TextDocument): Promise<ValidationResult[]> {
     return new Promise((resolve, reject) => {
+        // Set the request headers
+        setContentType(document.languageId);
+
         const request = http.request(RequestOptions, (response) => {
             // handle http errors
             if (response.statusCode < 200 || response.statusCode > 299) { reject(); }
@@ -151,10 +150,24 @@ function sendDocument(document: string): Promise<ValidationResult[]> {
         request.on("error", (err) => reject(err));
 
         // write data to request body
-        request.write(document);
+        request.write(document.getText());
         request.end();
     });
 }// sendDocument
+
+function setContentType(languageId: string): void {
+    let mediaTypes: string;
+    switch (languageId) {
+        case "html": mediaTypes = "text/html"; break;
+        case "css": mediaTypes = "text/css"; break;
+        case "svg": mediaTypes = "image/svg+xml"; break;
+    }// switch
+
+    RequestOptions.headers = {
+        "Content-Type": `${mediaTypes}; charset=utf-8`,
+        "User-Agent": "Validator.nu/LV",
+    };
+}// setContentType
 
 // Make the text document manager listen on the connection for change text document events
 documents.listen(connection);
