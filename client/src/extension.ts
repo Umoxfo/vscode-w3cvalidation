@@ -31,8 +31,8 @@ export function activate(context: ExtensionContext) {
 
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
-            // Register the server for HTML documents
-            documentSelector: [{ language: "html" }],
+            // Register the server for HTML, CSS, SVG documents
+            documentSelector: [{ language: "html" }, /* { language: "css" }, */ { language: "svg" }],
         };
 
         // Create the language client and start the client.
