@@ -1,5 +1,8 @@
-## 1.10.0
+## 2.1.1
 * Update TypeScript to v3.0.3
+* Update vnu.war to v18.8.29
+* Update Jetty to v9.4.12
+* Support for verification of SVG file
 
 ## 2.0.0
 * Update TypeScript to v2.9.2
