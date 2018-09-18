@@ -1,7 +1,7 @@
 ## 1.10.0
 * Update TypeScript to v3.0.3
 
-## 1.9.0
+## 2.0.0
 * Update TypeScript to v2.9.2
 * Update Jetty to v9.4.11
 * Update the Nu Html Checker to v18.7.23
