@@ -20,7 +20,7 @@
         "Linters"
     ],
     "engines": {
-        "vscode": "^1.20.0"
+        "vscode": "^1.26.0"
     },
     "activationEvents": [
         "*"
@@ -57,7 +57,7 @@
         "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile"
     },
     "devDependencies": {
-        "@types/node": "^7.0.70",
+        "@types/node": "^8.10.36",
         "eslint": "^5.6.1",
         "tslint": "^5.11.0",
         "typescript": "^3.1.3",
