@@ -1,3 +1,9 @@
+## 2.2.0
+* Update TypesScript to v3.1.6
+* Update vnu.war to v18.11.5
+* Drop support version 1.20.x
+  It is supported VSCode version 1.26.0 or later now.
+
 ## 2.1.1
 * Update TypeScript to v3.0.3
 * Update vnu.war to v18.8.29
