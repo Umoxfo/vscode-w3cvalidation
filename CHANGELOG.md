@@ -1,3 +1,6 @@
+## 2.2.1
+* Bugfix the extension does not work from last release #3
+
 ## 2.2.0
 * Update TypesScript to v3.1.6
 * Update vnu.war to v18.11.5
