@@ -57,12 +57,10 @@
         "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile"
     },
     "devDependencies": {
-        "@types/node": "^8.10.37",
-        "acorn": "^6.0.3",
-        "ajv": "^6.5.5",
-        "eslint": "^5.8.0",
+        "@types/node": "^8.10.38",
+        "eslint": "^5.9.0",
         "tslint": "^5.11.0",
         "typescript": "^3.1.6",
-        "typescript-eslint-parser": "^20.1.1"
+        "typescript-eslint-parser": "^21.0.1"
     }
 }
