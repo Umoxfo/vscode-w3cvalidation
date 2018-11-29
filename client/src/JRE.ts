@@ -6,8 +6,10 @@
 
 import { workspace } from "vscode";
 
-import { execFile } from "child_process";
 import * as path from "path";
+import { execFile } from "child_process";
+import * as util from "util";
+const execFilePromise = util.promisify(execFile);
 
 let javaBinDir: string = "bin";
 if (process.platform === "darwin") {
@@ -34,13 +36,9 @@ if (jdkHome) {
  *
  * @returns Promise<void> Resolved promise
  */
-export function checkJRE(): Promise<void> {
-    return new Promise((resolve, reject) => {
-        // tslint:disable-next-line:variable-name
-        execFile("java", ["-version"], (_error, _stdout, stderr) => {
-            const currentVersion = stderr.substring(14, stderr.lastIndexOf("\""));
-
-            (currentVersion >= "1.8") ? resolve() : reject();
-        });
-    });
+export async function checkJRE(): Promise<void> {
+    const output = await execFilePromise("java", ["-version"]);
+    const stdout = output.stderr;
+    const currentVersion = stdout.substring(14, stdout.lastIndexOf("\""));
+    return (currentVersion >= "1.8") ? Promise.resolve() : Promise.reject();
 }// checkJRE
