@@ -60,9 +60,9 @@
     },
     "devDependencies": {
         "@types/node": "^8.10.38",
-        "eslint": "^5.9.0",
+        "eslint": "^5.10.0",
         "tslint": "^5.11.0",
-        "typescript": "^3.2.1",
+        "typescript": "^3.2.2",
         "typescript-eslint-parser": "^21.0.2"
     }
 }
