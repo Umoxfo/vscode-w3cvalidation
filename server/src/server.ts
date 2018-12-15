@@ -90,11 +90,14 @@ function validateHtmlDocument(textDocument: TextDocument): void {
                 source: "W3C Validator",
                 message: item.message,
             });
-        }//forOf
+        }// forOf
     }).then(() => {
         // Send the computed diagnostics to VSCode.
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-    }).catch(() => setTimeoutPromise((Math.random() + 1) * 1000).then(() => validateHtmlDocument(textDocument)));
+    }).catch(async () => {
+        await setTimeoutPromise((Math.random() + 1) * 1000);
+        return validateHtmlDocument(textDocument);
+    });
 }// validateHtmlDocument
 
 // Make the text document manager listen on the connection for change text document events
