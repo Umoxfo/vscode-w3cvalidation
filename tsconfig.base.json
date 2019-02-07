@@ -1,6 +1,11 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
+        "plugins": [
+            {
+                "name": "typescript-tslint-plugin"
+            }
+        ],
         "module": "commonjs",
         "target": "es2017",
         "lib": [
