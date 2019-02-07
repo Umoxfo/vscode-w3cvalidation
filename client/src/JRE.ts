@@ -6,8 +6,8 @@
 
 import { workspace } from "vscode";
 
-import * as path from "path";
 import { execFile } from "child_process";
+import * as path from "path";
 import * as util from "util";
 const execFilePromise = util.promisify(execFile);
 

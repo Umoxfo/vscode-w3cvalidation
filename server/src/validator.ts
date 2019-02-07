@@ -38,7 +38,7 @@ interface ValidationResult {
      * See https://github.com/validator/validator/wiki/Output-%C2%BB-JSON#the-language-string
      */
     readonly language?: string;
-}//ValidationResult
+}// ValidationResult
 
 /**
  * Message object of the validation result
@@ -47,13 +47,16 @@ interface Message {
     /*
      * "info" is an informational message or warning that does not affect the validity of the document being checked.
      * "error" signifies a problem that causes the validation/checking to fail.
-     * "non-document-error" indicates that the examination ended in an indeterminate state because the document being validated could not be examined to the end.
+     * "non-document-error" indicates that the examination ended in an indeterminate state
+     * because the document being validated could not be examined to the end.
      */
     readonly type: "info" | "error" | "non-document-error";
 
     /*
-     * type: "info" is "warning" (something questionable issue); in the absence of the "subtype" key, general information
-     * type: "error" is "fatal" (an XML well-formedness error or the implementer's requirements in the case of HTML); in the absence of the "subtype" key, a spec violation in general
+     * type: "info" is "warning" (something questionable issue);
+     * in the absence of the "subtype" key, general information
+     * type: "error" is "fatal" (an XML well-formedness error or the implementer's requirements
+     * in the case of HTML); in the absence of the "subtype" key, a spec violation in general
      * type: "non-document-error" are:
      *  "io" (an input/output error)
      *  "schema" (initializing a schema-based validator failed)
@@ -96,7 +99,7 @@ interface Message {
 }
 
 const RequestOptions: http.RequestOptions = {
-    hostname: "localhost",
+    hostname: "localhost", // tslint:disable-line: object-literal-sort-keys
     port: 8888,
     path: "/?out=json",
     method: "POST",
@@ -107,7 +110,7 @@ const RequestOptions: http.RequestOptions = {
 
 const MediaTypes: { [key: string]: string } = {
     html: "text/html",
-    css: "text/css",
+    css: "text/css", // tslint:disable-line: object-literal-sort-keys
     svg: "image/svg+xml",
 };
 
@@ -118,6 +121,7 @@ function setContentType(languageId: string): void {
 /*
  * Sends document to the local validation server
  */
+// tslint:disable-next-line: promise-function-async
 export function sendDocument(document: TextDocument): Promise<Message[]> {
     return new Promise((resolve, reject) => {
         // Set the request headers

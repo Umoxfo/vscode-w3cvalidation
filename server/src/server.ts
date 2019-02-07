@@ -75,6 +75,7 @@ function validateHtmlDocument(textDocument: TextDocument): void {
                     break;
             }// switch
 
+            /* tslint:disable:object-literal-sort-keys */
             diagnostics.push({
                 range: {
                     start: {
@@ -90,6 +91,7 @@ function validateHtmlDocument(textDocument: TextDocument): void {
                 source: "W3C Validator",
                 message: item.message,
             });
+            /* tslint:enable:object-literal-sort-keys */
         }// forOf
     }).then(() => {
         // Send the computed diagnostics to VSCode.
