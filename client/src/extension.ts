@@ -4,7 +4,7 @@
  */
 "use strict";
 
-import { commands, ExtensionContext, Uri, window } from "vscode";
+import { env, ExtensionContext, Uri, window } from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
 
 import * as path from "path";
@@ -43,9 +43,8 @@ export function activate(context: ExtensionContext) {
         client.start();
     }).catch(() => {
         window.showErrorMessage("Java runtime could not be located.", "Get Java Runtime Environment")
-            .then(() => {
-                // tslint:disable-next-line:max-line-length
-                commands.executeCommand("vscode.open", Uri.parse("http://www.oracle.com/technetwork/java/javase/downloads/index.html"));
+            .then(async () => {
+                await env.openExternal(Uri.parse("http://www.oracle.com/technetwork/java/javase/downloads/index.html"));
             });
 
         // tslint:disable-next-line:max-line-length

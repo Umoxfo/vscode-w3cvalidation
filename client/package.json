@@ -4,7 +4,7 @@
     "description": "W3C validation client",
     "version": "1.1.0",
     "engines": {
-        "vscode": "^1.27.0"
+        "vscode": "^1.31.0"
     },
     "scripts": {
         "update-vscode": "node ./node_modules/vscode/bin/install",
