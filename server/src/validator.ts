@@ -19,23 +19,23 @@ interface ValidationResult {
      */
     readonly source?: {
         /*
-         * See https://github.com/validator/validator/wiki/Output-%C2%BB-JSON#the-code-string
+         * See https://github.com/validator/validator/wiki/Output-»-JSON#the-code-string
          */
         readonly code: string;
 
         /*
-         * See https://github.com/validator/validator/wiki/Output-%C2%BB-JSON#the-type-string-1
+         * See https://github.com/validator/validator/wiki/Output-»-JSON#the-type-string-1
          */
         readonly type?: string;
 
         /*
-         * See https://github.com/validator/validator/wiki/Output-%C2%BB-JSON#the-encoding-string
+         * See https://github.com/validator/validator/wiki/Output-»-JSON#the-encoding-string
          */
         readonly encoding?: string;
     };
 
     /*
-     * See https://github.com/validator/validator/wiki/Output-%C2%BB-JSON#the-language-string
+     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-language-string
      */
     readonly language?: string;
 }// ValidationResult
@@ -66,12 +66,12 @@ interface Message {
     readonly subType?: "warning" | "fatal" | "io" | "schema" | "internal";
 
     /*
-     * See https://github.com/validator/validator/wiki/Output-%C2%BB-JSON#the-message-string
+     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-message-string
      */
     readonly message?: string;
 
     /*
-     * See https://github.com/validator/validator/wiki/Output-%C2%BB-JSON#the-extract-string
+     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-extract-string
      */
     readonly extract?: string;
 
@@ -81,7 +81,7 @@ interface Message {
     readonly offset?: number;
 
     /*
-     * See https://github.com/validator/validator/wiki/Output-%C2%BB-JSON#the-url-string
+     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-url-string
      */
     readonly url?: string;
 
