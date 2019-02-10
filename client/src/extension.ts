@@ -52,8 +52,8 @@ export function activate(context: ExtensionContext) {
     });
 }
 
-export function deactivate(): Thenable<void> {
-    if (!client) { return Promise.resolve(); }
+export function deactivate(): Thenable<void> | undefined {
+    if (!client) { return undefined; }
 
     return client.stop();
 }
