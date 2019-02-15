@@ -40,6 +40,12 @@ interface ValidationResult {
     language?: string;
 }// ValidationResult
 
+interface SubTypes {
+    readonly info: "warning";
+    readonly error: "fatal";
+    readonly "non-document-error": "io" | "schema" | "internal";
+}
+
 /**
  * Message object of the validation result
  */
@@ -63,7 +69,7 @@ interface Message {
      *  "internal" (the validator/checker found an error bug in itself, ran out of memory, etc.)
      *  Undefined is a problem external to the document in general
      */
-    subType?: "warning" | "fatal" | "io" | "schema" | "internal";
+    subType?: SubTypes["info"] | SubTypes["error"] | SubTypes["non-document-error"];
 
     /*
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-message-string
