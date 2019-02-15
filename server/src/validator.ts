@@ -11,33 +11,33 @@ import { TextDocument } from "vscode-languageserver";
  * The validation result format
  */
 interface ValidationResult {
-    readonly url?: string;
-    readonly messages: Message[] | [];
+    url?: string;
+    messages: Message[] | [];
 
     /*
      * The "source" object
      */
-    readonly source?: {
+    source?: {
         /*
          * See https://github.com/validator/validator/wiki/Output-»-JSON#the-code-string
          */
-        readonly code: string;
+        code: string;
 
         /*
          * See https://github.com/validator/validator/wiki/Output-»-JSON#the-type-string-1
          */
-        readonly type?: string;
+        type?: string;
 
         /*
          * See https://github.com/validator/validator/wiki/Output-»-JSON#the-encoding-string
          */
-        readonly encoding?: string;
+        encoding?: string;
     };
 
     /*
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-language-string
      */
-    readonly language?: string;
+    language?: string;
 }// ValidationResult
 
 /**
@@ -50,7 +50,7 @@ interface Message {
      * "non-document-error" indicates that the examination ended in an indeterminate state
      * because the document being validated could not be examined to the end.
      */
-    readonly type: "info" | "error" | "non-document-error";
+    type: "info" | "error" | "non-document-error";
 
     /*
      * type: "info" is "warning" (something questionable issue);
@@ -63,27 +63,27 @@ interface Message {
      *  "internal" (the validator/checker found an error bug in itself, ran out of memory, etc.)
      *  Undefined is a problem external to the document in general
      */
-    readonly subType?: "warning" | "fatal" | "io" | "schema" | "internal";
+    subType?: "warning" | "fatal" | "io" | "schema" | "internal";
 
     /*
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-message-string
      */
-    readonly message?: string;
+    message?: string;
 
     /*
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-extract-string
      */
-    readonly extract?: string;
+    extract?: string;
 
     /*
      * The "offset" number is an UTF-16 code unit index into the "extract". The first code unit has the index 0.
      */
-    readonly offset?: number;
+    offset?: number;
 
     /*
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-url-string
      */
-    readonly url?: string;
+    url?: string;
 
     /*
      * The "firstLine", "firstColumn", "lastLine" and "lastColumn"
@@ -92,10 +92,10 @@ interface Message {
      *   The first line is line 1
      *   The first column is column 1
      */
-    readonly firstLine?: number; // If the attribute is missing, it is the same value as "lastLine".
-    readonly firstColumn?: number;
-    readonly lastLine?: number;
-    readonly lastColumn?: number;
+    firstLine?: number; // If the attribute is missing, it is the same value as "lastLine".
+    firstColumn?: number;
+    lastLine?: number;
+    lastColumn?: number;
 }
 
 const RequestOptions: http.RequestOptions = {
