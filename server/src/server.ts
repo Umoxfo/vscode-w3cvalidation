@@ -9,6 +9,7 @@ import {
     Diagnostic,
     DiagnosticSeverity,
     IConnection,
+    InitializeParams,
     ProposedFeatures,
     TextDocument,
     TextDocuments,
@@ -30,9 +31,11 @@ const connection: IConnection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments = new TextDocuments();
 
 // After the server has started the client sends an initialize request.
-connection.onInitialize(() => {
-    const JETTY_HOME = path.resolve(__dirname, "../service/jetty-home");
-    const JETTY_BASE = path.resolve(__dirname, "../service/vnu");
+connection.onInitialize((params: InitializeParams) => {
+    const extentionPath: string = params.initializationOptions;
+
+    const JETTY_HOME = path.resolve(extentionPath, "server/service/jetty-home");
+    const JETTY_BASE = path.resolve(extentionPath, "server/service/vnu");
 
     // Start the validation server
     validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });
