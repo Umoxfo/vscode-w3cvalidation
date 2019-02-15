@@ -55,7 +55,7 @@
     "main": "./client/out/extension",
     "scripts": {
         "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
-        "compile": "tsc -p client && tsc -p server",
+        "compile": "tsc -b client server",
         "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile"
     },
     "devDependencies": {
