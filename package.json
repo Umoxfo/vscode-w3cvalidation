@@ -16,7 +16,6 @@
     },
     "license": "MIT",
     "categories": [
-        "Programming Languages",
         "Linters"
     ],
     "engines": {
@@ -46,6 +45,9 @@
                 "aliases": [
                     "SVG",
                     "svg"
+                ],
+                "mimetypes": [
+                    "image/svg+xml"
                 ]
             }
         ]
