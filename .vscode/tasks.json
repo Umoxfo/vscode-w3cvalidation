@@ -7,10 +7,22 @@
     },
     "tasks": [
         {
+            "label": "Client Compile",
+            "type": "typescript",
+            "tsconfig": "client\\tsconfig.json",
+            "problemMatcher": "$tsc"
+        },
+        {
+            "label": "Server Compile",
+            "type": "typescript",
+            "tsconfig": "server\\tsconfig.json",
+            "problemMatcher": "$tsc"
+        },
+        {
             "label": "compile",
             "dependsOn": [
-                "compile:client",
-                "compile:server"
+                "Client Compile",
+                "Server Compile"
             ],
             "group": {
                 "kind": "build",
@@ -19,39 +31,31 @@
             "problemMatcher": []
         },
         {
-            "identifier": "compile:client",
+            "label": "Client Watch",
             "type": "typescript",
             "tsconfig": "client\\tsconfig.json",
-            "problemMatcher": "$tsc"
+            "option": "watch",
+            "problemMatcher": "$tsc-watch",
+            "presentation": {
+                "group": "groupWatch"
+            }
         },
         {
-            "identifier": "compile:server",
+            "label": "Server Watch",
             "type": "typescript",
             "tsconfig": "server\\tsconfig.json",
-            "problemMatcher": "$tsc"
+            "option": "watch",
+            "problemMatcher": "$tsc-watch",
+            "presentation": {
+                "group": "groupWatch"
+            }
         },
         {
             "label": "watch",
             "dependsOn": [
-                "watch:client",
-                "watch:server"
-            ],
-            "isBackground": true,
-            "problemMatcher": []
-        },
-        {
-            "identifier": "watch:client",
-            "type": "typescript",
-            "tsconfig": "client\\tsconfig.json",
-            "option": "watch",
-            "problemMatcher": "$tsc-watch"
-        },
-        {
-            "identifier": "watch:server",
-            "type": "typescript",
-            "tsconfig": "server\\tsconfig.json",
-            "option": "watch",
-            "problemMatcher": "$tsc-watch"
-        },
+                "Client Watch",
+                "Server Watch"
+            ]
+        }
     ]
 }
