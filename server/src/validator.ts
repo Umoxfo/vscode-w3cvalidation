@@ -115,14 +115,14 @@ const RequestOptions: http.RequestOptions = {
     },
 };
 
-const MediaTypes: { [key: string]: string } = {
-    html: "text/html",
-    css: "text/css", // tslint:disable-line: object-literal-sort-keys
-    svg: "image/svg+xml",
-};
+enum MediaTypes {
+    html = "text/html",
+    css = "text/css",
+    svg = "image/svg+xml",
+}
 
 function setContentType(languageId: string): void {
-    RequestOptions.headers["Content-Type"] = `${MediaTypes[languageId]}; charset=utf-8`;
+    RequestOptions.headers["Content-Type"] = `${MediaTypes[languageId as keyof typeof MediaTypes]}; charset=utf-8`;
 }// setContentType
 
 /*
