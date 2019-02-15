@@ -51,7 +51,7 @@ connection.onInitialize((params: InitializeParams) => {
 connection.onShutdown(() => validationService.kill("SIGINT"));
 
 // The content of a text document has changed.
-documents.onDidChangeContent((change) => validateHtmlDocument(change.document));
+documents.onDidChangeContent(async (change) => validateHtmlDocument(change.document));
 
 // When a text document is closed, clear the error message.
 documents.onDidClose((event) => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
@@ -59,10 +59,12 @@ documents.onDidClose((event) => connection.sendDiagnostics({ uri: event.document
 /*
  * Validation for HTML document
  */
-function validateHtmlDocument(textDocument: TextDocument): void {
+async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
     const diagnostics: Diagnostic[] = [];
 
-    sendDocument(textDocument).then((results) => {
+    try {
+        const results = await sendDocument(textDocument);
+
         for (const item of results) {
             let type: DiagnosticSeverity;
             switch (item.type) {
@@ -96,13 +98,13 @@ function validateHtmlDocument(textDocument: TextDocument): void {
             });
             /* tslint:enable:object-literal-sort-keys */
         }// forOf
-    }).then(() => {
+
         // Send the computed diagnostics to VSCode.
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-    }).catch(async () => {
+    } catch (error) {
         await setTimeoutPromise((Math.random() + 1) * 1000);
         return validateHtmlDocument(textDocument);
-    });
+    }// try-catch
 }// validateHtmlDocument
 
 // Make the text document manager listen on the connection for change text document events
