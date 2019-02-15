@@ -61,13 +61,14 @@ interface Message {
     /*
      * type: "info" is "warning" (something questionable issue);
      * in the absence of the "subtype" key, general information
-     * type: "error" is "fatal" (an XML well-formedness error or the implementer's requirements
-     * in the case of HTML); in the absence of the "subtype" key, a spec violation in general
+     * type: "error" is "fatal" (an XML well-formedness error) more information see
+     * https://github.com/validator/validator/wiki/Output-»-JSON#the-subtype-string;
+     * in the absence of the "subtype" key, a spec violation in general
      * type: "non-document-error" are:
-     *  "io" (an input/output error)
-     *  "schema" (initializing a schema-based validator failed)
-     *  "internal" (the validator/checker found an error bug in itself, ran out of memory, etc.)
-     *  Undefined is a problem external to the document in general
+     *   "io" (an input/output error)
+     *   "schema" (initializing a schema-based validator failed)
+     *   "internal" (the validator/checker found an error bug in itself, ran out of memory, etc.)
+     *   Undefined is a problem external to the document in general
      */
     subType?: SubTypes["info"] | SubTypes["error"] | SubTypes["non-document-error"];
 
@@ -141,7 +142,7 @@ export function sendDocument(document: TextDocument): Promise<Message[]> {
             response.setEncoding("utf8");
             let body = "";
 
-            // on every content chunk, push it to the data array
+            // on every content chunk, push it to the string
             response.on("data", (chunk) => body += chunk);
 
             // we are done, resolve promise with those joined chunks
