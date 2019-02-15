@@ -39,7 +39,6 @@ export function activate(context: ExtensionContext) {
 
         // Create the language client and start the client.
         client = new LanguageClient("w3cvalidation", "HTML Validation Service", serverOptions, clientOptions);
-        client.registerProposedFeatures();
         client.start();
     }).catch(() => {
         window.showErrorMessage("Java runtime could not be located.", "Get Java Runtime Environment")
