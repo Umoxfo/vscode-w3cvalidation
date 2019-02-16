@@ -48,8 +48,11 @@ connection.onShutdown(() => validationService.kill("SIGINT"));
 // The content of a text document has changed.
 documents.onDidChangeContent((change) => validateHtmlDocument(change.document));
 
+// When a text document is closed, clear the error message.
+documents.onDidClose((event) => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
+
 interface ValidationResult {
-    type?: string;
+    type: string;
     subtype?: string;
     message?: string;
 

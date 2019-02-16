@@ -1,3 +1,10 @@
+## 1.9.0
+* Update TypeScript to v2.9.2
+* Update Jetty to v9.4.11
+* Update the Nu Html Checker to v18.7.23
+* Drop support version 1.19.x
+  It is supported version 1.20.0 or later now.
+
 ## 1.8.0
 * Update TypeScript to v2.8.3
 * Delete the Java rantime download if not exist

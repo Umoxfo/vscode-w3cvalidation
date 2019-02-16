@@ -3,13 +3,11 @@
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "tslint.nodePath": "node_modules/tslint",
+    "files.eol": "\n",
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "typescript.preferences.quoteStyle": "double",
     "eslint.validate": [
         "javascript",
         "typescript"
-    ],
-    "cSpell.words": [
-        "cvalidation"
     ],
 }

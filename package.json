@@ -2,7 +2,7 @@
     "name": "vscode-w3cvalidation",
     "displayName": "W3C Validation",
     "description": "Adds W3C validation support to Visual Studio Code.",
-    "version": "1.8.0",
+    "version": "2.0.0",
     "publisher": "Umoxfo",
     "author": {
         "name": "Makoto Sakaguchi"
@@ -16,11 +16,11 @@
     },
     "license": "MIT",
     "categories": [
-        "Languages",
+        "Programming Languages",
         "Linters"
     ],
     "engines": {
-        "vscode": "^1.19.0"
+        "vscode": "^1.20.0"
     },
     "activationEvents": [
         "*"
@@ -36,7 +36,7 @@
                         "null"
                     ],
                     "default": null,
-                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\\\Program Files\\\\Java\\\\jre1.8.0_171\""
+                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jre1.8.0_171\""
                 }
             }
         }
@@ -44,14 +44,14 @@
     "main": "./client/out/extension",
     "scripts": {
         "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
-        "compile": "tsc -p client/tsconfig.json && cd server && npm update && cd .. && tsc -p server/tsconfig.json",
+        "compile": "tsc -p client && tsc -p server",
         "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile"
     },
     "devDependencies": {
-        "@types/node": "^7.0.61",
-        "eslint": "^4.19.1",
-        "tslint": "^5.9.1",
-        "typescript": "^2.8.3",
-        "typescript-eslint-parser": "^15.0.0"
+        "@types/node": "^7.0.67",
+        "eslint": "^5.2.0",
+        "tslint": "^5.11.0",
+        "typescript": "^3.0.1",
+        "typescript-eslint-parser": "^17.0.1"
     }
 }
