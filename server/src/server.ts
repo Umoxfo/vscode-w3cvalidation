@@ -9,7 +9,6 @@ import {
     Diagnostic,
     DiagnosticSeverity,
     IConnection,
-    InitializeParams,
     ProposedFeatures,
     TextDocument,
     TextDocuments,
@@ -18,7 +17,6 @@ import {
 import { ChildProcess, spawn } from "child_process";
 import * as http from "http";
 import * as path from "path";
-import { checkJRE } from "./JRE";
 
 // Start a HTML validation server.
 let validationService: ChildProcess;
@@ -26,20 +24,16 @@ let validationService: ChildProcess;
 // Create a connection for the server. The connection uses Node's IPC as a transport
 const connection: IConnection = createConnection(ProposedFeatures.all);
 
-// Create a simple text document manager. The text document manager supports full document sync only
+// Create a simple text document manager.
 const documents: TextDocuments = new TextDocuments();
 
 // After the server has started the client sends an initialize request.
-// The server receives in the passed params the rootPath of the workspace plus the client capabilities.
-// tslint:disable-next-line:variable-name
-connection.onInitialize((_params: InitializeParams) => {
+connection.onInitialize(() => {
     const JETTY_HOME = path.resolve(__dirname, "../service/jetty-home");
     const JETTY_BASE = path.resolve(__dirname, "../service/vnu");
 
-    /* Ready for the server */
-    checkJRE().then(() => {
-        validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });
-    });
+    // Start the validation server
+    validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });
 
     return {
         capabilities: {
@@ -48,11 +42,10 @@ connection.onInitialize((_params: InitializeParams) => {
     };
 });
 
-// Shutdown the server.
+// Shutdown the validation server.
 connection.onShutdown(() => validationService.kill("SIGINT"));
 
 // The content of a text document has changed.
-// This event is emitted when the text document first opened or when its content has changed.
 documents.onDidChangeContent((change) => validateHtmlDocument(change.document));
 
 interface ValidationResult {
@@ -79,12 +72,12 @@ interface ValidationResult {
 function validateHtmlDocument(textDocument: TextDocument): void {
     const diagnostics: Diagnostic[] = [];
 
-    checkValidation(textDocument.getText()).then((results) => {
-        results.forEach((element) => {
+    sendDocument(textDocument.getText()).then((results) => {
+        results.forEach((item) => {
             let type: DiagnosticSeverity;
-            switch (element.type) {
+            switch (item.type) {
                 case "info":
-                    if (element.subtype === "warning") {
+                    if (item.subtype === "warning") {
                         type = DiagnosticSeverity.Warning;
                     } else {
                         type = DiagnosticSeverity.Information;
@@ -95,35 +88,30 @@ function validateHtmlDocument(textDocument: TextDocument): void {
                     break;
             }// switch
 
-            if (!element.firstLine) { element.firstLine = element.lastLine; }
-
             diagnostics.push({
-                severity: type,
                 range: {
                     start: {
-                        line: element.firstLine - 1,
-                        character: element.firstColumn,
+                        line: (item.firstLine || item.lastLine) - 1,
+                        character: item.firstColumn,
                     },
                     end: {
-                        line: element.lastLine - 1,
-                        character: element.lastColumn,
+                        line: item.lastLine - 1,
+                        character: item.lastColumn,
                     },
                 },
-                message: element.message,
+                severity: type,
                 source: "W3C Validator",
+                message: item.message,
             });
         });
     }).then(() => {
         // Send the computed diagnostics to VSCode.
-        connection.sendDiagnostics({
-            uri: textDocument.uri,
-            diagnostics,
-        });
+        connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     }).catch(() => {
-        new Promise((resolve) => setTimeout(resolve, (Math.random() + 1) * 1000))
+        return new Promise((resolve) => setTimeout(resolve, (Math.random() + 1) * 1000))
             .then(() => validateHtmlDocument(textDocument));
     });
-}
+}// validateHtmlDocument
 
 const RequestOptions: http.RequestOptions = {
     hostname: "localhost",
@@ -139,13 +127,14 @@ const RequestOptions: http.RequestOptions = {
 /*
  * Sends document to the local validation server
  */
-function checkValidation(htmlDocument: string): Promise<ValidationResult[]> {
+function sendDocument(document: string): Promise<ValidationResult[]> {
     return new Promise((resolve, reject) => {
         const request = http.request(RequestOptions, (response) => {
             // handle http errors
             if (response.statusCode < 200 || response.statusCode > 299) { reject(); }
 
             // temporary data holder
+            response.setEncoding("utf8");
             let body = "";
 
             // on every content chunk, push it to the data array
@@ -156,13 +145,13 @@ function checkValidation(htmlDocument: string): Promise<ValidationResult[]> {
         });
 
         // handle connection errors of the request
-        request.on("error", reject);
+        request.on("error", (err) => reject(err));
 
         // write data to request body
-        request.write(htmlDocument);
+        request.write(document);
         request.end();
     });
-}
+}// sendDocument
 
 // Make the text document manager listen on the connection for change text document events
 documents.listen(connection);

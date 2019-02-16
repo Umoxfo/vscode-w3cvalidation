@@ -3,6 +3,7 @@
 tsconfig.base.json
 **/tsconfig.json
 tslint.json
+.eslintrc.json
 test/**
 **/*.ts
 **/*.map
@@ -11,5 +12,4 @@ client/node_modules/**
 !client/node_modules/vscode-languageclient/**
 !client/node_modules/vscode-languageserver-protocol/**
 !client/node_modules/vscode-languageserver-types/**
-server/node_modules/@types/**
-server/node_modules/tar-fs/test/**
+server/SERVICE_VERSION
