@@ -2,7 +2,7 @@
     "name": "vscode-w3cvalidation",
     "displayName": "W3C Validation",
     "description": "Adds W3C validation support to Visual Studio Code.",
-    "version": "2.0.0",
+    "version": "2.1.1",
     "publisher": "Umoxfo",
     "author": {
         "name": "Makoto Sakaguchi"
@@ -31,15 +31,24 @@
             "title": "W3C Validation",
             "properties": {
                 "vscode-w3cvalidation.javaHome": {
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "default": null,
-                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jre1.8.0_171\""
+                    "type": "string",
+                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jre1.8.0_171\"",
+                    "default": null
                 }
             }
-        }
+        },
+        "languages": [
+            {
+                "id": "svg",
+                "extensions": [
+                    ".svg"
+                ],
+                "aliases": [
+                    "SVG",
+                    "svg"
+                ]
+            }
+        ]
     },
     "main": "./client/out/extension",
     "scripts": {
@@ -48,10 +57,10 @@
         "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile"
     },
     "devDependencies": {
-        "@types/node": "^7.0.67",
-        "eslint": "^5.2.0",
+        "@types/node": "^7.0.70",
+        "eslint": "^5.6.0",
         "tslint": "^5.11.0",
-        "typescript": "^3.0.1",
-        "typescript-eslint-parser": "^17.0.1"
+        "typescript": "^3.0.3",
+        "typescript-eslint-parser": "^18.0.0"
     }
 }
