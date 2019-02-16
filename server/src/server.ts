@@ -17,6 +17,8 @@ import {
 import { ChildProcess, spawn } from "child_process";
 import * as http from "http";
 import * as path from "path";
+import * as util from "util";
+const setTimeoutPromise = util.promisify(setTimeout);
 
 // Start a HTML validation server.
 let validationService: ChildProcess;
@@ -110,10 +112,7 @@ function validateHtmlDocument(textDocument: TextDocument): void {
     }).then(() => {
         // Send the computed diagnostics to VSCode.
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-    }).catch(() => {
-        return new Promise((resolve) => setTimeout(resolve, (Math.random() + 1) * 1000))
-            .then(() => validateHtmlDocument(textDocument));
-    });
+    }).catch(() => setTimeoutPromise((Math.random() + 1) * 1000).then(() => validateHtmlDocument(textDocument)));
 }// validateHtmlDocument
 
 const RequestOptions: http.RequestOptions = {
