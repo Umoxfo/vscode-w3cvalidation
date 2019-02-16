@@ -4,7 +4,7 @@
 <Configure id="Server" class="org.eclipse.jetty.server.Server">
   <Set name="handler">
     <New class="org.eclipse.jetty.quickstart.QuickStartWebApp">
-      <Set name="war"><SystemProperty name="jetty.base"/>/webapps/vnu</Set>
+      <Set name="war"><Property name="jetty.base"/>/webapps/vnu</Set>
       <Set name="autoPreconfigure">true</Set>
     </New>
   </Set>

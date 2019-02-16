@@ -3,7 +3,7 @@
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
-    "files.eol": "\n",
+    "files.eol": "\r\n",
     "typescript.tsdk": "./node_modules/typescript/lib",
     "typescript.preferences.quoteStyle": "double",
     "eslint.validate": [
@@ -13,4 +13,6 @@
     "cSpell.words": [
         "promisify"
     ],
+    "licenser.license": "MIT",
+    "tslint.configFile": "./tslint.json",
 }

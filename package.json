@@ -2,7 +2,7 @@
     "name": "vscode-w3cvalidation",
     "displayName": "W3C Validation",
     "description": "Adds W3C validation support to Visual Studio Code.",
-    "version": "2.2.1",
+    "version": "2.3.0",
     "publisher": "Umoxfo",
     "author": {
         "name": "Makoto Sakaguchi"
@@ -16,11 +16,10 @@
     },
     "license": "MIT",
     "categories": [
-        "Programming Languages",
         "Linters"
     ],
     "engines": {
-        "vscode": "^1.26.0"
+        "vscode": "^1.27.0"
     },
     "activationEvents": [
         "*"
@@ -46,6 +45,9 @@
                 "aliases": [
                     "SVG",
                     "svg"
+                ],
+                "mimetypes": [
+                    "image/svg+xml"
                 ]
             }
         ]
@@ -60,7 +62,7 @@
         "@types/node": "^8.10.38",
         "eslint": "^5.9.0",
         "tslint": "^5.11.0",
-        "typescript": "^3.1.6",
+        "typescript": "^3.2.1",
         "typescript-eslint-parser": "^21.0.1"
     }
 }
