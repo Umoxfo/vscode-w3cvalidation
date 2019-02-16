@@ -1,3 +1,9 @@
+## 2.3.0
+* Update TypeScript to v3.2.1
+* Update Jetty to v9.4.14
+* Drop support version 1.26.x
+  It is supported VSCode version 1.27.0 or later now.
+
 ## 2.2.1
 * Bugfix the extension does not work from last release #3
 
