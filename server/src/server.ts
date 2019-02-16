@@ -17,7 +17,7 @@ import {
 
 import { ChildProcess, spawn } from "child_process";
 import * as http from "http";
-import * as vnu from "vnu-jar";
+import * as path from "path";
 import { checkJRE } from "./JRE";
 
 // Start a HTML validation server.
@@ -33,24 +33,20 @@ const documents: TextDocuments = new TextDocuments();
 // The server receives in the passed params the rootPath of the workspace plus the client capabilities.
 // tslint:disable-next-line:variable-name
 connection.onInitialize((_params: InitializeParams) => {
+    const JETTY_HOME = path.resolve(__dirname, "../service/jetty-home");
+    const JETTY_BASE = path.resolve(__dirname, "../service/vnu");
+
     /* Ready for the server */
-    const SERVER_READY = /.*(Initialization\scomplete\.).*/;
-
-    return checkJRE().then(() => {
-        return new Promise((resolve) => {
-            validationService = spawn("java", ["-Xss1m", "-cp", vnu, "nu.validator.servlet.Main", "8888"]);
-
-            validationService.stdout.on("data", (data) => {
-                if (SERVER_READY.test(data.toString())) { resolve(); }
-            });
-        });
-    }).then(() => {
-        return {
-            capabilities: {
-                textDocumentSync: documents.syncKind,
-            },
-        };
+    checkJRE().then(() => {
+        validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`, `${JETTY_BASE}/config.xml`],
+            { cwd: JETTY_BASE });
     });
+
+    return {
+        capabilities: {
+            textDocumentSync: documents.syncKind,
+        },
+    };
 });
 
 // Shutdown the server.
@@ -146,7 +142,6 @@ const RequestOptions: http.RequestOptions = {
  */
 function checkValidation(htmlDocument: string): Promise<ValidationResult[]> {
     return new Promise((resolve, reject) => {
-        // tslint:disable-next-line:no-shadowed-variable
         const request = http.request(RequestOptions, (response) => {
             // handle http errors
             if (response.statusCode < 200 || response.statusCode > 299) { reject(); }

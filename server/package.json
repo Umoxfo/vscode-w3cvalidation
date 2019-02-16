@@ -1,6 +1,7 @@
 {
+    "private": true,
     "name": "server",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": "Makoto Sakaguchi",
     "license": "MIT",
     "repository": {
@@ -11,8 +12,7 @@
         "node": "*"
     },
     "dependencies": {
-        "vscode-languageserver": "^3.5.0",
-        "vnu-jar": "^17.11.1",
+        "vscode-languageserver": "^4.0.0",
         "request": "^2.83.0",
         "tar-fs": "^1.16.0"
     },
