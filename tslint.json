@@ -5,6 +5,7 @@
     "rules": {
         "object-literal-sort-keys": [
             true,
+            "ignore-case",
             "match-declaration-order",
             "shorthand-first"
         ],
