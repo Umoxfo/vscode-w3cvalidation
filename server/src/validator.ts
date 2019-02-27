@@ -1,14 +1,14 @@
 /*
-* Copyright (c) Makoto Sakaguchi. All rights reserved.
-* Licensed under the MIT License. See LICENSE in the project root for license information.
-*/
+ * Copyright (c) Makoto Sakaguchi. All rights reserved.
+ * Licensed under the MIT License. See LICENSE in the project root for license information.
+ */
 "use strict";
 
 import * as http from "http";
 import { TextDocument } from "vscode-languageserver";
 
 /**
- * The validation result format
+ * Validation result format
  */
 interface ValidationResult {
     url?: string;
@@ -106,7 +106,7 @@ interface Message {
 }
 
 const RequestOptions: http.RequestOptions = {
-    hostname: "localhost", // tslint:disable-line: object-literal-sort-keys
+    host: "localhost", // tslint:disable-line: object-literal-sort-keys
     port: 8888,
     path: "/?out=json",
     method: "POST",
