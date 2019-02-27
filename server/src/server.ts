@@ -69,11 +69,7 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
             let type: DiagnosticSeverity;
             switch (item.type) {
                 case "info":
-                    if (item.subType === "warning") {
-                        type = DiagnosticSeverity.Warning;
-                    } else {
-                        type = DiagnosticSeverity.Information;
-                    }
+                    type = (item.subType === "warning") ? DiagnosticSeverity.Warning : DiagnosticSeverity.Information;
                     break;
                 case "error":
                     type = DiagnosticSeverity.Error;
