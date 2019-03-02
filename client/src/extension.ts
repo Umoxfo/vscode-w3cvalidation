@@ -42,7 +42,7 @@ export function activate(context: ExtensionContext) {
         client = new LanguageClient("w3cvalidation", "HTML Validation Service", serverOptions, clientOptions);
         client.start();
     }).catch(() => {
-        window.showErrorMessage("Java runtime could not be located.", "Get Java Runtime Environment")
+        window.showErrorMessage("Java runtime could not be located.", "Get Java Platform (JDK)")
             .then(async () => {
                 await env.openExternal(Uri.parse("http://www.oracle.com/technetwork/java/javase/downloads/index.html"));
             });
