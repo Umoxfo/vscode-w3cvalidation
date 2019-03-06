@@ -5,18 +5,25 @@
     "presentation": {
         "reveal": "silent"
     },
+    "group": "none",
     "tasks": [
         {
             "label": "Client Compile",
             "type": "typescript",
             "tsconfig": "client\\tsconfig.json",
-            "problemMatcher": "$tsc"
+            "problemMatcher": "$tsc",
+            "presentation": {
+                "group": "groupCompile"
+            }
         },
         {
             "label": "Server Compile",
             "type": "typescript",
             "tsconfig": "server\\tsconfig.json",
-            "problemMatcher": "$tsc"
+            "problemMatcher": "$tsc",
+            "presentation": {
+                "group": "groupCompile"
+            }
         },
         {
             "label": "compile",
@@ -52,10 +59,13 @@
         },
         {
             "label": "watch",
+            "type": "shell",
+            "group": "none",
             "dependsOn": [
                 "Client Watch",
                 "Server Watch"
-            ]
+            ],
+            "problemMatcher": []
         }
     ]
 }
