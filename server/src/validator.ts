@@ -108,8 +108,8 @@ interface Message {
 const RequestOptions: http.RequestOptions = {
     host: "localhost", // tslint:disable-line: object-literal-sort-keys
     port: 8888,
-    path: "/?out=json",
     method: "POST",
+    path: "/?out=json",
     headers: {
         "User-Agent": "Validator.nu/LV",
     },
@@ -121,10 +121,6 @@ enum MediaTypes {
     svg = "image/svg+xml",
 }
 
-function setContentType(languageId: string): void {
-    RequestOptions.headers["Content-Type"] = `${MediaTypes[languageId as keyof typeof MediaTypes]}; charset=utf-8`;
-}// setContentType
-
 /*
  * Sends document to the local validation server
  */
@@ -132,7 +128,8 @@ function setContentType(languageId: string): void {
 export function sendDocument(document: TextDocument): Promise<Message[]> {
     return new Promise((resolve, reject) => {
         // Set the request headers
-        setContentType(document.languageId);
+        // tslint:disable-next-line: max-line-length
+        RequestOptions.headers["Content-Type"] = `${MediaTypes[document.languageId as keyof typeof MediaTypes]}; charset=utf-8`;
 
         const request = http.request(RequestOptions, (response) => {
             // handle http errors
