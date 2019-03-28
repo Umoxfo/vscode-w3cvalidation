@@ -34,8 +34,7 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-            "problemMatcher": []
+            }
         },
         {
             "label": "Client Watch",
@@ -59,13 +58,10 @@
         },
         {
             "label": "watch",
-            "type": "shell",
-            "group": "none",
             "dependsOn": [
                 "Client Watch",
                 "Server Watch"
-            ],
-            "problemMatcher": []
+            ]
         }
     ]
 }
