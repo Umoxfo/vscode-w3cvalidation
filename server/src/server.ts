@@ -81,7 +81,7 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
                 range: {
                     start: {
                         line: (item.firstLine || item.lastLine) - 1,
-                        character: item.firstColumn || (item.lastColumn - 1),
+                        character: (item.firstColumn || item.lastColumn) - 1,
                     },
                     end: {
                         line: item.lastLine - 1,
