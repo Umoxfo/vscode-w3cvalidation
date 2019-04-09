@@ -62,7 +62,7 @@
         "@types/node": "^10.14.4",
         "eslint": "^5.16.0",
         "tslint": "^5.15.0",
-        "typescript": "^3.4.1",
+        "typescript": "^3.4.2",
         "typescript-eslint-parser": "^22.0.0",
         "typescript-tslint-plugin": "^0.3.1"
     }
