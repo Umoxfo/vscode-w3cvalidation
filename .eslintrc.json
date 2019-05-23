@@ -3,12 +3,20 @@
     "env": {
         "node": true
     },
-    "extends": "eslint:recommended",
-    "parser": "typescript-eslint-parser",
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaVersion": 2016,
-        "sourceType": "module"
+        "ecmaVersion": 2017,
+        "sourceType": "module",
+        "project": "./tsconfig.base.json"
     },
+    "plugins": [
+        "@typescript-eslint",
+        "@typescript-eslint/tslint"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
     "rules": {
         "indent": [
             "error",
@@ -33,8 +41,15 @@
         "no-this-before-super": "warn",
         "no-undef": "off",
         "no-unreachable": "warn",
-        "no-unused-vars": "off",
+        "no-unused-vars": "warn",
         "constructor-super": "warn",
-        "valid-typeof": "warn"
+        "@typescript-eslint/promise-function-async": "error",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/tslint/config": [
+            "warn",
+            {
+                "lintFile": "./tslint.json"
+            }
+        ]
     }
 }
