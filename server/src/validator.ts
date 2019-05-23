@@ -119,7 +119,7 @@ enum MediaTypes {
  * Sends document to the local validation server
  */
 // tslint:disable-next-line: promise-function-async
-export function sendDocument(document: TextDocument): Promise<Message[]> {
+export async function sendDocument(document: TextDocument): Promise<Message[]> {
     return new Promise((resolve, reject) => {
         // Set the request headers
         // tslint:disable-next-line: max-line-length

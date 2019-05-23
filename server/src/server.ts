@@ -51,8 +51,8 @@ connection.onInitialize((params: InitializeParams) => {
 connection.onShutdown(() => validationService.kill("SIGINT"));
 
 // The content of a text document has changed.
-documents.onDidChangeContent(async (change) => validateHtmlDocument(change.document));
 // eslint-disable-next-line @typescript-eslint/no-use-before-define
+documents.onDidChangeContent(async (change) => await validateHtmlDocument(change.document));
 
 // When a text document is closed, clear the error message.
 documents.onDidClose((event) => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
