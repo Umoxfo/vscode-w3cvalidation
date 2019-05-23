@@ -61,12 +61,10 @@ documents.onDidClose((event) => connection.sendDiagnostics({ uri: event.document
  * Validation for HTML document
  */
 async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
-    const diagnostics: Diagnostic[] = [];
-
     try {
         const results = await sendDocument(textDocument);
 
-        for (const item of results) {
+        const diagnostics = results.map<Diagnostic>((item) => {
             let type: DiagnosticSeverity;
             switch (item.type) {
                 case "info":
@@ -77,8 +75,8 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
                     break;
             }// switch
 
-            /* tslint:disable:object-literal-sort-keys */
-            diagnostics.push({
+            /* tslint:disable: object-literal-sort-keys */
+            return {
                 range: {
                     start: {
                         line: (item.firstLine || item.lastLine) - 1,
@@ -92,9 +90,9 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
                 severity: type,
                 source: "W3C Validator",
                 message: item.message,
-            });
-            /* tslint:enable:object-literal-sort-keys */
-        }// forOf
+            };
+            /* tslint:enable: object-literal-sort-keys */
+        });
 
         // Send the computed diagnostics to VSCode.
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
