@@ -11,24 +11,23 @@ import * as path from "path";
 import * as util from "util";
 const execFilePromise = util.promisify(execFile);
 
-let javaBinDir: string = "bin";
 if (process.platform === "darwin") {
-    javaBinDir = "Contents/Home/bin";
+    execFile("/usr/libexec/java_home", (_, stdout) => process.env.JAVA_HOME = stdout);
 }// if
 
 const userJavaHome: string | undefined = workspace.getConfiguration("vscode-w3cvalidation").get("javaHome");
 if (userJavaHome) {
-    process.env.PATH += path.join(path.delimiter, userJavaHome, javaBinDir);
+    process.env.PATH += path.join(path.delimiter, userJavaHome, "bin");
 }
 
 const javaHome = process.env.JAVA_HOME;
 if (javaHome) {
-    process.env.PATH += path.join(path.delimiter, javaHome, javaBinDir);
+    process.env.PATH += path.join(path.delimiter, javaHome, "bin");
 }
 
 const jdkHome = process.env.JDK_HOME;
 if (jdkHome) {
-    process.env.PATH += path.join(path.delimiter, jdkHome, javaBinDir);
+    process.env.PATH += path.join(path.delimiter, jdkHome, "bin");
 }
 
 /**
