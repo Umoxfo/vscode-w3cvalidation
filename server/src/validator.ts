@@ -67,24 +67,9 @@ interface Message {
     readonly subType?: "warning" | "fatal" | "io" | "schema" | "internal";
 
     /*
-     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-message-string
-     */
-    readonly message?: string;
-
-    /*
-     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-extract-string
-     */
-    readonly extract?: string;
-
-    /*
      * The "offset" number is an UTF-16 code unit index into the "extract". The first code unit has the index 0.
      */
     readonly offset?: number;
-
-    /*
-     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-url-string
-     */
-    readonly url?: string;
 
     /*
      * The "firstLine", "firstColumn", "lastLine" and "lastColumn"
@@ -97,6 +82,21 @@ interface Message {
     readonly firstColumn?: number;
     readonly lastLine?: number;
     readonly lastColumn?: number;
+
+    /*
+     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-url-string
+     */
+    readonly url?: string;
+
+    /*
+     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-message-string
+     */
+    readonly message?: string;
+
+    /*
+     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-extract-string
+     */
+    readonly extract?: string;
 }
 
 const RequestOptions: http.RequestOptions = {
