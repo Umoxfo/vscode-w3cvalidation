@@ -61,7 +61,11 @@
             "dependsOn": [
                 "Client Watch",
                 "Server Watch"
-            ]
+            ],
+            "problemMatcher": [
+                "$tsc-watch"
+            ],
+            "isBackground": true,
         }
     ]
 }
