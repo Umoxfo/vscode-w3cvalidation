@@ -97,6 +97,9 @@ interface Message {
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-extract-string
      */
     readonly extract?: string;
+
+    readonly hiliteStart?: number;
+    readonly hiliteLength?: number;
 }
 
 const RequestOptions: http.RequestOptions = {
