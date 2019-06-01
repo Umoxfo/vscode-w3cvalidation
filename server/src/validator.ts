@@ -108,15 +108,18 @@ const RequestOptions: http.RequestOptions = {
     method: "POST",
     path: "/?out=json",
     headers: {
+        "Content-Type": "text/html; charset=utf-8",
         "User-Agent": "Validator.nu/LV",
     },
 };
 
+/*
 enum MediaTypes {
     html = "text/html",
     css = "text/css",
     svg = "image/svg+xml",
 }
+*/
 
 /*
  * Sends document to the local validation server
@@ -126,7 +129,7 @@ export async function sendDocument(document: TextDocument): Promise<Message[]> {
     return new Promise((resolve, reject) => {
         // Set the request headers
         // tslint:disable-next-line: max-line-length
-        RequestOptions.headers["Content-Type"] = `${MediaTypes[document.languageId as keyof typeof MediaTypes]}; charset=utf-8`;
+        // RequestOptions.headers["Content-Type"] = `${MediaTypes[document.languageId as keyof typeof MediaTypes]}; charset=utf-8`;
 
         const request = http.request(RequestOptions, (response) => {
             // handle http errors
