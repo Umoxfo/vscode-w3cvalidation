@@ -9,12 +9,6 @@
             "match-declaration-order",
             "shorthand-first"
         ],
-        "interface-name": [
-            true,
-            "never-prefix"
-        ],
-        "no-import-side-effect": true,
-        "prefer-while": true,
-        "promise-function-async": true
+        "prefer-while": true
     }
 }

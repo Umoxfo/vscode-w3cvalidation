@@ -12,22 +12,24 @@
     "plugins": [
         "@typescript-eslint",
         "@typescript-eslint/tslint",
-        "prettier"
+        "prettier",
+        "import"
     ],
     "extends": [
         "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:import/typescript",
         "prettier",
-        "prettier/@typescript-eslint"
+        "prettier/@typescript-eslint",
+        "plugin:import/typescript"
     ],
     "rules": {
         "prettier/prettier": "warn",
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
-        "no-undef": "off",
+        "no-undef": "warn",
         "no-unreachable": "warn",
-        "no-unused-vars": "warn",
         "constructor-super": "warn",
         "@typescript-eslint/promise-function-async": "error",
         "@typescript-eslint/explicit-function-return-type": "off",
@@ -36,6 +38,7 @@
             {
                 "lintFile": "./tslint.json"
             }
-        ]
+        ],
+        "import/no-unassigned-import": "warn"
     }
 }
