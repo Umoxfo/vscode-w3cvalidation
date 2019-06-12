@@ -4,7 +4,7 @@
  */
 "use strict";
 
-import { env, ExtensionContext, Uri, window } from "vscode";
+import { commands, env, ExtensionContext, Uri, window } from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
 
 import * as path from "path";
@@ -47,7 +47,19 @@ export async function activate(context: ExtensionContext) {
         await env.openExternal(Uri.parse("http://www.oracle.com/technetwork/java/javase/downloads/index.html"));
 
         // tslint:disable-next-line:max-line-length
-        window.showInformationMessage("Install it and set its location using 'vscode-w3cvalidation.javaHome' variable in VS Code settings.");
+        const item = await window.showInformationMessage("Install it and set its location using 'vscode-w3cvalidation.javaHome' variable in VS Code settings.", "Open User Settings", "Open Workspace Settings");
+
+        let commandID: string;
+        switch (item) {
+            case "Open User Settings":
+                commandID = "workbench.action.openGlobalSettings";
+                break;
+            case "Open Workspace Settings":
+                commandID = "workbench.action.openWorkspaceSettings";
+                break;
+        }// switch
+
+        await commands.executeCommand(commandID);
     }// try-catch
 }
 
