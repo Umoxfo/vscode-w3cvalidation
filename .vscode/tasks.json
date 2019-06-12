@@ -10,7 +10,7 @@
         {
             "label": "Client Compile",
             "type": "typescript",
-            "tsconfig": "client\\tsconfig.json",
+            "tsconfig": "client/tsconfig.json",
             "problemMatcher": "$tsc",
             "presentation": {
                 "group": "groupCompile"
@@ -19,7 +19,7 @@
         {
             "label": "Server Compile",
             "type": "typescript",
-            "tsconfig": "server\\tsconfig.json",
+            "tsconfig": "server/tsconfig.json",
             "problemMatcher": "$tsc",
             "presentation": {
                 "group": "groupCompile"
@@ -39,7 +39,7 @@
         {
             "label": "Client Watch",
             "type": "typescript",
-            "tsconfig": "client\\tsconfig.json",
+            "tsconfig": "client/tsconfig.json",
             "option": "watch",
             "problemMatcher": "$tsc-watch",
             "presentation": {
@@ -49,7 +49,7 @@
         {
             "label": "Server Watch",
             "type": "typescript",
-            "tsconfig": "server\\tsconfig.json",
+            "tsconfig": "server/tsconfig.json",
             "option": "watch",
             "problemMatcher": "$tsc-watch",
             "presentation": {
