@@ -37,6 +37,7 @@ export async function activate(context: ExtensionContext) {
         const clientOptions: LanguageClientOptions = {
             // Register the server for HTML documents
             documentSelector: [{ language: "html" }],
+            initializationOptions: context.extensionPath,
         };
 
         // Create the language client and start the client.
