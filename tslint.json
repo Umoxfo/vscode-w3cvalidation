@@ -9,6 +9,12 @@
             "match-declaration-order",
             "shorthand-first"
         ],
-        "prefer-while": true
+        "prefer-while": true,
+        // Disable rules that conflict with ESLint rules
+        "array-type": false,
+        "curly": false,
+        "interface-name": false,
+        "interface-over-type-literal": false,
+        "semicolon": false
     }
 }
