@@ -26,13 +26,72 @@
     ],
     "rules": {
         "prettier/prettier": "warn",
-        "no-const-assign": "warn",
-        "no-this-before-super": "warn",
-        "no-undef": "warn",
-        "no-unreachable": "warn",
-        "constructor-super": "warn",
+        "arrow-body-style": "warn",
+        "arrow-parens": "warn",
+        "dot-notation": "warn",
+        "eqeqeq": [
+            "error",
+            "always",
+            {
+                "null": "ignore"
+            }
+        ],
+        "guard-for-in": "error",
+        "max-classes-per-file": "error",
+        "new-parens": "error",
+        "no-bitwise": "warn",
+        "no-caller": "warn",
+        "no-console": "error",
+        "no-eval": "error",
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1
+            }
+        ],
+        "no-new-wrappers": "error",
+        "no-shadow": "error",
+        "no-throw-literal": "error",
+        "no-trailing-spaces": "error",
+        "no-undef-init": "error",
+        "no-unused-expressions": "error",
+        "object-shorthand": "error",
+        "one-var": [
+            "error",
+            "never"
+        ],
+        "quote-props": [
+            "error",
+            "consistent-as-needed"
+        ],
+        "radix": "error",
+        "space-before-function-paren": [
+            "error",
+            {
+                "anonymous": "never",
+                "asyncArrow": "always",
+                "named": "never"
+            }
+        ],
+        "spaced-comment": [
+            "error",
+            "always",
+            {
+                "block": {
+                    "balanced": true
+                }
+            }
+        ],
+        "@typescript-eslint/prefer-interface": "off", //DEPRECATED
+        "@typescript-eslint/consistent-type-definitions": [
+            "error",
+            "interface"
+        ],
+        "@typescript-eslint/member-ordering": "error",
+        "@typescript-eslint/prefer-for-of": "error",
+        "@typescript-eslint/prefer-function-type": "error",
+        "@typescript-eslint/unified-signatures": "warn",
         "@typescript-eslint/promise-function-async": "error",
-        "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/tslint/config": [
             "warn",
             {
