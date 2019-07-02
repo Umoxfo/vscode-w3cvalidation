@@ -48,7 +48,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         // tslint:disable-next-line:max-line-length
         const item = await window.showInformationMessage("Install it and set its location using 'vscode-w3cvalidation.javaHome' variable in VS Code settings.", "Open User Settings", "Open Workspace Settings");
 
-        let commandID: string;
+        let commandID = "";
         switch (item) {
             case "Open User Settings":
                 commandID = "workbench.action.openGlobalSettings";

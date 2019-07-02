@@ -134,6 +134,7 @@ export async function sendDocument(document: TextDocument): Promise<Message[]> {
 
         const request = http.request(RequestOptions, (response): void => {
             // handle http errors
+            response.statusCode = response.statusCode || 0;
             if (response.statusCode < 200 || response.statusCode > 299) reject();
 
             // temporary data holder

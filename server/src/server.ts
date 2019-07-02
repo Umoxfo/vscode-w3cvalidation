@@ -68,7 +68,7 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
 
         /* eslint-disable @typescript-eslint/explicit-function-return-type */
         const diagnostics = results.map<Diagnostic>((item) => {
-            let type: DiagnosticSeverity;
+            let type: DiagnosticSeverity | undefined;
             switch (item.type) {
                 case "info":
                     type = (item.subType === "warning") ? DiagnosticSeverity.Warning : DiagnosticSeverity.Information;
@@ -81,17 +81,17 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
             return {
                 range: {
                     start: {
-                        line: (item.firstLine || item.lastLine) - 1,
-                        character: (item.firstColumn || item.lastColumn) - 1,
+                        line: (item.firstLine || item.lastLine || 1) - 1,
+                        character: (item.firstColumn || item.lastColumn || 1) - 1,
                     },
                     end: {
-                        line: item.lastLine - 1,
-                        character: item.lastColumn,
+                        line: (item.lastLine || 1) - 1,
+                        character: item.lastColumn || 0,
                     },
                 },
                 severity: type,
                 source: "W3C Validator",
-                message: item.message,
+                message: item.message || "",
             };
         });
         /* eslint-enable */
