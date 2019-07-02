@@ -37,7 +37,7 @@ if (jdkHome) {
  */
 export async function checkJRE(): Promise<void> {
     const output = await execFilePromise("java", ["-version"]);
-    const currentVersion = output.stderr.substring(14, output.stderr.lastIndexOf("\""));
+    const currentVersion = output.stderr.substring(14, output.stderr.lastIndexOf('"'));
 
     return (currentVersion >= "1.8") ? Promise.resolve() : Promise.reject();
 }// checkJRE

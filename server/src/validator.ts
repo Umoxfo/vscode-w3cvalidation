@@ -4,8 +4,9 @@
  */
 "use strict";
 
-import * as http from "http";
 import { TextDocument } from "vscode-languageserver";
+
+import * as http from "http";
 
 /**
  * Validation result format
@@ -133,7 +134,7 @@ export async function sendDocument(document: TextDocument): Promise<Message[]> {
 
         const request = http.request(RequestOptions, (response): void => {
             // handle http errors
-            if (response.statusCode < 200 || response.statusCode > 299) { reject(); }
+            if (response.statusCode < 200 || response.statusCode > 299) reject();
 
             // temporary data holder
             response.setEncoding("utf8");
