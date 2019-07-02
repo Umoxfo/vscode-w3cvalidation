@@ -12,7 +12,7 @@ import { checkJRE } from "./JRE";
 
 let client: LanguageClient;
 
-export async function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext): Promise<void> {
     try {
         // JRE check
         await checkJRE();

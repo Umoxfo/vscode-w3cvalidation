@@ -126,12 +126,12 @@ enum MediaTypes {
  */
 // tslint:disable-next-line: promise-function-async
 export async function sendDocument(document: TextDocument): Promise<Message[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject): void => {
         // Set the request headers
         // tslint:disable-next-line: max-line-length
         // RequestOptions.headers["Content-Type"] = `${MediaTypes[document.languageId as keyof typeof MediaTypes]}; charset=utf-8`;
 
-        const request = http.request(RequestOptions, (response) => {
+        const request = http.request(RequestOptions, (response): void => {
             // handle http errors
             if (response.statusCode < 200 || response.statusCode > 299) { reject(); }
 
@@ -140,14 +140,14 @@ export async function sendDocument(document: TextDocument): Promise<Message[]> {
             let body = "";
 
             // on every content chunk, push it to the string
-            response.on("data", (chunk) => body += chunk);
+            response.on("data", (chunk): string => body += chunk);
 
             // we are done, resolve promise with those joined chunks
-            response.on("end", () => resolve((JSON.parse(body) as ValidationResult).messages));
+            response.on("end", (): void => resolve((JSON.parse(body) as ValidationResult).messages));
         });
 
         // handle connection errors of the request
-        request.on("error", (err) => reject(err));
+        request.on("error", (err): void => reject(err));
 
         // write data to request body
         request.write(document.getText());

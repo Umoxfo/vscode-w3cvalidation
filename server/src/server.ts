@@ -31,6 +31,7 @@ const connection: IConnection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments = new TextDocuments();
 
 // After the server has started the client sends an initialize request.
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 connection.onInitialize((params: InitializeParams) => {
     const extentionPath: string = params.initializationOptions;
 
@@ -46,16 +47,17 @@ connection.onInitialize((params: InitializeParams) => {
         },
     };
 });
+/* eslint-enable */
 
 // Shutdown the validation server.
-connection.onShutdown(() => validationService.kill("SIGINT"));
+connection.onShutdown((): void => validationService.kill("SIGINT"));
 
 // The content of a text document has changed.
 // eslint-disable-next-line @typescript-eslint/no-use-before-define
-documents.onDidChangeContent(async (change) => await validateHtmlDocument(change.document));
+documents.onDidChangeContent(async (change): Promise<void> => await validateHtmlDocument(change.document));
 
 // When a text document is closed, clear the error message.
-documents.onDidClose((event) => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
+documents.onDidClose((event): void => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
 
 /*
  * Validation for HTML document
@@ -64,6 +66,7 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
     try {
         const results = await sendDocument(textDocument);
 
+        /* eslint-disable @typescript-eslint/explicit-function-return-type */
         const diagnostics = results.map<Diagnostic>((item) => {
             let type: DiagnosticSeverity;
             switch (item.type) {
@@ -93,6 +96,7 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
             };
             /* tslint:enable: object-literal-sort-keys */
         });
+        /* eslint-enable */
 
         // Send the computed diagnostics to VSCode.
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });

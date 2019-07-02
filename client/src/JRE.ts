@@ -12,7 +12,7 @@ import * as util from "util";
 const execFilePromise = util.promisify(execFile);
 
 if (process.platform === "darwin") {
-    execFile("/usr/libexec/java_home", (_, stdout) => process.env.JAVA_HOME = stdout);
+    execFile("/usr/libexec/java_home", (_, stdout): string => process.env.JAVA_HOME = stdout);
 }// if
 
 const userJavaHome: string | undefined = workspace.getConfiguration("vscode-w3cvalidation").get("javaHome");
