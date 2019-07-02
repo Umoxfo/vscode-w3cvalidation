@@ -9,39 +9,6 @@ import { TextDocument } from "vscode-languageserver";
 import * as http from "http";
 
 /**
- * Validation result format
- */
-interface ValidationResult {
-    readonly url?: string;
-    readonly messages: Message[] | [];
-
-    /*
-     * The "source" object
-     */
-    readonly source?: {
-        /*
-         * See https://github.com/validator/validator/wiki/Output-»-JSON#the-code-string
-         */
-        readonly code: string;
-
-        /*
-         * See https://github.com/validator/validator/wiki/Output-»-JSON#the-type-string-1
-         */
-        readonly type?: string;
-
-        /*
-         * See https://github.com/validator/validator/wiki/Output-»-JSON#the-encoding-string
-         */
-        readonly encoding?: string;
-    };
-
-    /*
-     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-language-string
-     */
-    readonly language?: string;
-}// ValidationResult
-
-/**
  * Message object of the validation result
  */
 interface Message {
@@ -101,7 +68,40 @@ interface Message {
 
     readonly hiliteStart?: number;
     readonly hiliteLength?: number;
-}
+}// Message
+
+/**
+ * Validation result format
+ */
+interface ValidationResult {
+    readonly url?: string;
+    readonly messages: Message[] | [];
+
+    /*
+     * The "source" object
+     */
+    readonly source?: {
+        /*
+         * See https://github.com/validator/validator/wiki/Output-»-JSON#the-code-string
+         */
+        readonly code: string;
+
+        /*
+         * See https://github.com/validator/validator/wiki/Output-»-JSON#the-type-string-1
+         */
+        readonly type?: string;
+
+        /*
+         * See https://github.com/validator/validator/wiki/Output-»-JSON#the-encoding-string
+         */
+        readonly encoding?: string;
+    };
+
+    /*
+     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-language-string
+     */
+    readonly language?: string;
+}// ValidationResult
 
 const RequestOptions: http.RequestOptions = {
     host: "localhost", // tslint:disable-line: object-literal-sort-keys
