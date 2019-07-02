@@ -78,7 +78,6 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
                     break;
             }// switch
 
-            /* tslint:disable: object-literal-sort-keys */
             return {
                 range: {
                     start: {
@@ -94,7 +93,6 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
                 source: "W3C Validator",
                 message: item.message,
             };
-            /* tslint:enable: object-literal-sort-keys */
         });
         /* eslint-enable */
 

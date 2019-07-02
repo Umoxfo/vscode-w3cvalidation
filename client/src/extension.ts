@@ -22,7 +22,6 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
         // If the extension is launched in debug mode then the debug server options are used
         // Otherwise the run options are used
-        /* tslint:disable:object-literal-sort-keys */
         const serverOptions: ServerOptions = {
             run: { module: serverModule, transport: TransportKind.ipc },
             debug: {
@@ -31,7 +30,6 @@ export async function activate(context: ExtensionContext): Promise<void> {
                 options: { execArgv: ["--nolazy", "--inspect=6009"] },
             },
         };
-        /* tslint:enable:object-literal-sort-keys */
 
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
