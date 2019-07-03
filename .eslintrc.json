@@ -11,7 +11,6 @@
     },
     "plugins": [
         "@typescript-eslint",
-        "@typescript-eslint/tslint",
         "prettier",
         "import"
     ],
@@ -92,12 +91,6 @@
         "@typescript-eslint/prefer-function-type": "error",
         "@typescript-eslint/unified-signatures": "warn",
         "@typescript-eslint/promise-function-async": "error",
-        "@typescript-eslint/tslint/config": [
-            "warn",
-            {
-                "lintFile": "./tslint.json"
-            }
-        ],
         "import/no-unassigned-import": "warn"
     }
 }
