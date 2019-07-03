@@ -15,20 +15,15 @@ if (process.platform === "darwin") {
     execFile("/usr/libexec/java_home", (_, stdout): string => process.env.JAVA_HOME = stdout);
 }// if
 
-const userJavaHome: string | undefined = workspace.getConfiguration("vscode-w3cvalidation").get("javaHome");
-if (userJavaHome) {
-    process.env.PATH += path.join(path.delimiter, userJavaHome, "bin");
-}
+const javaDirectories: (string | undefined)[] = [
+    workspace.getConfiguration("vscode-w3cvalidation").get("javaHome"),
+    process.env.JAVA_HOME,
+    process.env.JDK_HOME,
+];
 
-const javaHome = process.env.JAVA_HOME;
-if (javaHome) {
-    process.env.PATH += path.join(path.delimiter, javaHome, "bin");
-}
-
-const jdkHome = process.env.JDK_HOME;
-if (jdkHome) {
-    process.env.PATH += path.join(path.delimiter, jdkHome, "bin");
-}
+for (const javaDir in javaDirectories) {
+    if (javaDir) process.env.PATH += path.join(path.delimiter, javaDir, "bin");
+}// for
 
 /**
  * Checks JRE version
