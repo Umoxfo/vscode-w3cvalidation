@@ -21,6 +21,23 @@ interface Message {
     readonly type: "info" | "error" | "non-document-error";
 
     /*
+     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-url-string
+     */
+    readonly url?: string;
+
+    /*
+     * The "firstLine", "firstColumn", "lastLine" and "lastColumn"
+     * indicate a range of source code associated with the message.
+     * The line and column numbers are one-based:
+     *   The first line is line 1
+     *   The first column is column 1
+     */
+    readonly lastLine?: number;
+    readonly firstLine?: number; // If the attribute is missing, it is the same value as "lastLine".
+    readonly lastColumn?: number;
+    readonly firstColumn?: number;
+
+    /*
      * type: "info" is "warning" (something questionable issue);
      * in the absence of the "subtype" key, general information
      * type: "error" is "fatal" (an XML well-formedness error) more information see
@@ -33,28 +50,6 @@ interface Message {
      *   Undefined is a problem external to the document in general
      */
     readonly subType?: "warning" | "fatal" | "io" | "schema" | "internal";
-
-    /*
-     * The "offset" number is an UTF-16 code unit index into the "extract". The first code unit has the index 0.
-     */
-    readonly offset?: number;
-
-    /*
-     * The "firstLine", "firstColumn", "lastLine" and "lastColumn"
-     * indicate a range of source code associated with the message.
-     * The line and column numbers are one-based:
-     *   The first line is line 1
-     *   The first column is column 1
-     */
-    readonly firstLine?: number; // If the attribute is missing, it is the same value as "lastLine".
-    readonly firstColumn?: number;
-    readonly lastLine?: number;
-    readonly lastColumn?: number;
-
-    /*
-     * See https://github.com/validator/validator/wiki/Output-»-JSON#the-url-string
-     */
-    readonly url?: string;
 
     /*
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-message-string
