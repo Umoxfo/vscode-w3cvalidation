@@ -27,10 +27,9 @@
         },
         {
             "label": "compile",
-            "dependsOn": [
-                "Client Compile",
-                "Server Compile"
-            ],
+            "type": "typescript",
+            "tsconfig": "tsconfig.json",
+            "problemMatcher": "$tsc",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -58,13 +57,10 @@
         },
         {
             "label": "watch",
-            "dependsOn": [
-                "Client Watch",
-                "Server Watch"
-            ],
-            "problemMatcher": [
-                "$tsc-watch"
-            ],
+            "type": "typescript",
+            "tsconfig": "tsconfig.json",
+            "option": "watch",
+            "problemMatcher": "$tsc-watch",
             "isBackground": true,
         }
     ]
