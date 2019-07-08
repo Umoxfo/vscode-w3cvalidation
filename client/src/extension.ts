@@ -9,6 +9,7 @@ import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } f
 
 import * as path from "path";
 import { checkJRE } from "./JRE";
+import { Message } from "./Message";
 
 let client: LanguageClient;
 
@@ -20,8 +21,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
         // The server is implemented in node
         const serverModule = context.asAbsolutePath(path.join("server", "out", "server.js"));
 
-        // If the extension is launched in debug mode then the debug server options are used
-        // Otherwise the run options are used
+        // If the extension is launched in debug mode then the debug server options are used,
+        // otherwise the run options are used
         const serverOptions: ServerOptions = {
             run: { module: serverModule, transport: TransportKind.ipc },
             debug: {
@@ -42,18 +43,21 @@ export async function activate(context: ExtensionContext): Promise<void> {
         client = new LanguageClient("w3cvalidation", "HTML Validation Service", serverOptions, clientOptions);
         client.start();
     } catch (error) {
-        await window.showErrorMessage("Java runtime could not be located.", "Get Java Platform (JDK)");
-        await env.openExternal(Uri.parse("http://www.oracle.com/technetwork/java/javase/downloads/index.html"));
+        await window.showErrorMessage(Message.JavaMissingErrorText, Message.GetJavaButtonText);
+        await env.openExternal(Uri.parse(Message.OracleJavaDownloadUrl));
 
-        // tslint:disable-next-line:max-line-length
-        const item = await window.showInformationMessage("Install it and set its location using 'vscode-w3cvalidation.javaHome' variable in VS Code settings.", "Open User Settings", "Open Workspace Settings");
+        const item = await window.showInformationMessage(
+            Message.JavaInstallInfoText,
+            Message.UserSettingsButtonText,
+            Message.WorkspaceSettingsButtonText
+        );
 
         let commandID = "";
         switch (item) {
-            case "Open User Settings":
+            case Message.UserSettingsButtonText:
                 commandID = "workbench.action.openGlobalSettings";
                 break;
-            case "Open Workspace Settings":
+            case Message.WorkspaceSettingsButtonText:
                 commandID = "workbench.action.openWorkspaceSettings";
                 break;
         }// switch
