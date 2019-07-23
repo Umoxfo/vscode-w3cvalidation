@@ -1,9 +1,11 @@
 .vscode/**
+*.code-workspace
 .gitignore
 tsconfig.base.json
 **/tsconfig.json
 tslint.json
 .eslintrc.json
+.prettierrc.json
 test/**
 **/*.ts
 **/*.map
@@ -15,3 +17,4 @@ client/node_modules/**
 !client/node_modules/vscode-languageserver-protocol/**
 !client/node_modules/vscode-languageserver-types/**
 server/SERVICE_VERSION
+**/vnu-test

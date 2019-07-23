@@ -1,3 +1,13 @@
+## 2.4.0
+* Update TypeScript to v3.5.3
+* Update Jetty to v9.4.19
+* Drop support version 1.27.x
+  It is support VSCode version 1.31.0 or later now.
+
+## 2.3.2
+* Hotfix (Dev): Update vscode to v1.1.29
+  For a dependency of vscode, braces@1.8.5, is vulnerable to Regular Expression Denial of Service (ReDoS).
+
 ## 2.3.0
 * Update TypeScript to v3.2.1
 * Update Jetty to v9.4.14
