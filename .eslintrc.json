@@ -7,7 +7,10 @@
     "parserOptions": {
         "ecmaVersion": 2017,
         "sourceType": "module",
-        "project": "./tsconfig.json"
+        "project": [
+            "./client/tsconfig.json",
+            "./server/tsconfig.json"
+        ]
     },
     "plugins": [
         "@typescript-eslint",
@@ -81,7 +84,6 @@
                 }
             }
         ],
-        "@typescript-eslint/prefer-interface": "off", //DEPRECATED
         "@typescript-eslint/consistent-type-definitions": [
             "error",
             "interface"
