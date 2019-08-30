@@ -44,16 +44,16 @@
         "vscode:prepublish": "npm run compile"
     },
     "devDependencies": {
-        "@types/node": "^10.14.15",
+        "@types/node": "^10.14.17",
         "@typescript-eslint/eslint-plugin": "^2.0.0",
         "@typescript-eslint/parser": "^2.0.0",
-        "eslint": "^6.2.0",
-        "eslint-config-prettier": "^6.0.0",
+        "eslint": "^6.2.2",
+        "eslint-config-prettier": "^6.1.0",
         "eslint-plugin-import": "^2.18.2",
         "eslint-plugin-prettier": "^3.1.0",
         "prettier": "^1.18.2",
-        "tslint": "^5.18.0",
-        "typescript": "^3.5.3",
+        "tslint": "^5.19.0",
+        "typescript": "^3.6.2",
         "typescript-tslint-plugin": "^0.5.4"
     }
 }
