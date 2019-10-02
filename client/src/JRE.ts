@@ -4,8 +4,6 @@
  */
 "use strict";
 
-import { workspace } from "vscode";
-
 import { execFile } from "child_process";
 import * as path from "path";
 import * as util from "util";
@@ -16,7 +14,6 @@ if (process.platform === "darwin") {
 }// if
 
 const javaDirectories: (string | undefined)[] = [
-    workspace.getConfiguration("vscode-w3cvalidation").get("javaHome"),
     process.env.JAVA_HOME,
     process.env.JDK_HOME,
 ];
