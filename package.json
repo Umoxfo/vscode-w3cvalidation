@@ -31,11 +31,11 @@
         "vscode:prepublish": "npm run compile"
     },
     "devDependencies": {
-        "@types/node": "^10.14.19",
-        "@typescript-eslint/eslint-plugin": "^2.3.2",
-        "@typescript-eslint/parser": "^2.3.2",
+        "@types/node": "^10.14.21",
+        "@typescript-eslint/eslint-plugin": "^2.3.3",
+        "@typescript-eslint/parser": "^2.3.3",
         "eslint": "^6.5.1",
-        "eslint-config-prettier": "^6.3.0",
+        "eslint-config-prettier": "^6.4.0",
         "eslint-plugin-import": "^2.18.2",
         "eslint-plugin-prettier": "^3.1.1",
         "prettier": "^1.18.2",
