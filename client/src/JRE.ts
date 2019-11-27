@@ -18,8 +18,8 @@ const javaDirectories: readonly (string | undefined)[] = [
     process.env.JDK_HOME,
 ];
 
-for (const javaDir in javaDirectories) {
-    if (javaDir) process.env.PATH += path.join(path.delimiter, javaDir, "bin");
+for (const javaDir of javaDirectories) {
+    if (javaDir) process.env.PATH += path.delimiter + path.join(javaDir, "bin");
 }// for
 
 /**
