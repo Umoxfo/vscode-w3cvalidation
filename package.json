@@ -24,6 +24,19 @@
     "activationEvents": [
         "*"
     ],
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "W3C Validation",
+            "properties": {
+                "vscode-w3cvalidation.javaHome": {
+                    "type": "string",
+                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jdk-11\" (Windows)\n /usr/lib/jvm/java-11-openjdk-amd64 (Ubuntu, etc.)",
+                    "default": "C:\\Program Files\\Java\\jdk-13.0.1"
+                }
+            }
+        }
+    },
     "main": "./client/out/extension",
     "scripts": {
         "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
