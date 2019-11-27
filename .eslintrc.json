@@ -1,45 +1,76 @@
 {
     "root": true,
     "env": {
+        "es2017": true,
         "node": true
     },
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 2017,
-        "sourceType": "module",
-        "project": [
-            "./client/tsconfig.json",
-            "./server/tsconfig.json"
-        ]
-    },
-    "plugins": [
-        "@typescript-eslint",
-        "prettier",
-        "import"
-    ],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:import/typescript",
+        // "plugin:jsdoc/recommended",
         "prettier",
-        "prettier/@typescript-eslint",
-        "plugin:import/typescript"
+        "prettier/@typescript-eslint"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": [
+            "./client/tsconfig.json",
+            "./server/tsconfig.json"
+        ],
+        "sourceType": "module",
+        "ecmaVersion": 2017
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "import",
+        // "jsdoc",
+        // "prefer-arrow",
+        "prettier"
     ],
     "rules": {
-        "prettier/prettier": "warn",
+        "@typescript-eslint/array-type": "error",
+        "@typescript-eslint/consistent-type-definitions": [
+            "error",
+            "interface"
+        ],
+        "@typescript-eslint/member-ordering": "error",
+        "@typescript-eslint/no-parameter-properties": "off",
+        "@typescript-eslint/no-use-before-declare": "off",
+        "@typescript-eslint/prefer-for-of": "error",
+        "@typescript-eslint/prefer-function-type": "error",
+        "@typescript-eslint/promise-function-async": "error",
+        "@typescript-eslint/unified-signatures": "warn",
         "arrow-body-style": "warn",
         "arrow-parens": "warn",
+        "camelcase": "error",
+        // "capitalized-comments": "error",
         "dot-notation": "warn",
         "eqeqeq": [
             "error",
-            "always",
-            {
-                "null": "ignore"
-            }
+            "smart"
         ],
         "guard-for-in": "error",
-        "max-classes-per-file": "error",
+        // "id-blacklist": [
+        //     "error",
+        //     "any",
+        //     "Number",
+        //     "number",
+        //     "String",
+        //     "string",
+        //     "Boolean",
+        //     "boolean",
+        //     "Undefined",
+        //     "undefined"
+        // ],
+        // "id-match": "error",
+        "import/no-unassigned-import": "warn",
+        "max-classes-per-file": [
+            "error",
+            1
+        ],
         "new-parens": "error",
         "no-bitwise": "warn",
         "no-caller": "warn",
@@ -52,16 +83,40 @@
             }
         ],
         "no-new-wrappers": "error",
-        "no-shadow": "error",
+        "no-shadow": [
+            "error",
+            {
+                "hoist": "all"
+            }
+        ],
         "no-throw-literal": "error",
         "no-trailing-spaces": "error",
         "no-undef-init": "error",
+        // "no-underscore-dangle": [
+        //     "error",
+        //     "off"
+        // ],
         "no-unused-expressions": "error",
         "object-shorthand": "error",
         "one-var": [
             "error",
             "never"
         ],
+        // "prefer-arrow/prefer-arrow-functions": [
+        //     "error",
+        //     {
+        //         "disallowPrototype": false,
+        //         "singleReturnOnly": true,
+        //         "classPropertiesAllowed": true
+        //     }
+        // ],
+        // TSLint
+        // "only-arrow-functions": [
+        //    true,
+        //    "allow-declarations",
+        //    "allow-named-functions"
+        // ]
+        "prettier/prettier": "warn",
         "quote-props": [
             "error",
             "consistent-as-needed"
@@ -71,8 +126,8 @@
             "error",
             {
                 "anonymous": "never",
-                "asyncArrow": "always",
-                "named": "never"
+                "named": "never",
+                "asyncArrow": "always"
             }
         ],
         "spaced-comment": [
@@ -83,16 +138,6 @@
                     "balanced": true
                 }
             }
-        ],
-        "@typescript-eslint/consistent-type-definitions": [
-            "error",
-            "interface"
-        ],
-        "@typescript-eslint/member-ordering": "error",
-        "@typescript-eslint/prefer-for-of": "error",
-        "@typescript-eslint/prefer-function-type": "error",
-        "@typescript-eslint/unified-signatures": "warn",
-        "@typescript-eslint/promise-function-async": "error",
-        "import/no-unassigned-import": "warn"
+        ]
     }
 }
