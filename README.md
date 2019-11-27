@@ -8,6 +8,8 @@ If you don't have them installed, download and install a latest Java Development
 
 After installing (or installed) the JDK, you would need to configure your environment for Java execution.
 
+Then open your HTML document(s).
+
 ## Setting the JDK
 The path to the JDK requires to be set in the environment.
 
@@ -16,7 +18,7 @@ The path to the JDK requires to be set in the environment.
 1. Select **Control Panel** and then **System**.
 1. Click **Advanced** and then **Environment Variables**.
 1. Click **New** in the section **System Variables**
-1. Enter the **Variable name** as `JAVA_HOME` and  the **Variable value** as the installation path for the Java (e.g. C:\Program Files\Java\jdk-12).
+1. Enter the **Variable name** as `JAVA_HOME` and  the **Variable value** as the installation path for the Java (e.g. C:\Program Files\Java\jdk-13).
 1. Click **OK**
 1. Find the `PATH` environment variable in the **System Variables** section and select it, click **Edit**.
 1. Append `;%JAVA_HOME%\bin` for the `PATH` variable
