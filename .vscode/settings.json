@@ -15,5 +15,5 @@
         "typescript"
     ],
     "licenser.license": "MIT",
-    "tslint.configFile": "../tslint.json",
+    "tslint.configFile": "tslint.json",
 }
