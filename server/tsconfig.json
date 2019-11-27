@@ -7,6 +7,6 @@
             }
         ],
         "rootDir": "src",
-        "outDir": "out",
+        "outDir": "out"
     }
 }

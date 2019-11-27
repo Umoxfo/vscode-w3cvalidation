@@ -14,8 +14,9 @@
         "incremental": true,
         "sourceMap": true,
         "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "noImplicitReturns": true
     }
 }
