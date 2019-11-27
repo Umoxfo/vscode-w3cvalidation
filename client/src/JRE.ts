@@ -13,7 +13,7 @@ if (process.platform === "darwin") {
     execFile("/usr/libexec/java_home", (_, stdout): string => process.env.JAVA_HOME = stdout);
 }// if
 
-const javaDirectories: (string | undefined)[] = [
+const javaDirectories: readonly (string | undefined)[] = [
     process.env.JAVA_HOME,
     process.env.JDK_HOME,
 ];
@@ -31,5 +31,5 @@ export async function checkJRE(): Promise<void> {
     const output = await execFilePromise("java", ["-version"]);
     const currentVersion = output.stderr.substring(14, output.stderr.lastIndexOf('"'));
 
-    return (currentVersion >= "1.8") ? Promise.resolve() : Promise.reject();
+    return currentVersion >= "1.8" ? Promise.resolve() : Promise.reject();
 }// checkJRE

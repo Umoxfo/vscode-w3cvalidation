@@ -82,13 +82,13 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
                         character: (item.firstColumn || item.lastColumn || 1) - 1,
                     },
                     end: {
-                        line: (item.lastLine || 1) - 1,
-                        character: item.lastColumn || 0,
+                        line: (item.lastLine ?? 1) - 1,
+                        character: item.lastColumn ?? 0,
                     },
                 },
                 severity: type,
                 source: "W3C Validator",
-                message: item.message || "",
+                message: item.message ?? "",
             };
         });
 
@@ -96,7 +96,7 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     } catch (error) {
         await setTimeoutPromise((Math.random() + 1) * 1000);
-        return validateHtmlDocument(textDocument);
+        validateHtmlDocument(textDocument);
     }// try-catch
 }// validateHtmlDocument
 
