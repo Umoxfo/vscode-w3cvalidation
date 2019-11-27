@@ -1,3 +1,9 @@
+## 2.5.0
+* Update TypeScript to v3.7.2
+* Update Jetty to v9.4.24
+* Update vnu.war to v19.11.26
+* Bugfix #8 JAVA_HOME plus PATH necessary to run validation
+
 ## 2.4.0
 * Update TypeScript to v3.5.3
 * Update Jetty to v9.4.19

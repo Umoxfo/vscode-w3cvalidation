@@ -15,14 +15,14 @@ if (process.platform === "darwin") {
     execFile("/usr/libexec/java_home", (_, stdout): string => process.env.JAVA_HOME = stdout);
 }// if
 
-const javaDirectories: (string | undefined)[] = [
+const javaDirectories: readonly (string | undefined)[] = [
     workspace.getConfiguration("vscode-w3cvalidation").get("javaHome"),
     process.env.JAVA_HOME,
     process.env.JDK_HOME,
 ];
 
-for (const javaDir in javaDirectories) {
-    if (javaDir) process.env.PATH += path.join(path.delimiter, javaDir, "bin");
+for (const javaDir of javaDirectories) {
+    if (javaDir) process.env.PATH += path.delimiter + path.join(javaDir, "bin");
 }// for
 
 /**
@@ -34,5 +34,5 @@ export async function checkJRE(): Promise<void> {
     const output = await execFilePromise("java", ["-version"]);
     const currentVersion = output.stderr.substring(14, output.stderr.lastIndexOf('"'));
 
-    return (currentVersion >= "1.8") ? Promise.resolve() : Promise.reject();
+    return currentVersion >= "1.8" ? Promise.resolve() : Promise.reject();
 }// checkJRE

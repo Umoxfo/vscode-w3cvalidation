@@ -31,7 +31,6 @@ const connection: IConnection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments = new TextDocuments();
 
 // After the server has started the client sends an initialize request.
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 connection.onInitialize((params: InitializeParams) => {
     const extentionPath: string = params.initializationOptions;
 
@@ -47,7 +46,6 @@ connection.onInitialize((params: InitializeParams) => {
         },
     };
 });
-/* eslint-enable */
 
 // Shutdown the validation server.
 connection.onShutdown((): void => validationService.kill("SIGINT"));
@@ -66,7 +64,6 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
     try {
         const results = await sendDocument(textDocument);
 
-        /* eslint-disable @typescript-eslint/explicit-function-return-type */
         const diagnostics = results.map<Diagnostic>((item) => {
             let type: DiagnosticSeverity | undefined;
             switch (item.type) {
@@ -85,22 +82,21 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
                         character: (item.firstColumn || item.lastColumn || 1) - 1,
                     },
                     end: {
-                        line: (item.lastLine || 1) - 1,
-                        character: item.lastColumn || 0,
+                        line: (item.lastLine ?? 1) - 1,
+                        character: item.lastColumn ?? 0,
                     },
                 },
                 severity: type,
                 source: "W3C Validator",
-                message: item.message || "",
+                message: item.message ?? "",
             };
         });
-        /* eslint-enable */
 
         // Send the computed diagnostics to VSCode.
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     } catch (error) {
         await setTimeoutPromise((Math.random() + 1) * 1000);
-        return validateHtmlDocument(textDocument);
+        validateHtmlDocument(textDocument);
     }// try-catch
 }// validateHtmlDocument
 
