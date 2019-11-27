@@ -2,7 +2,7 @@
     "name": "vscode-w3cvalidation",
     "displayName": "W3C Validation",
     "description": "Adds W3C validation support to Visual Studio Code.",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "publisher": "Umoxfo",
     "author": {
         "name": "Makoto Sakaguchi"
