@@ -137,7 +137,7 @@ export async function sendDocument(document: TextDocument): Promise<Message[]> {
             let body = "";
 
             // on every content chunk, push it to the string
-            response.on("data", (chunk): string => body += chunk);
+            response.on("data", (chunk): string => (body += chunk));
 
             // we are done, resolve promise with those joined chunks
             response.on("end", (): void => resolve((JSON.parse(body) as ValidationResult).messages));
