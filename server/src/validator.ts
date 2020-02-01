@@ -61,7 +61,7 @@ interface Message {
 
     readonly hiliteStart?: number;
     readonly hiliteLength?: number;
-}// Message
+} // Message
 
 /**
  * Validation result format
@@ -94,10 +94,10 @@ interface ValidationResult {
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-language-string
      */
     readonly language?: string;
-}// ValidationResult
+} // ValidationResult
 
 const RequestOptions: http.RequestOptions = {
-    host: "localhost", // tslint:disable-line: object-literal-sort-keys
+    host: "localhost",
     port: 8888,
     method: "POST",
     path: "/?out=json",
@@ -148,4 +148,4 @@ export async function sendDocument(document: string): Promise<Message[]> {
         request.write(document);
         request.end();
     });
-}// sendDocument
+} // sendDocument
