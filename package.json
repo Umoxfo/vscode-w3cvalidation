@@ -19,7 +19,7 @@
         "Linters"
     ],
     "engines": {
-        "vscode": "^1.31.0"
+        "vscode": "^1.39.0"
     },
     "activationEvents": [
         "*"

@@ -11,9 +11,10 @@ import {
     IConnection,
     InitializeParams,
     ProposedFeatures,
-    TextDocument,
     TextDocuments,
+    TextDocumentSyncKind,
 } from "vscode-languageserver";
+import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { ChildProcess, spawn } from "child_process";
 import * as path from "path";
@@ -28,7 +29,7 @@ let validationService: ChildProcess;
 const connection: IConnection = createConnection(ProposedFeatures.all);
 
 // Create a simple text document manager.
-const documents: TextDocuments = new TextDocuments();
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 // After the server has started the client sends an initialize request.
 connection.onInitialize((params: InitializeParams) => {
@@ -42,7 +43,7 @@ connection.onInitialize((params: InitializeParams) => {
 
     return {
         capabilities: {
-            textDocumentSync: documents.syncKind,
+            textDocumentSync: TextDocumentSyncKind.Full,
         },
     };
 });
