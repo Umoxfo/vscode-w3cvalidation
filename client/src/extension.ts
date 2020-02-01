@@ -10,6 +10,7 @@ import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } f
 import * as path from "path";
 import { checkJava } from "./Java";
 import * as Message from "./Message.json";
+import { checkValidator } from "./service/vnu";
 
 let client: LanguageClient;
 
@@ -18,8 +19,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
         const JETTY_HOME = context.asAbsolutePath(path.join("server", "service", "jetty-home"));
         const JETTY_BASE = context.asAbsolutePath(path.join("server", "service", "vnu"));
 
-        // Java check
-        await checkJava();
+        // Java and validator check
+        await Promise.all([checkJava(), checkValidator(JETTY_HOME, JETTY_BASE)]);
 
         // The server is implemented in node
         const serverModule = context.asAbsolutePath(path.join("server", "out", "server.js"));

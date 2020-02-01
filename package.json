@@ -26,13 +26,19 @@
     ],
     "contributes": {
         "configuration": {
-            "type": "object",
             "title": "W3C Validation",
             "properties": {
                 "vscode-w3cvalidation.javaHome": {
                     "type": "string",
-                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jdk-11\" (Windows)\n /usr/lib/jvm/java-11-openjdk-amd64 (Ubuntu, etc.)",
-                    "default": ""
+                    "scope": "machine",
+                    "default": "",
+                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jdk-11\" (Windows)\n /usr/lib/jvm/java-11-openjdk-amd64 (Ubuntu, etc.)"
+                },
+                "vscode-w3cvalidation.validator-token": {
+                    "type": "string",
+                    "scope": "machine",
+                    "default": "\"e13fab74c4623fce612b1e979576f46c\"",
+                    "description": "ETag, a fingerprint, for the Nu Html Checker repository"
                 }
             }
         }
