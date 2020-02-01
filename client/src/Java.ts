@@ -30,7 +30,7 @@ for (const javaDir of javaDirectories) {
  *
  * @returns Promise<void> Resolved promise
  */
-export async function checkJRE(): Promise<void> {
+export async function checkJava(): Promise<void> {
     const output = await execFilePromise("java", ["-version"]);
     const currentVersion = output.stderr.substring(14, output.stderr.lastIndexOf('"'));
 

@@ -8,15 +8,15 @@ import { commands, env, ExtensionContext, Uri, window } from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
 
 import * as path from "path";
-import { checkJRE } from "./JRE";
 import { Message } from "./Message";
+import { checkJava } from "./Java";
 
 let client: LanguageClient;
 
 export async function activate(context: ExtensionContext): Promise<void> {
     try {
-        // JRE check
-        await checkJRE();
+        // Java check
+        await checkJava();
 
         // The server is implemented in node
         const serverModule = context.asAbsolutePath(path.join("server", "out", "server.js"));
