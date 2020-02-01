@@ -6,6 +6,7 @@
                 "name": "typescript-tslint-plugin"
             }
         ],
+        "resolveJsonModule": true,
         "rootDir": "src",
         "outDir": "out"
     }

@@ -8,8 +8,8 @@ import { commands, env, ExtensionContext, Uri, window } from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
 
 import * as path from "path";
-import { Message } from "./Message";
 import { checkJava } from "./Java";
+import * as Message from "./Message.json";
 
 let client: LanguageClient;
 
