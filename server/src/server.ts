@@ -17,7 +17,6 @@ import {
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { ChildProcess, spawn } from "child_process";
-import * as path from "path";
 import * as util from "util";
 const setTimeoutPromise = util.promisify(setTimeout);
 import { sendDocument } from "./validator";
@@ -33,10 +32,7 @@ const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 // After the server has started the client sends an initialize request.
 connection.onInitialize((params: InitializeParams) => {
-    const extentionPath: string = params.initializationOptions;
-
-    const JETTY_HOME = path.resolve(extentionPath, "server/service/jetty-home");
-    const JETTY_BASE = path.resolve(extentionPath, "server/service/vnu");
+    const [JETTY_HOME, JETTY_BASE]: string = params.initializationOptions;
 
     // Start the validation server
     validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });

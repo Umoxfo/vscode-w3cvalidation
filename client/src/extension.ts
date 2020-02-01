@@ -15,6 +15,9 @@ let client: LanguageClient;
 
 export async function activate(context: ExtensionContext): Promise<void> {
     try {
+        const JETTY_HOME = context.asAbsolutePath(path.join("server", "service", "jetty-home"));
+        const JETTY_BASE = context.asAbsolutePath(path.join("server", "service", "vnu"));
+
         // Java check
         await checkJava();
 
@@ -36,7 +39,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         const clientOptions: LanguageClientOptions = {
             // Register the server for HTML documents
             documentSelector: [{ language: "html" }],
-            initializationOptions: context.extensionPath,
+            initializationOptions: [JETTY_HOME, JETTY_BASE],
         };
 
         // Create the language client and start the client.
