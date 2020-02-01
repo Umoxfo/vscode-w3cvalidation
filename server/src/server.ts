@@ -59,7 +59,7 @@ documents.onDidClose((event): void => connection.sendDiagnostics({ uri: event.do
  */
 async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
     try {
-        const results = await sendDocument(textDocument);
+        const results = await sendDocument(textDocument.getText());
 
         const diagnostics = results.map<Diagnostic>((item) => {
             let type: DiagnosticSeverity | undefined;

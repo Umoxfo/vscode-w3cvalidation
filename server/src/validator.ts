@@ -4,8 +4,6 @@
  */
 "use strict";
 
-import { TextDocument } from "vscode-languageserver";
-
 import * as http from "http";
 
 /**
@@ -121,7 +119,7 @@ enum MediaTypes {
  * Sends document to the local validation server
  */
 // tslint:disable-next-line: promise-function-async
-export async function sendDocument(document: TextDocument): Promise<Message[]> {
+export async function sendDocument(document: string): Promise<Message[]> {
     return new Promise((resolve, reject): void => {
         // Set the request headers
         // tslint:disable-next-line: max-line-length
@@ -147,7 +145,7 @@ export async function sendDocument(document: TextDocument): Promise<Message[]> {
         request.on("error", (err): void => reject(err));
 
         // write data to request body
-        request.write(document.getText());
+        request.write(document);
         request.end();
     });
 }// sendDocument
