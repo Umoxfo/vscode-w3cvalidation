@@ -27,7 +27,7 @@ const RequestOptions: https.RequestOptions = {
     path: "/repos/validator/validator/releases/tags/war",
     headers: {
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
-        "If-None-Match": workspace.getConfiguration("vscode-w3cvalidation").get("validator-token"),
+        "If-Modified-Since": workspace.getConfiguration("vscode-w3cvalidation").get("validator-token"),
     },
 };
 
@@ -40,7 +40,7 @@ async function getLatestVersionInfo(): Promise<Status> {
                 case Status.HAVE_UPDATE:
                     workspace
                         .getConfiguration("vscode-w3cvalidation")
-                        .update("validator-token", response.headers.etag, ConfigurationTarget.Global);
+                        .update("validator-token", response.headers["last-modified"], ConfigurationTarget.Global);
 
                     return resolve(Status.HAVE_UPDATE);
                 default:
