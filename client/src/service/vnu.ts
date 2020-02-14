@@ -103,6 +103,7 @@ const getVNUChecksum = async (response: IncomingMessage, fileName: string): Prom
 
 const getHashFile = async (response: IncomingMessage): Promise<string> =>
     new Promise((resolve) => {
+        response.setEncoding("utf-8");
         let body = "";
 
         response.on("data", (chunk): string => (body += chunk));
