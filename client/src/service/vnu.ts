@@ -53,6 +53,8 @@ async function getLatestVersionInfo(): Promise<Status> {
     });
 }
 
+type ResponseCallback = (response: IncomingMessage, fileName?: string) => Promise<string>;
+
 const DownloadRequest: https.RequestOptions = {
     host: "github.com",
     method: "HEAD",
@@ -62,7 +64,7 @@ const DownloadRequest: https.RequestOptions = {
     },
 };
 
-async function downloadFile(fileName: string, response: Function): Promise<string> {
+async function downloadFile(fileName: string, response: ResponseCallback): Promise<string> {
     const url: string = await new Promise((resolve, reject): void => {
         DownloadRequest.path = `/validator/validator/releases/download/war/${fileName}`;
 
