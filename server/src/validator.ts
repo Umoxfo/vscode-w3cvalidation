@@ -97,6 +97,7 @@ interface ValidationResult {
 } // ValidationResult
 
 const RequestOptions: http.RequestOptions = {
+    // tslint:disable-next-line: object-literal-sort-keys
     host: "localhost",
     port: 8888,
     method: "POST",
@@ -145,7 +146,6 @@ export async function sendDocument(document: string): Promise<Message[]> {
         request.on("error", (err): void => reject(err));
 
         // write data to request body
-        request.write(document);
-        request.end();
+        request.end(document);
     });
 } // sendDocument

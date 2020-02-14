@@ -91,7 +91,7 @@ async function checksumFile(filePath: string): Promise<string> {
 
 const getVNU = async (response: IncomingMessage, fileName?: string): Promise<string> =>
     new Promise((resolve) => {
-        const warFile = fs.createWriteStream(path.join(os.tmpdir(), fileName));
+        const warFile = fs.createWriteStream(path.join(os.tmpdir(), fileName ?? ""));
 
         response.pipe(warFile);
 
