@@ -89,7 +89,7 @@ async function checksumFile(filePath: string): Promise<string> {
     });
 }
 
-const getVNUChecksum = async (response: IncomingMessage, fileName: string): Promise<string> =>
+const getVNU = async (response: IncomingMessage, fileName?: string): Promise<string> =>
     new Promise((resolve) => {
         const warFile = fs.createWriteStream(path.join(os.tmpdir(), fileName));
 
@@ -101,7 +101,7 @@ const getVNUChecksum = async (response: IncomingMessage, fileName: string): Prom
         });
     });
 
-const getHashFile = async (response: IncomingMessage): Promise<string> =>
+const getHash = async (response: IncomingMessage): Promise<string> =>
     new Promise((resolve) => {
         response.setEncoding("utf-8");
         let body = "";
@@ -116,8 +116,8 @@ const getHashFile = async (response: IncomingMessage): Promise<string> =>
  */
 async function downloadVNU(): Promise<string> {
     const [warFilePath, warFileHash] = await Promise.all([
-        downloadFile("vnu.war", getVNUChecksum),
-        downloadFile("vnu.war.sha1", getHashFile),
+        downloadFile("vnu.war", getVNU),
+        downloadFile("vnu.war.sha1", getHash),
     ]);
 
     const warFileChecksum = await checksumFile(warFilePath);
