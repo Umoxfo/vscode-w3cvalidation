@@ -28,103 +28,92 @@ const RequestOptions: https.RequestOptions = {
     method: "HEAD",
     path: "/repos/validator/validator/releases/tags/war",
     headers: {
+        Accept: "application/vnd.github+json",
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
         "If-Modified-Since": workspace.getConfiguration("vscode-w3cvalidation").get("validator-token"),
     },
 };
 
-async function getLatestVersionInfo(): Promise<Status> {
-    return new Promise((resolve, reject): void => {
-        const req = https.request(RequestOptions, (response): void => {
+async function getLatestVersionInfo(): Promise<{ status: Status; token?: string }> {
+    return new Promise((resolve, reject) => {
+        const req = https.request(RequestOptions, (response) => {
             switch (response.statusCode) {
                 case Status.UP_TO_DATE:
-                    return resolve(Status.UP_TO_DATE);
+                    return resolve({ status: Status.UP_TO_DATE });
                 case Status.HAVE_UPDATE:
-                    workspace
-                        .getConfiguration("vscode-w3cvalidation")
-                        .update("validator-token", response.headers["last-modified"], ConfigurationTarget.Global);
-
-                    return resolve(Status.HAVE_UPDATE);
+                    return resolve({ status: Status.HAVE_UPDATE, token: response.headers["last-modified"] });
                 default:
                     return reject(new Error(response.statusMessage));
             }
         });
 
-        req.on("error", (err): void => reject(err));
+        req.on("error", (err) => reject(err));
         req.end();
     });
 }
 
-type ResponseCallback = (response: IncomingMessage, fileName?: string) => Promise<string>;
+interface WarFileResponse { warFile: Buffer, warFileHash: string }
+type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => void) => void;
 
-const DownloadRequest: https.RequestOptions = {
+const preConfigDownloadRequestOptions = (fileName: string): https.RequestOptions => ({
     host: "github.com",
     method: "HEAD",
-    path: "",
+    path: `/validator/validator/releases/download/war/${fileName}`,
     headers: {
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
-    },
-};
+    }
+});
 
-async function downloadFile(fileName: string, response: ResponseCallback): Promise<string> {
-    const url: string = await new Promise((resolve, reject): void => {
-        DownloadRequest.path = `/validator/validator/releases/download/war/${fileName}`;
-
-        const req = https.request(DownloadRequest, (res): void => resolve(res.headers.location ?? ""));
-        req.on("error", (err): void => reject(err));
+async function downloadFile<T>(fileName: string, response: ResponseCallback<T>): Promise<T> {
+    const url: string = await new Promise((resolve, reject) => {
+        const req = https.request(preConfigDownloadRequestOptions(fileName), (res) => resolve(res.headers.location ?? ""));
+        req.on("error", (err) => reject(err));
         req.end();
     });
 
     return new Promise((resolve, reject) =>
-        https.get(url, (res) => resolve(response(res, fileName))).on("error", (err): void => reject(err))
+        https.get(url, (res) => response(res, resolve)).on("error", (err) => reject(err))
     );
 }
 
-async function checksumFile(filePath: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const hash = crypto.createHash("sha1").setEncoding("hex");
+function getVNU(response: IncomingMessage, resolve: (value: WarFileResponse) => void): void {
+    const buffs: Buffer[] = [];
+    const hash = crypto.createHash("sha1");
 
-        fs.createReadStream(filePath)
-            .on("error", (err) => reject(err))
-            .pipe(hash)
-            .on("finish", () => resolve(hash.read()));
+    response.on("data", (chunk) => {
+        buffs.push(chunk);
+        hash.update(chunk);
     });
+
+    response.on("end", () => resolve({ warFile: Buffer.concat(buffs), warFileHash: hash.digest("hex") }));
 }
 
-const getVNU = async (response: IncomingMessage, fileName?: string): Promise<string> =>
-    new Promise((resolve) => {
-        const warFile = fs.createWriteStream(path.join(os.tmpdir(), fileName ?? ""));
+function getHash(response: IncomingMessage, resolve: (value: string) => void): void {
+    response.setEncoding("utf8");
+    let content = "";
 
-        response.pipe(warFile);
+    response.on("data", (chunk) => (content += chunk));
 
-        response.on("end", () => {
-            warFile.close();
-            resolve(warFile.path as string);
-        });
-    });
-
-const getHash = async (response: IncomingMessage): Promise<string> =>
-    new Promise((resolve) => {
-        response.setEncoding("utf-8");
-        let body = "";
-
-        response.on("data", (chunk): string => (body += chunk));
-
-        response.on("end", () => resolve(body));
-    });
+    response.on("end", () => resolve(content));
+}
 
 /**
  * Download latest validator
  */
 async function downloadVNU(): Promise<string> {
-    const [warFilePath, warFileHash] = await Promise.all([
+    const [{ warFile, warFileHash }, warFileChecksum] = await Promise.all([
         downloadFile("vnu.war", getVNU),
         downloadFile("vnu.war.sha1", getHash),
     ]);
 
-    const warFileChecksum = await checksumFile(warFilePath);
+    // Validate a file
+    if (warFileHash !== warFileChecksum) throw new Error("The downloaded file is invalid.");
 
-    return warFileChecksum === warFileHash ? Promise.resolve(warFilePath) : Promise.reject(new Error("Hash Error"));
+    // Write in a file
+    const warFilePath = path.join(os.tmpdir(), "vnu.war");
+    await fs.writeFile(warFilePath, warFile);
+
+    return warFilePath;
 }
 
 async function initServerArgs(jettyHome: string, jettyBase: string): Promise<string> {
@@ -135,12 +124,10 @@ async function initServerArgs(jettyHome: string, jettyBase: string): Promise<str
 }
 
 async function updateValidator(jettyHome: string, jettyBase: string): Promise<void> {
-    let warFilePath: string;
-    let jettyClasspath: string;
     try {
-        [warFilePath, jettyClasspath] = await Promise.all([downloadVNU(), initServerArgs(jettyHome)]);
+        const [warFilePath, jettyClasspath] = await Promise.all([downloadVNU(), initServerArgs(jettyHome, jettyBase)]);
 
-        await new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const jettyPreconfWar = spawn("java", [
                 "-cp",
                 jettyClasspath,
@@ -158,9 +145,14 @@ async function updateValidator(jettyHome: string, jettyBase: string): Promise<vo
 
 export async function checkValidator(jettyHome: string, jettyBase: string): Promise<void> {
     try {
-        const status = await getLatestVersionInfo();
+        const { status, token } = await getLatestVersionInfo();
         if (status === Status.HAVE_UPDATE) {
-            await updateValidator(jettyHome, jettyBase);
+            await Promise.all([
+                workspace
+                    .getConfiguration("vscode-w3cvalidation")
+                    .update("validator-token", token, ConfigurationTarget.Global),
+                updateValidator(jettyHome, jettyBase),
+            ]);
         }
     } catch (error) {
         // Ignore any errors (e.g. exceed the GitHub API rate limit)
