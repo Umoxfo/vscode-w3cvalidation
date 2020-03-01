@@ -15,7 +15,6 @@ import { spawn, execFile } from "child_process";
 import { promisify } from "util";
 const execFilePromise = promisify(execFile);
 
-import { classpath, PreconfigureQuickStart, deployDir } from "./Preconfig.json";
 // eslint-disable-next-line prettier/prettier
 import type { IncomingMessage } from "http";
 
@@ -128,10 +127,11 @@ async function downloadVNU(): Promise<string> {
     return warFileChecksum === warFileHash ? Promise.resolve(warFilePath) : Promise.reject(new Error("Hash Error"));
 }
 
-async function initServerArgs(jettyHome: string): Promise<string> {
-    return Promise.all(
-        classpath.jettyClasspath.map(async (item) => Promise.resolve(path.join(jettyHome, item)))
-    ).then((cp) => cp.join(path.delimiter));
+async function initServerArgs(jettyHome: string, jettyBase: string): Promise<string> {
+    const tmp = (
+        await execFilePromise("java", ["-jar", `${jettyHome}/start.jar`, "--dry-run"], { cwd: jettyBase })
+    ).stdout.split(" ");
+    return tmp[tmp.indexOf("-cp") + 1];
 }
 
 async function updateValidator(jettyHome: string, jettyBase: string): Promise<void> {
@@ -144,9 +144,9 @@ async function updateValidator(jettyHome: string, jettyBase: string): Promise<vo
             const jettyPreconfWar = spawn("java", [
                 "-cp",
                 jettyClasspath,
-                PreconfigureQuickStart,
+                "org.eclipse.jetty.quickstart.PreconfigureQuickStartWar",
                 warFilePath,
-                path.join(jettyBase, deployDir),
+                path.join(jettyBase, "webapps/vnu"),
             ]);
 
             jettyPreconfWar.on("close", (code) => (code === 0 ? resolve() : reject()));
