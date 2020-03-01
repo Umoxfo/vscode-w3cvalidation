@@ -1,0 +1,5 @@
+{
+    "OptionsTypeError": "ts-build-clean-webpack-plugin only accepts an options object.\nSee: https://github.com/johnagan/clean-webpack-plugin#options-and-defaults-optional",
+    "OutputPathWarning": "ts-build-clean-webpack-plugin: options.output.path not defined. Plugin disabled...",
+    "HandleDone.WebpackError": "ts-build-clean-webpack-plugin: pausing due to webpack errors"
+}
