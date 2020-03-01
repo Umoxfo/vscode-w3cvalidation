@@ -1,11 +1,7 @@
 {
     "extends": "../tsconfig.base",
     "compilerOptions": {
-        "plugins": [
-            {
-                "name": "typescript-tslint-plugin"
-            }
-        ],
+        "allowJs": true,
         "resolveJsonModule": true,
         "rootDir": "src",
         "outDir": "out"

@@ -1,11 +1,6 @@
 {
     "extends": "../tsconfig.base",
     "compilerOptions": {
-        "plugins": [
-            {
-                "name": "typescript-tslint-plugin"
-            }
-        ],
         "rootDir": "src",
         "outDir": "out"
     }
