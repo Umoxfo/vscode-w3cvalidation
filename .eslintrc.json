@@ -42,6 +42,14 @@
         "@typescript-eslint/prefer-for-of": "error",
         "@typescript-eslint/prefer-function-type": "error",
         "@typescript-eslint/promise-function-async": "error",
+        "@typescript-eslint/triple-slash-reference": [
+            "error",
+            {
+                "path": "never",
+                "types": "prefer-import",
+                "lib": "never"
+            }
+        ],
         "@typescript-eslint/unified-signatures": "warn",
         "arrow-body-style": "warn",
         "arrow-parens": "warn",
@@ -119,7 +127,7 @@
         "prettier/prettier": "warn",
         "quote-props": [
             "error",
-            "consistent-as-needed"
+            "as-needed"
         ],
         "radix": "error",
         "space-before-function-paren": [
