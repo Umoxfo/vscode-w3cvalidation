@@ -35,7 +35,7 @@
     ],
     "ignorePatterns": [
         "webpack.config.js",
-        "build/*.js",
+        "**/*.js",
         "node_modules/"
     ],
     "rules": {

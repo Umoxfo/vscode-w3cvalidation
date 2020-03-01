@@ -45,7 +45,8 @@
     },
     "main": "./client/out/extension",
     "scripts": {
-        "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+        "postinstall": "node setup_dev.js install",
+        "update:subprojects": "node setup_dev.js update",
         "service-updater:update": "tsc -b build/service-updater && node ./build/service-updater service -p ./build/GitHub_token.txt",
         "service-updater:validator": "tsc -b build/service-updater && node ./build/service-updater validator -p ./build/GitHub_token.txt",
         "service-updater:server": "tsc -b build/service-updater && node ./build/service-updater server",
