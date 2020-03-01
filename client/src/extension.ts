@@ -9,8 +9,8 @@ import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } f
 
 import * as path from "path";
 import { checkJava } from "./Java";
-import * as Message from "./Message.json";
 import { checkValidator } from "./service/vnu";
+import * as Message from "./Message.json";
 
 let client: LanguageClient;
 
@@ -41,6 +41,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
             // Register the server for HTML documents
             documentSelector: [{ language: "html" }],
             initializationOptions: [JETTY_HOME, JETTY_BASE],
+            progressOnInitialization: true,
         };
 
         // Create the language client and start the client.
@@ -70,6 +71,4 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }// try-catch
 }
 
-export function deactivate(): Thenable<void> | undefined {
-    return client?.stop();
-}
+export const deactivate = (): Thenable<void> | undefined => client?.stop();

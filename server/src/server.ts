@@ -30,6 +30,9 @@ const connection: IConnection = createConnection(ProposedFeatures.all);
 // Create a simple text document manager.
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
+// Make the text document manager listen on the connection for change text document events
+documents.listen(connection);
+
 // After the server has started the client sends an initialize request.
 connection.onInitialize((params: InitializeParams) => {
     const [JETTY_HOME, JETTY_BASE]: string = params.initializationOptions;
@@ -46,13 +49,6 @@ connection.onInitialize((params: InitializeParams) => {
 
 // Shutdown the validation server.
 connection.onShutdown((): void => validationService.kill("SIGINT"));
-
-// The content of a text document has changed.
-// eslint-disable-next-line @typescript-eslint/no-use-before-define
-documents.onDidChangeContent(async (change): Promise<void> => await validateHtmlDocument(change.document));
-
-// When a text document is closed, clear the error message.
-documents.onDidClose((event): void => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
 
 /*
  * Validation for HTML document
@@ -97,8 +93,11 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
     }// try-catch
 }// validateHtmlDocument
 
-// Make the text document manager listen on the connection for change text document events
-documents.listen(connection);
+// The content of a text document has changed.
+documents.onDidChangeContent(async (change): Promise<void> => await validateHtmlDocument(change.document));
+
+// When a text document is closed, clear the error message.
+documents.onDidClose((event): void => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
 
 // Listen on the connection
 connection.listen();

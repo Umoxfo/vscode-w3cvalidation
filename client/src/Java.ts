@@ -7,9 +7,9 @@
 import { workspace } from "vscode";
 
 import { execFile } from "child_process";
+import { promisify } from "util";
+const execFilePromise = promisify(execFile);
 import * as path from "path";
-import * as util from "util";
-const execFilePromise = util.promisify(execFile);
 
 if (process.platform === "darwin") {
     execFile("/usr/libexec/java_home", (_, stdout): string => (process.env.JAVA_HOME = stdout));
@@ -31,8 +31,8 @@ for (const javaDir of javaDirectories) {
  * @returns Promise<void> Resolved promise
  */
 export async function checkJava(): Promise<void> {
-    const output = await execFilePromise("java", ["-version"]);
-    const currentVersion = output.stderr.substring(14, output.stderr.lastIndexOf('"'));
+    const { stderr } = await execFilePromise("java", ["-version"]);
+    const currentVersion = stderr.substring(14, stderr.lastIndexOf('"'));
 
     return currentVersion >= "1.8" ? Promise.resolve() : Promise.reject();
 }// checkJRE

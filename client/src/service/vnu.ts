@@ -7,14 +7,17 @@
 import { workspace, ConfigurationTarget } from "vscode";
 
 import * as https from "https";
-import { IncomingMessage } from "http";
-import * as fs from "fs";
+import { promises as fs } from "fs";
 import * as path from "path";
 import * as crypto from "crypto";
 import * as os from "os";
-import { spawn } from "child_process";
+import { spawn, execFile } from "child_process";
+import { promisify } from "util";
+const execFilePromise = promisify(execFile);
 
 import { classpath, PreconfigureQuickStart, deployDir } from "./Preconfig.json";
+// eslint-disable-next-line prettier/prettier
+import type { IncomingMessage } from "http";
 
 const enum Status {
     UP_TO_DATE = 304,
