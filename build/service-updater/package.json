@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "service-updater",
+  "version": "1.0.0",
+  "description": "Updater for a Jetty server and the Nu Html Checker",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.16.0"
+  },
+  "bin": "bin/server-updater.js",
+  "main": "./out/index.js",
+  "dependencies": {
+    "commander": "^4.1.1",
+    "jsdom": "^16.2.0",
+    "tar": "^6.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.29",
+    "@types/jsdom": "^16.1.0",
+    "@types/tar": "^4.0.3"
+  }
+}

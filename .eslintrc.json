@@ -19,6 +19,7 @@
         "project": [
             "./client/tsconfig.json",
             "./server/tsconfig.json",
+            "./build/service-updater/tsconfig.json",
             "./build/ts-build-clean-webpack-plugin/tsconfig.json",
             "./build/json-perf-loader/tsconfig.json"
         ],

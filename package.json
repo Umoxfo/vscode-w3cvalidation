@@ -46,11 +46,14 @@
     "main": "./client/out/extension",
     "scripts": {
         "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
-        "compile:build": "tsc -b build/ts-build-clean-webpack-plugin build/json-perf-loader",
+        "service-updater:update": "tsc -b build/service-updater && node ./build/service-updater service -p ./build/GitHub_token.txt",
+        "service-updater:validator": "tsc -b build/service-updater && node ./build/service-updater validator -p ./build/GitHub_token.txt",
+        "service-updater:server": "tsc -b build/service-updater && node ./build/service-updater server",
+        "compile:build": "tsc -b build/service-updater build/ts-build-clean-webpack-plugin build/json-perf-loader",
         "webpack-dev": "npm run compile:build && webpack --env.development",
         "webpack:client": "npm run compile:build && webpack --env.development --config-name client --progress",
         "webpack:server": "npm run compile:build && webpack --env.development --config-name server",
-        "vscode:prepublish": "npm run compile:build && webpack"
+        "vscode:prepublish": "npm run compile:build && node ./build/service-updater service -p ./build/GitHub_token.txt && webpack"
     },
     "devDependencies": {
         "@types/node": "^10.17.17",
