@@ -1,0 +1,17 @@
+{
+    "private": true,
+    "name": "json-perf-loader",
+    "description": "A loader for webpack to load JSON with performance advice",
+    "version": "1.0.0",
+    "license": "MIT",
+    "engines": {
+        "node": ">=12.16.0"
+    },
+    "main": "./out/json-perf-loader.js",
+    "dependencies": {
+        "loader-utils": "^1.4.0"
+    },
+    "devDependencies": {
+        "@types/loader-utils": "^1.1.3"
+    }
+}

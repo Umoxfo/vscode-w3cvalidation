@@ -46,7 +46,7 @@
     "main": "./client/out/extension",
     "scripts": {
         "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
-        "compile:build": "tsc -b build/ts-build-clean-webpack-plugin",
+        "compile:build": "tsc -b build/ts-build-clean-webpack-plugin build/json-perf-loader",
         "webpack-dev": "npm run compile:build && webpack --env.development",
         "webpack:client": "npm run compile:build && webpack --env.development --config-name client --progress",
         "webpack:server": "npm run compile:build && webpack --env.development --config-name server",
@@ -62,7 +62,7 @@
         "eslint-plugin-import": "^2.20.1",
         "eslint-plugin-prettier": "^3.1.2",
         "fork-ts-checker-webpack-plugin": "^4.0.5",
-        "json-perf-loader": "^1.0.3",
+        "json-perf-loader": "file:build/json-perf-loader",
         "prettier": "^1.19.1",
         "ts-build-clean-webpack-plugin": "file:build/ts-build-clean-webpack-plugin",
         "ts-loader": "^6.2.1",

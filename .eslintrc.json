@@ -19,7 +19,8 @@
         "project": [
             "./client/tsconfig.json",
             "./server/tsconfig.json",
-            "./build/ts-build-clean-webpack-plugin/tsconfig.json"
+            "./build/ts-build-clean-webpack-plugin/tsconfig.json",
+            "./build/json-perf-loader/tsconfig.json"
         ],
         "sourceType": "module",
         "ecmaVersion": 2017
