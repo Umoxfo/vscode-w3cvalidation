@@ -8,11 +8,13 @@
 import * as https from "https";
 import { promises as fs } from "fs";
 import * as path from "path";
-import * as crypto from "crypto";
 import * as os from "os";
+import { getArchive, getPlainText } from "./downloader";
 
 // eslint-disable-next-line prettier/prettier
 import type { IncomingMessage } from "http";
+import type { ArchiveResponse } from "./downloader";
+
 interface VnuQueryResponse {
     data: {
         repository: {
@@ -30,8 +32,7 @@ interface VnuQueryResponse {
 }
 interface ReleaseAsset { name: string; url: string; }
 type VnuReleaseQueryResponse = [ReleaseAsset[], string];
-interface WarFileResponse { warFile: Buffer, warFileHash: string }
-type AssetDownloadTasks = [Promise<WarFileResponse>, Promise<string>];
+type AssetDownloadTasks = [Promise<ArchiveResponse>, Promise<string>];
 type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => void) => void;
 
 const VNU_QUERY = {
@@ -51,29 +52,8 @@ const VNU_QUERY = {
         }`.replace(/\s{2,}/gm, " ")
 };
 
-function getVNU(response: IncomingMessage, resolve: (value: WarFileResponse) => void): void {
-    const buffs: Buffer[] = [];
-    const hash = crypto.createHash("sha1");
-
-    response.on("data", (chunk) => {
-        buffs.push(chunk);
-        hash.update(chunk);
-    });
-
-    response.on("end", () => resolve({ warFile: Buffer.concat(buffs), warFileHash: hash.digest("hex") }));
-}
-
-function getHash(response: IncomingMessage, resolve: (value: string) => void): void {
-    response.setEncoding("utf-8");
-    let body = "";
-
-    response.on("data", (chunk) => (body += chunk));
-
-    response.on("end", () => resolve(body));
-}
-
 interface AssetList { [filename: string]: (response: IncomingMessage, resolve: <T>(value: T) => void) => void };
-const assets: AssetList = { "vnu.war": getVNU, "vnu.war.sha1": getHash };
+const assets: AssetList = { "vnu.war": getArchive, "vnu.war.sha1": getPlainText };
 const assetNames: readonly string[] = Object.keys(assets);
 
 function getAsset(queryResponse: VnuQueryResponse): VnuReleaseQueryResponse {
@@ -167,16 +147,16 @@ const downloadFile = async <T>(url: string, response: ResponseCallback<T>): Prom
  * Download latest validator
  */
 async function downloadVNU(releaseAssets: ReleaseAsset[]): Promise<string> {
-    const [{ warFile, warFileHash }, warFileChecksum] = await Promise.all(
+    const [{ archive, archiveHash }, warFileChecksum] = await Promise.all(
         releaseAssets.map(async (asset) => downloadFile(asset.url, assets[asset.name])) as AssetDownloadTasks
     );
 
     // Validate a file
-    if (warFileHash !== warFileChecksum) throw new Error("The downloaded file is invalid.");
+    if (archiveHash !== warFileChecksum) throw new Error("The downloaded file is invalid.");
 
     // Write in a file
     const warFilePath = path.join(os.tmpdir(), "vnu.war");
-    await fs.writeFile(warFilePath, warFile);
+    await fs.writeFile(warFilePath, archive);
 
     return warFilePath;
 }

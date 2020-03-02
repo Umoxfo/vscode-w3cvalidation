@@ -10,10 +10,10 @@ import * as tar from "tar";
 
 import * as http2 from "http2";
 import { Duplex } from "stream";
-import * as crypto from "crypto";
 import * as zlib from "zlib";
 import { promises as fs } from "fs";
 import * as path from "path";
+import { getArchive, getPlainText } from "./downloader";
 
 // eslint-disable-next-line prettier/prettier
 import type { OutgoingHttpHeaders, ClientHttp2Session, ClientHttp2Stream } from "http2";
@@ -70,26 +70,6 @@ async function downloadFile(reqOpts: OutgoingHttpHeaders, resFunc: ResponseFunct
     });
 }
 
-function getJetty(response: ClientHttp2Stream, resolve: (value: ArchiveResponse) => void): void {
-    const buffs: Buffer[] = [];
-    const hash = crypto.createHash("sha1");
-
-    response.on("data", (chunk) => {
-        buffs.push(chunk);
-        hash.update(chunk);
-    });
-
-    response.on("end", () => resolve({ archive: Buffer.concat(buffs), archiveHash: hash.digest("hex") }));
-}
-
-function getHash(response: ClientHttp2Stream, resolve: (value: string) => void): void {
-    response.setEncoding("utf-8");
-    let data = "";
-
-    response.on("data", (chunk) => (data += chunk));
-    response.on("end", () => resolve(data));
-}
-
 const JETTY_HOME = path.join(process.cwd(), "server", "service", "jetty-home");
 
 async function installJetty(archive: Buffer, versionInfo: string): Promise<void> {
@@ -114,7 +94,7 @@ async function installJetty(archive: Buffer, versionInfo: string): Promise<void>
     );
 }
 
-const assets = [{ ext: ".tar.gz", func: getJetty }, { ext: ".tar.gz.sha1", func: getHash }];
+const assets = [{ ext: ".tar.gz", func: getArchive }, { ext: ".tar.gz.sha1", func: getPlainText }];
 
 /**
  * Download latest Jetty server
