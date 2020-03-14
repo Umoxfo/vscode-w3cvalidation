@@ -9,6 +9,6 @@
     },
     "main": "./out/ts-build-clean-webpack-plugin.js",
     "devDependencies": {
-        "@types/node": "^12.12.29"
+        "@types/node": "^12.12.30"
     }
 }
