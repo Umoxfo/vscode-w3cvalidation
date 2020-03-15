@@ -1,3 +1,11 @@
+## 2.6.0
+* Add the Nu Html Checker auto-update
+* Update TypeScript to v3.8.3
+* Update Jetty to v9.4.27
+* Update vnu.war to v20.3.8
+* Drop support version 1.31.x  
+  It is support VSCode version 1.39.0 or later now.
+
 ## 2.5.0
 * Update TypeScript to v3.7.2
 * Update Jetty to v9.4.24
@@ -7,17 +15,17 @@
 ## 2.4.0
 * Update TypeScript to v3.5.3
 * Update Jetty to v9.4.19
-* Drop support version 1.27.x
+* Drop support version 1.27.x  
   It is support VSCode version 1.31.0 or later now.
 
 ## 2.3.2
-* Hotfix (Dev): Update vscode to v1.1.29
+* Hotfix (Dev): Update vscode to v1.1.29  
   For a dependency of vscode, braces@1.8.5, is vulnerable to Regular Expression Denial of Service (ReDoS).
 
 ## 2.3.0
 * Update TypeScript to v3.2.1
 * Update Jetty to v9.4.14
-* Drop support version 1.26.x
+* Drop support version 1.26.x  
   It is supported VSCode version 1.27.0 or later now.
 
 ## 2.2.1
@@ -26,7 +34,7 @@
 ## 2.2.0
 * Update TypesScript to v3.1.6
 * Update vnu.war to v18.11.5
-* Drop support version 1.20.x
+* Drop support version 1.20.x  
   It is supported VSCode version 1.26.0 or later now.
 
 ## 2.1.1
@@ -39,7 +47,7 @@
 * Update TypeScript to v2.9.2
 * Update Jetty to v9.4.11
 * Update the Nu Html Checker to v18.7.23
-* Drop support version 1.19.x
+* Drop support version 1.19.x  
   It is supported version 1.20.0 or later now.
 
 ## 1.8.0
