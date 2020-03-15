@@ -7,6 +7,7 @@ This extention works using Java applications. You must have Java 8 or later on y
 If you don't have them installed, download and install a latest Java Development Kit (latest Java 8 is the minimum requirement).
 
 After installing (or installed) the JDK, you would need to configure your environment for Java execution.
+**Please restart the VS Code** in order to load reliably the changed environment variables.
 
 Then open your HTML document(s).
 
