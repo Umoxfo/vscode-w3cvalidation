@@ -30,13 +30,9 @@ export default function jsonPerfLoader(this: loader.LoaderContext, source: unkno
     }
 
     // https://v8.dev/blog/cost-of-javascript-2019#json
-    if (value.length < options.limit) {
-        value = value.replace(/(\u2028)|(\u2029)/g,
-            (substr: string, p1: string, p2: string) => p1 ? "\\u2028" : (p2 ? "\\u2029" : substr));
+    value = (value.length < options.limit)
+        ? value.replace(/(\u2028)|(\u2029)/g, (substr: string, p1: string, p2: string) => p1 ? "\\u2028" : (p2 ? "\\u2029" : substr))
+        : `JSON.parse(${value})`;
 
-        callback(null, `module.exports = ${value}`);
-        return;
-    }
-
-    callback(null, `module.exports = JSON.parse(${value})`);
+    callback(null, `module.exports = ${value}`);
 }

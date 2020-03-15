@@ -50,7 +50,7 @@ async function runWithCWD(cwd, command) {
         const runner = spawn("npm", [command], { cwd, shell: true });
 
         runner.stdout.pipe(process.stdout);
-        runner.stderr.pipe(process.stderr);
+        runner.stderr.pipe(process.stdout);
 
         runner.on("close", (code) => ((code === 0 || command === "outdate") ? resolve() : reject()));
         runner.on("error", (err) => reject(err));
@@ -69,8 +69,7 @@ function prompt(message) {
     process.stdin.resume();
     process.stdin.setEncoding("utf8");
 
-    return new Promise((r) => process.stdin.once('data', r))
-        .finally(() => process.stdin.pause());
+    return new Promise((r) => process.stdin.once('data', r)).finally(() => process.stdin.pause());
 }
 
 async function update() {
