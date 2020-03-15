@@ -18,7 +18,10 @@
     "parserOptions": {
         "project": [
             "./client/tsconfig.json",
-            "./server/tsconfig.json"
+            "./server/tsconfig.json",
+            "./build/service-updater/tsconfig.json",
+            "./build/ts-build-clean-webpack-plugin/tsconfig.json",
+            "./build/json-perf-loader/tsconfig.json"
         ],
         "sourceType": "module",
         "ecmaVersion": 2017
@@ -29,6 +32,11 @@
         // "jsdoc",
         // "prefer-arrow",
         "prettier"
+    ],
+    "ignorePatterns": [
+        "webpack.config.js",
+        "**/*.js",
+        "node_modules/"
     ],
     "rules": {
         "@typescript-eslint/array-type": "error",
@@ -42,6 +50,14 @@
         "@typescript-eslint/prefer-for-of": "error",
         "@typescript-eslint/prefer-function-type": "error",
         "@typescript-eslint/promise-function-async": "error",
+        "@typescript-eslint/triple-slash-reference": [
+            "error",
+            {
+                "path": "never",
+                "types": "prefer-import",
+                "lib": "never"
+            }
+        ],
         "@typescript-eslint/unified-signatures": "warn",
         "arrow-body-style": "warn",
         "arrow-parens": "warn",
@@ -119,7 +135,7 @@
         "prettier/prettier": "warn",
         "quote-props": [
             "error",
-            "consistent-as-needed"
+            "as-needed"
         ],
         "radix": "error",
         "space-before-function-paren": [

@@ -8,6 +8,10 @@
         "**/.git": true,
         "**/*.tsbuildinfo": true,
     },
+    "[markdown]": {
+        "files.trimFinalNewlines": false,
+        "files.trimTrailingWhitespace": false
+    },
     "typescript.tsdk": "./node_modules/typescript/lib",
     "typescript.preferences.quoteStyle": "double",
     "eslint.validate": [
@@ -16,4 +20,7 @@
     ],
     "licenser.license": "MIT",
     "tslint.configFile": "tslint.json",
+    "files.associations": {
+        "tslint.json": "jsonc"
+    },
 }

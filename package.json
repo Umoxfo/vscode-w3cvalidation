@@ -2,7 +2,7 @@
     "name": "vscode-w3cvalidation",
     "displayName": "W3C Validation",
     "description": "Adds W3C validation support to Visual Studio Code.",
-    "version": "2.5.0",
+    "version": "2.6.0",
     "publisher": "Umoxfo",
     "author": {
         "name": "Makoto Sakaguchi"
@@ -19,41 +19,61 @@
         "Linters"
     ],
     "engines": {
-        "vscode": "^1.31.0"
+        "vscode": "^1.39.0"
     },
     "activationEvents": [
         "*"
     ],
     "contributes": {
         "configuration": {
-            "type": "object",
             "title": "W3C Validation",
             "properties": {
                 "vscode-w3cvalidation.javaHome": {
                     "type": "string",
-                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jdk-11\" (Windows)\n /usr/lib/jvm/java-11-openjdk-amd64 (Ubuntu, etc.)",
-                    "default": "C:\\Program Files\\Java\\jdk-13.0.1"
+                    "scope": "machine",
+                    "default": "",
+                    "description": "Specifies the folder path to the JRE used to launch the W3C Validation Language Server.\nFor example \"C:\\Program Files\\Java\\jdk-11\" (Windows)\n /usr/lib/jvm/java-11-openjdk-amd64 (Ubuntu, etc.)"
+                },
+                "vscode-w3cvalidation.validator-token": {
+                    "type": "string",
+                    "scope": "machine",
+                    "default": "Sun, 08 Mar 2020 08:32:30 GMT",
+                    "description": "Last-Modified, a timestamp, for the last release of war tag in the Nu Html Checker repository."
                 }
             }
         }
     },
     "main": "./client/out/extension",
     "scripts": {
-        "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
-        "compile": "tsc -b client server",
-        "vscode:prepublish": "npm run compile"
+        "postinstall": "node setup_dev.js install",
+        "update:subprojects": "node --experimental-modules setup_dev.mjs update",
+        "service-updater:update": "tsc -b build/service-updater && node ./build/service-updater service -p ./build/GitHub_token.txt",
+        "service-updater:validator": "tsc -b build/service-updater && node ./build/service-updater validator -p ./build/GitHub_token.txt",
+        "service-updater:server": "tsc -b build/service-updater && node ./build/service-updater server",
+        "compile:build": "tsc -b build/service-updater build/ts-build-clean-webpack-plugin build/json-perf-loader",
+        "webpack-dev": "npm run compile:build && webpack --env.development",
+        "webpack:client": "npm run compile:build && webpack --env.development --config-name client --progress",
+        "webpack:server": "npm run compile:build && webpack --env.development --config-name server",
+        "vscode:prepublish": "npm run compile:build && node ./build/service-updater service -p ./build/GitHub_token.txt && webpack"
     },
     "devDependencies": {
-        "@types/node": "^10.17.6",
-        "@typescript-eslint/eslint-plugin": "^2.9.0",
-        "@typescript-eslint/parser": "^2.9.0",
-        "eslint": "^6.7.1",
-        "eslint-config-prettier": "^6.7.0",
-        "eslint-plugin-import": "^2.18.2",
-        "eslint-plugin-prettier": "^3.1.1",
+        "@types/node": "^10.17.17",
+        "@types/webpack": "^4.41.7",
+        "@typescript-eslint/eslint-plugin": "^2.23.0",
+        "@typescript-eslint/parser": "^2.23.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.0",
+        "eslint-plugin-import": "^2.20.1",
+        "eslint-plugin-prettier": "^3.1.2",
+        "fork-ts-checker-webpack-plugin": "^4.1.0",
+        "json-perf-loader": "file:build/json-perf-loader",
         "prettier": "^1.19.1",
-        "tslint": "^5.20.1",
-        "typescript": "^3.7.2",
-        "typescript-tslint-plugin": "^0.5.5"
+        "ts-build-clean-webpack-plugin": "file:build/ts-build-clean-webpack-plugin",
+        "ts-loader": "^6.2.1",
+        "tslint": "^6.1.0",
+        "typescript": "^3.8.3",
+        "typescript-tslint-plugin": "^0.5.5",
+        "webpack": "^4.42.0",
+        "webpack-cli": "^3.3.11"
     }
 }

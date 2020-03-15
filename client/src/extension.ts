@@ -8,15 +8,19 @@ import { commands, env, ExtensionContext, Uri, window } from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
 
 import * as path from "path";
-import { checkJRE } from "./JRE";
-import { Message } from "./Message";
+import { checkJava } from "./Java";
+import { checkValidator } from "./service/vnu";
+import * as Message from "./Message.json";
 
 let client: LanguageClient;
 
 export async function activate(context: ExtensionContext): Promise<void> {
     try {
-        // JRE check
-        await checkJRE();
+        const JETTY_HOME = context.asAbsolutePath(path.join("server", "service", "jetty-home"));
+        const JETTY_BASE = context.asAbsolutePath(path.join("server", "service", "vnu"));
+
+        // Java and validator check
+        await Promise.all([checkJava(), checkValidator(JETTY_HOME, JETTY_BASE)]);
 
         // The server is implemented in node
         const serverModule = context.asAbsolutePath(path.join("server", "out", "server.js"));
@@ -36,7 +40,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
         const clientOptions: LanguageClientOptions = {
             // Register the server for HTML documents
             documentSelector: [{ language: "html" }],
-            initializationOptions: context.extensionPath,
+            initializationOptions: [JETTY_HOME, JETTY_BASE],
+            progressOnInitialization: true,
         };
 
         // Create the language client and start the client.
@@ -66,6 +71,4 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }// try-catch
 }
 
-export function deactivate(): Thenable<void> | undefined {
-    return client?.stop();
-}
+export const deactivate = (): Thenable<void> | undefined => client?.stop();

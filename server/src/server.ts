@@ -11,12 +11,12 @@ import {
     IConnection,
     InitializeParams,
     ProposedFeatures,
-    TextDocument,
     TextDocuments,
+    TextDocumentSyncKind,
 } from "vscode-languageserver";
+import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { ChildProcess, spawn } from "child_process";
-import * as path from "path";
 import * as util from "util";
 const setTimeoutPromise = util.promisify(setTimeout);
 import { sendDocument } from "./validator";
@@ -28,21 +28,21 @@ let validationService: ChildProcess;
 const connection: IConnection = createConnection(ProposedFeatures.all);
 
 // Create a simple text document manager.
-const documents: TextDocuments = new TextDocuments();
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
+
+// Make the text document manager listen on the connection for change text document events
+documents.listen(connection);
 
 // After the server has started the client sends an initialize request.
 connection.onInitialize((params: InitializeParams) => {
-    const extentionPath: string = params.initializationOptions;
-
-    const JETTY_HOME = path.resolve(extentionPath, "server/service/jetty-home");
-    const JETTY_BASE = path.resolve(extentionPath, "server/service/vnu");
+    const [JETTY_HOME, JETTY_BASE]: string = params.initializationOptions;
 
     // Start the validation server
     validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });
 
     return {
         capabilities: {
-            textDocumentSync: documents.syncKind,
+            textDocumentSync: TextDocumentSyncKind.Full,
         },
     };
 });
@@ -50,19 +50,12 @@ connection.onInitialize((params: InitializeParams) => {
 // Shutdown the validation server.
 connection.onShutdown((): void => validationService.kill("SIGINT"));
 
-// The content of a text document has changed.
-// eslint-disable-next-line @typescript-eslint/no-use-before-define
-documents.onDidChangeContent(async (change): Promise<void> => await validateHtmlDocument(change.document));
-
-// When a text document is closed, clear the error message.
-documents.onDidClose((event): void => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
-
 /*
  * Validation for HTML document
  */
 async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
     try {
-        const results = await sendDocument(textDocument);
+        const results = await sendDocument(textDocument.getText());
 
         const diagnostics = results.map<Diagnostic>((item) => {
             let type: DiagnosticSeverity | undefined;
@@ -100,8 +93,11 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
     }// try-catch
 }// validateHtmlDocument
 
-// Make the text document manager listen on the connection for change text document events
-documents.listen(connection);
+// The content of a text document has changed.
+documents.onDidChangeContent(async (change): Promise<void> => await validateHtmlDocument(change.document));
+
+// When a text document is closed, clear the error message.
+documents.onDidClose((event): void => connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] }));
 
 // Listen on the connection
 connection.listen();

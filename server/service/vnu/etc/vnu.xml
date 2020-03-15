@@ -5,7 +5,6 @@
   <Set name="handler">
     <New class="org.eclipse.jetty.quickstart.QuickStartWebApp">
       <Set name="war"><Property name="jetty.base"/>/webapps/vnu</Set>
-      <Set name="autoPreconfigure">true</Set>
     </New>
   </Set>
 </Configure>

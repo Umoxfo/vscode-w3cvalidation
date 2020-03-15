@@ -4,8 +4,6 @@
  */
 "use strict";
 
-import { TextDocument } from "vscode-languageserver";
-
 import * as http from "http";
 
 /**
@@ -63,7 +61,7 @@ interface Message {
 
     readonly hiliteStart?: number;
     readonly hiliteLength?: number;
-}// Message
+} // Message
 
 /**
  * Validation result format
@@ -96,10 +94,11 @@ interface ValidationResult {
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-language-string
      */
     readonly language?: string;
-}// ValidationResult
+} // ValidationResult
 
 const RequestOptions: http.RequestOptions = {
-    host: "localhost", // tslint:disable-line: object-literal-sort-keys
+    // tslint:disable-next-line: object-literal-sort-keys
+    host: "localhost",
     port: 8888,
     method: "POST",
     path: "/?out=json",
@@ -121,7 +120,7 @@ enum MediaTypes {
  * Sends document to the local validation server
  */
 // tslint:disable-next-line: promise-function-async
-export async function sendDocument(document: TextDocument): Promise<Message[]> {
+export async function sendDocument(document: string): Promise<Message[]> {
     return new Promise((resolve, reject): void => {
         // Set the request headers
         // tslint:disable-next-line: max-line-length
@@ -129,7 +128,7 @@ export async function sendDocument(document: TextDocument): Promise<Message[]> {
 
         const request = http.request(RequestOptions, (response): void => {
             // handle http errors
-            response.statusCode = response.statusCode || 0;
+            response.statusCode = response.statusCode ?? 0;
             if (response.statusCode < 200 || response.statusCode > 299) reject();
 
             // temporary data holder
@@ -137,7 +136,7 @@ export async function sendDocument(document: TextDocument): Promise<Message[]> {
             let body = "";
 
             // on every content chunk, push it to the string
-            response.on("data", (chunk): string => body += chunk);
+            response.on("data", (chunk): string => (body += chunk));
 
             // we are done, resolve promise with those joined chunks
             response.on("end", (): void => resolve((JSON.parse(body) as ValidationResult).messages));
@@ -147,7 +146,6 @@ export async function sendDocument(document: TextDocument): Promise<Message[]> {
         request.on("error", (err): void => reject(err));
 
         // write data to request body
-        request.write(document.getText());
-        request.end();
+        request.end(document);
     });
-}// sendDocument
+} // sendDocument
