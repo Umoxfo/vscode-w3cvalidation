@@ -17,8 +17,8 @@ import {
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { ChildProcess, spawn } from "child_process";
-import * as util from "util";
-const setTimeoutPromise = util.promisify(setTimeout);
+import { promisify } from "util";
+const setTimeoutPromise = promisify(setTimeout);
 import { sendDocument } from "./validator";
 
 // Start a HTML validation server.
@@ -61,12 +61,12 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
             let type: DiagnosticSeverity | undefined;
             switch (item.type) {
                 case "info":
-                    type = (item.subType === "warning") ? DiagnosticSeverity.Warning : DiagnosticSeverity.Information;
+                    type = item.subType === "warning" ? DiagnosticSeverity.Warning : DiagnosticSeverity.Information;
                     break;
                 case "error":
                     type = DiagnosticSeverity.Error;
                     break;
-            }// switch
+            } // switch
 
             return {
                 range: {
@@ -90,8 +90,8 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
     } catch (error) {
         await setTimeoutPromise((Math.random() + 1) * 1000);
         validateHtmlDocument(textDocument);
-    }// try-catch
-}// validateHtmlDocument
+    } // try-catch
+} // validateHtmlDocument
 
 // The content of a text document has changed.
 documents.onDidChangeContent(async (change): Promise<void> => await validateHtmlDocument(change.document));

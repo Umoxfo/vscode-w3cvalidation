@@ -65,10 +65,10 @@ export async function activate(context: ExtensionContext): Promise<void> {
             case Message.WorkspaceSettingsButtonText:
                 commandID = "workbench.action.openWorkspaceSettings";
                 break;
-        }// switch
+        } // switch
 
         await commands.executeCommand(commandID);
-    }// try-catch
+    } // try-catch
 }
 
 export const deactivate = (): Thenable<void> | undefined => client?.stop();
