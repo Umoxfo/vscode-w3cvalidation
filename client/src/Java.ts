@@ -13,7 +13,7 @@ import * as path from "path";
 
 if (process.platform === "darwin") {
     execFile("/usr/libexec/java_home", (_, stdout): string => (process.env.JAVA_HOME = stdout));
-}// if
+} // if
 
 const javaDirectories: readonly (string | undefined)[] = [
     workspace.getConfiguration("vscode-w3cvalidation").get("javaHome"),
@@ -21,9 +21,9 @@ const javaDirectories: readonly (string | undefined)[] = [
     process.env.JDK_HOME,
 ];
 
-for (const javaDir of javaDirectories) {
-    if (javaDir) process.env.PATH += path.delimiter + path.join(javaDir, "bin");
-}// for
+javaDirectories.forEach((javadir) => {
+    if (javadir) process.env.PATH += path.delimiter + path.join(javadir, "bin");
+});
 
 /**
  * Checks JRE version
@@ -35,4 +35,4 @@ export async function checkJava(): Promise<void> {
     const currentVersion = stderr.substring(14, stderr.lastIndexOf('"'));
 
     return currentVersion >= "1.8" ? Promise.resolve() : Promise.reject();
-}// checkJRE
+} // checkJRE
