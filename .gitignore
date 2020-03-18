@@ -5,3 +5,4 @@ server/service/jetty-home/
 .vscode/cSpell.json
 **/*.tsbuildinfo
 build/GitHub_token.txt
+.vscode-test
