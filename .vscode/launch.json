@@ -25,6 +25,26 @@
             "outFiles": [
                 "${workspaceRoot}/server/out/**/*.js"
             ]
+        },
+        {
+            "name": "Extension Tests",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--disable-extensions",
+                "--extensionDevelopmentPath=${workspaceRoot}",
+                "--extensionTestsPath=${workspaceRoot}/test/out/suite/index",
+                "${workspaceRoot}/test/resource"
+            ],
+            "outFiles": [
+                "${workspaceRoot}/test/out/**/*.js"
+            ],
+            "preLaunchTask": {
+                "task": "compile: Test",
+                "type": "typescript",
+                "tsconfig": "test/tsconfig.json",
+            }
         }
     ]
 }

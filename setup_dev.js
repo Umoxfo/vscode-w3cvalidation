@@ -15,7 +15,7 @@ const execFilePromise = require("util").promisify(execFile);
  * Working directory where the NPM command is executed
  * @readonly
  */
-const projects = ["./build/service-updater", "./build/ts-build-clean-webpack-plugin", "./build/json-perf-loader", "./client", "./server"];
+const projects = ["./build/service-updater", "./build/ts-build-clean-webpack-plugin", "./build/json-perf-loader", "./test", "./client", "./server"];
 
 /**
  * NPM command runner
