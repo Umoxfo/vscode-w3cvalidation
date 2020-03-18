@@ -7,8 +7,5 @@
     "engines": {
         "node": ">=12.16.0"
     },
-    "main": "./out/ts-build-clean-webpack-plugin.js",
-    "devDependencies": {
-        "@types/node": "^12.12.30"
-    }
+    "main": "./out/ts-build-clean-webpack-plugin.js"
 }
