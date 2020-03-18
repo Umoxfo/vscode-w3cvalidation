@@ -21,7 +21,8 @@
             "./server/tsconfig.json",
             "./build/service-updater/tsconfig.json",
             "./build/ts-build-clean-webpack-plugin/tsconfig.json",
-            "./build/json-perf-loader/tsconfig.json"
+            "./build/json-perf-loader/tsconfig.json",
+            "./test/tsconfig.json"
         ],
         "sourceType": "module",
         "ecmaVersion": 2017
