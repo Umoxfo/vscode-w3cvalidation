@@ -32,7 +32,7 @@ javaDirectories.forEach((javadir) => {
  */
 export async function checkJava(): Promise<void> {
     const { stderr } = await execFilePromise("java", ["-version"]);
-    const currentVersion = stderr.substring(14, stderr.lastIndexOf('"'));
+    const currentVersion = stderr.substring(stderr.indexOf('"') + 1, stderr.lastIndexOf('"'));
 
     return currentVersion >= "1.8" ? Promise.resolve() : Promise.reject();
 } // checkJRE
