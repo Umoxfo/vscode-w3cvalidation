@@ -12,9 +12,6 @@ export let platformEol: string;
  * Activates the Umoxfo.vscode-w3cvalidation extension
  */
 export async function activate(docUri: vscode.Uri): Promise<void> {
-    // The extensionId is `publisher.name` from package.json
-    const ext = vscode.extensions.getExtension("Umoxfo.vscode-w3cvalidation");
-    await ext?.activate();
     try {
         doc = await vscode.workspace.openTextDocument(docUri);
         editor = await vscode.window.showTextDocument(doc);
@@ -24,7 +21,7 @@ export async function activate(docUri: vscode.Uri): Promise<void> {
 
         return new Promise((resolve, reject) => {
             vscode.languages.onDidChangeDiagnostics(() => resolve());
-            setTimeoutPromise((Math.random() + 1) * 20000).then(reject);
+            setTimeoutPromise(20000).then(reject);
         });
     } catch (e) {
         // eslint-disable-next-line no-console

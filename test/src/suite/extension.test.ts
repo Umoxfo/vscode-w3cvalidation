@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { after } from "mocha";
+import { before } from "mocha";
 import { getDocUri, activate } from "../helper";
 
 // You can import and use all API from the 'vscode' module
@@ -12,15 +12,12 @@ async function testDiagnostic(docUri: vscode.Uri, severity?: vscode.DiagnosticSe
     assert.equal(vscode.languages.getDiagnostics(docUri)[0].severity, severity);
 }
 
+before(async () => await vscode.extensions.getExtension("Umoxfo.vscode-w3cvalidation")?.activate());
+
 suite("Extension Test Suite", () => {
     test("Testing Passed HTML files", async () => assert.doesNotReject(activate(getDocUri("test.html"))));
     test("Testing Warning HTML files", async () =>
         await testDiagnostic(getDocUri("warning.html"), vscode.DiagnosticSeverity.Warning));
     test("Testing Error HTML file", async () =>
         await testDiagnostic(getDocUri("error.html"), vscode.DiagnosticSeverity.Error));
-
-    after(async (done) => {
-        await vscode.window.showInformationMessage("All tests done!");
-        return setImmediate(done);
-    });
 });

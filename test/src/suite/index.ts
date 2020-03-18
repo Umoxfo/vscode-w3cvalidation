@@ -6,7 +6,7 @@ const globPromise = promisify(glob);
 
 export async function run(): Promise<void> {
     // Create the mocha test
-    const mocha = new Mocha({ ui: "tdd", color: true, timeout: (Math.random() + 1) * 200000 });
+    const mocha = new Mocha({ ui: "tdd", color: true, timeout: (Math.random() + 1) * 20000 });
 
     const testsRoot = path.resolve(__dirname, "..");
 
