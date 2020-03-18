@@ -9,7 +9,7 @@
     },
     "main": "./out/json-perf-loader.js",
     "dependencies": {
-        "loader-utils": "^1.4.0"
+        "loader-utils": "^2.0.0"
     },
     "devDependencies": {
         "@types/loader-utils": "^1.1.3"
