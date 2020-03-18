@@ -1,3 +1,8 @@
+## 2.6.2
+* Update vnu.war to v20.3.18
+* Drop support version 1.39.x  
+  It is support VSCode version 1.42.0 or later now.
+
 ## 2.6.0
 * Add the Nu Html Checker auto-update
 * Update TypeScript to v3.8.3
