@@ -1,5 +1,6 @@
 .vscode
 .gitignore
+.github
 tsconfig.base.json
 **/tsconfig.json
 **/*.tsbuildinfo
@@ -7,6 +8,7 @@ tslint.json
 .eslintrc.json
 .prettierrc.json
 setup_dev.js
+setup_dev.mjs
 **/webpack.config.js
 build
 test
