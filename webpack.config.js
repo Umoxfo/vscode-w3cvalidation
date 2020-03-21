@@ -64,7 +64,6 @@ const preConfig = (development = false, configName, filename = configName) => ({
 		vscode: 'commonjs vscode', // ignored because it doesn't exist
 	},
 	plugins: [
-		// new ProgressPlugin(),
 		new CleanWebpackPlugin(),
 		new ForkTsCheckerWebpackPlugin()
 	]
