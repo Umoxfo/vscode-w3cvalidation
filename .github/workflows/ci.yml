@@ -19,10 +19,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+      - name: Get npm cache directory
+        id: npm-cache
+        run: echo "::set-output name=dir::$(npm config get cache)"
       - name: Cache Node.js modules
         uses: actions/cache@v1
         with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ${{ steps.npm-cache.outputs.dir }}
           key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
@@ -32,6 +35,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 8
+          java-package: jre
       - name: Run headless test
         uses: GabrielBB/xvfb-action@v1.0
         with:
