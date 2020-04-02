@@ -7,12 +7,14 @@
 
 import * as crypto from "crypto";
 
-// eslint-disable-next-line prettier/prettier
 import type { IncomingMessage } from "http";
 import type { ClientHttp2Stream } from "http2";
 
 type Response = IncomingMessage | ClientHttp2Stream;
-export interface ArchiveResponse { archive: Buffer, archiveHash: string }
+export interface ArchiveResponse {
+    archive: Buffer;
+    archiveHash: string;
+}
 
 export function getArchive(response: Response, resolve: (value: ArchiveResponse) => void): void {
     const buffs: Buffer[] = [];

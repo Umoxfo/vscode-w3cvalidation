@@ -11,7 +11,6 @@ import * as path from "path";
 import * as os from "os";
 import { getArchive, getPlainText } from "./downloader";
 
-// eslint-disable-next-line prettier/prettier
 import type { IncomingMessage } from "http";
 import type { ArchiveResponse } from "./downloader";
 
@@ -30,14 +29,16 @@ interface VnuQueryResponse {
         };
     };
 }
-interface ReleaseAsset { name: string; url: string; }
+interface ReleaseAsset {
+    name: string;
+    url: string;
+}
 type VnuReleaseQueryResponse = [ReleaseAsset[], string];
 type AssetDownloadTasks = [Promise<ArchiveResponse>, Promise<string>];
 type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => void) => void;
 
 const VNU_QUERY = {
-    query:
-        `query {
+    query: `query {
             repository(name: "validator", owner: "validator") {
                 release(tagName: "war") {
                     releaseAssets(last: 6) {
@@ -49,15 +50,20 @@ const VNU_QUERY = {
                     updatedAt
                 }
             }
-        }`.replace(/\s{2,}/gm, " ")
+        }`.replace(/\s{2,}/gm, " "),
 };
 
-interface AssetList { [filename: string]: (response: IncomingMessage, resolve: <T>(value: T) => void) => void };
+interface AssetList {
+    [filename: string]: (response: IncomingMessage, resolve: <T>(value: T) => void) => void;
+}
 const assets: AssetList = { "vnu.war": getArchive, "vnu.war.sha1": getPlainText };
 const assetNames: readonly string[] = Object.keys(assets);
 
 function getAsset(queryResponse: VnuQueryResponse): VnuReleaseQueryResponse {
-    const { releaseAssets: { nodes }, updatedAt } = queryResponse.data.repository.release;
+    const {
+        releaseAssets: { nodes },
+        updatedAt,
+    } = queryResponse.data.repository.release;
 
     const releaseAssets: ReleaseAsset[] = [];
     for (const { name, url } of nodes ?? []) {
@@ -77,7 +83,7 @@ const preConfigRequestOptions = (token: string): https.RequestOptions => ({
     headers: {
         Authorization: `bearer ${token}`,
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
-    }
+    },
 });
 
 async function getLatestVersionInfo(token: string): Promise<VnuReleaseQueryResponse> {
@@ -102,18 +108,21 @@ const preConfigDownloadRequestOptions = (fileName: string): https.RequestOptions
     path: `/validator/validator/releases/download/war/${fileName}`,
     headers: {
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
-    }
+    },
 });
 
-function getDownloadUrls(): Promise<{ name: string, url: string }>[] {
-    return assetNames.map(async (fileName) =>
-        new Promise<{ name: string, url: string }>((resolve, reject) => {
-            const reqOpts = preConfigDownloadRequestOptions(fileName);
+function getDownloadUrls(): Promise<{ name: string; url: string }>[] {
+    return assetNames.map(
+        async (fileName) =>
+            new Promise<{ name: string; url: string }>((resolve, reject) => {
+                const reqOpts = preConfigDownloadRequestOptions(fileName);
 
-            const req = https.request(reqOpts, (res) => resolve({ name: fileName, url: res.headers?.location ?? "" }));
-            req.on("error", (err) => reject(err));
-            req.end();
-        })
+                const req = https.request(reqOpts, (res) =>
+                    resolve({ name: fileName, url: res.headers?.location ?? "" })
+                );
+                req.on("error", (err) => reject(err));
+                req.end();
+            })
     );
 }
 
@@ -139,16 +148,14 @@ const getLatestVersionInfoREST = async (): Promise<VnuReleaseQueryResponse> =>
     Promise.all([Promise.all(getDownloadUrls()), getLastUpdateDate()]);
 
 const downloadFile = async <T>(url: string, response: ResponseCallback<T>): Promise<T> =>
-    new Promise((resolve, reject) =>
-        https.get(url, (res) => response(res, resolve)).on("error", (err) => reject(err))
-    );
+    new Promise((resolve, reject) => https.get(url, (res) => response(res, resolve)).on("error", (err) => reject(err)));
 
 /**
  * Download latest validator
  */
 async function downloadVNU(releaseAssets: ReleaseAsset[]): Promise<string> {
     const [{ archive, archiveHash }, warFileChecksum] = await Promise.all(
-        releaseAssets.map(async (asset) => downloadFile(asset.url, assets[asset.name])) as AssetDownloadTasks
+        releaseAssets.map(async ({ name, url }) => downloadFile(url, assets[name])) as AssetDownloadTasks
     );
 
     // Validate a file
