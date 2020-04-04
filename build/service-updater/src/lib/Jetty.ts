@@ -16,9 +16,7 @@ import * as path from "path";
 import { getArchive, getPlainText } from "./downloader";
 
 import type { OutgoingHttpHeaders, ClientHttp2Session, ClientHttp2Stream } from "http2";
-import type { ArchiveResponse } from "./downloader";
-type ResponseFunc = (response: ClientHttp2Stream, resolve: (value: string | ArchiveResponse) => void) => void;
-type AssetDownloadTasks = [Promise<ArchiveResponse>, Promise<string>];
+type ResponseFunc<T> = (response: ClientHttp2Stream, resolve: (value: T) => void) => void;
 
 const MAVEN_CENTRAL_REPOSITORY = "https://repo1.maven.org";
 const JETTY_VERSION_PATTERN = /(\d+\.){3}v\d+/;
@@ -57,7 +55,7 @@ async function getLatestVersionInfo(): Promise<string> {
     });
 }
 
-async function downloadFile(reqOpts: OutgoingHttpHeaders, resFunc: ResponseFunc): Promise<string | ArchiveResponse> {
+async function downloadFile<T>(reqOpts: OutgoingHttpHeaders, resFunc: ResponseFunc<T>): Promise<T> {
     return new Promise((resolve, reject) => {
         const req = clientSession.request(reqOpts);
 
@@ -94,27 +92,21 @@ async function installJetty({ archive, versionInfo }: { archive: Buffer; version
     );
 }
 
-const assets = [
-    { ext: ".tar.gz", func: getArchive },
-    { ext: ".tar.gz.sha1", func: getPlainText },
-];
-
 /**
  * Download latest Jetty server
  */
 async function downloadJetty(): Promise<{ archive: Buffer; versionInfo: string }> {
-    const versionInfo = await getLatestVersionInfo();
+    const version = await getLatestVersionInfo();
 
-    const [{ archive, archiveHash }, archiveChecksum] = await Promise.all(
-        assets.map(async ({ ext, func }) =>
-            downloadFile(preConfigReqOpts(`/${versionInfo}/jetty-home-${versionInfo}${ext}`), func)
-        ) as AssetDownloadTasks
-    );
+    const [{ archive, archiveHash }, archiveChecksum] = await Promise.all([
+        downloadFile(preConfigReqOpts(`/${version}/jetty-home-${version}.tar.gz`), getArchive),
+        downloadFile(preConfigReqOpts(`/${version}/jetty-home-${version}.tar.gz.sha1`), getPlainText),
+    ]);
     clientSession.close();
 
     if (archiveHash !== archiveChecksum) throw new Error("The downloaded file is invalid.");
 
-    return { archive, versionInfo };
+    return { archive, versionInfo: version };
 }
 
 export async function updateJetty(): Promise<void> {

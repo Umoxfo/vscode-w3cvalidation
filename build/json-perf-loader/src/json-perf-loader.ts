@@ -8,7 +8,6 @@
 import { getOptions } from "loader-utils";
 // import * as schema from "./options.json";
 
-// eslint-disable-next-line prettier/prettier
 import type { loader } from "webpack";
 
 // Default limit: 10 KiB
@@ -30,9 +29,12 @@ export default function jsonPerfLoader(this: loader.LoaderContext, source: unkno
     }
 
     // https://v8.dev/blog/cost-of-javascript-2019#json
-    value = (value.length < options.limit)
-        ? value.replace(/(\u2028)|(\u2029)/g, (substr: string, p1: string, p2: string) => p1 ? "\\u2028" : (p2 ? "\\u2029" : substr))
-        : `JSON.parse(${value})`;
+    value =
+        value.length < options.limit
+            ? value.replace(/(\u2028)|(\u2029)/g, (substr: string, p1: string, p2: string) =>
+                  p1 ? "\\u2028" : p2 ? "\\u2029" : substr
+              )
+            : `JSON.parse(${value})`;
 
     callback(null, `module.exports = ${value}`);
 }

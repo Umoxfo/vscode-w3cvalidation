@@ -11,7 +11,7 @@ import type { IncomingMessage } from "http";
 import type { ClientHttp2Stream } from "http2";
 
 type Response = IncomingMessage | ClientHttp2Stream;
-export interface ArchiveResponse {
+interface ArchiveResponse {
     archive: Buffer;
     archiveHash: string;
 }

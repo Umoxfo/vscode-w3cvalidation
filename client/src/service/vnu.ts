@@ -15,7 +15,6 @@ import { spawn, execFile } from "child_process";
 import { promisify } from "util";
 const execFilePromise = promisify(execFile);
 
-// eslint-disable-next-line prettier/prettier
 import type { IncomingMessage } from "http";
 
 const enum Status {
@@ -52,7 +51,10 @@ async function getLatestVersionInfo(): Promise<{ status: Status; token?: string 
     });
 }
 
-interface WarFileResponse { warFile: Buffer, warFileHash: string }
+interface WarFileResponse {
+    warFile: Buffer;
+    warFileHash: string;
+}
 type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => void) => void;
 
 const preConfigDownloadRequestOptions = (fileName: string): https.RequestOptions => ({
@@ -61,12 +63,14 @@ const preConfigDownloadRequestOptions = (fileName: string): https.RequestOptions
     path: `/validator/validator/releases/download/war/${fileName}`,
     headers: {
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
-    }
+    },
 });
 
 async function downloadFile<T>(fileName: string, response: ResponseCallback<T>): Promise<T> {
     const url: string = await new Promise((resolve, reject) => {
-        const req = https.request(preConfigDownloadRequestOptions(fileName), (res) => resolve(res.headers.location ?? ""));
+        const req = https.request(preConfigDownloadRequestOptions(fileName), (res) =>
+            resolve(res.headers.location ?? "")
+        );
         req.on("error", (err) => reject(err));
         req.end();
     });

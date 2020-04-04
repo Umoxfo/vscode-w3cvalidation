@@ -12,7 +12,6 @@ import * as os from "os";
 import { getArchive, getPlainText } from "./downloader";
 
 import type { IncomingMessage } from "http";
-import type { ArchiveResponse } from "./downloader";
 
 interface VnuQueryResponse {
     data: {
@@ -34,7 +33,6 @@ interface ReleaseAsset {
     url: string;
 }
 type VnuReleaseQueryResponse = [ReleaseAsset[], string];
-type AssetDownloadTasks = [Promise<ArchiveResponse>, Promise<string>];
 type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => void) => void;
 
 const VNU_QUERY = {
@@ -53,11 +51,7 @@ const VNU_QUERY = {
         }`.replace(/\s{2,}/gm, " "),
 };
 
-interface AssetList {
-    [filename: string]: (response: IncomingMessage, resolve: <T>(value: T) => void) => void;
-}
-const assets: AssetList = { "vnu.war": getArchive, "vnu.war.sha1": getPlainText };
-const assetNames: readonly string[] = Object.keys(assets);
+const assetNames: readonly string[] = ["vnu.war", "vnu.war.sha1"];
 
 function getAsset(queryResponse: VnuQueryResponse): VnuReleaseQueryResponse {
     const {
@@ -111,10 +105,10 @@ const preConfigDownloadRequestOptions = (fileName: string): https.RequestOptions
     },
 });
 
-function getDownloadUrls(): Promise<{ name: string; url: string }>[] {
+function getDownloadUrls(): Promise<ReleaseAsset>[] {
     return assetNames.map(
         async (fileName) =>
-            new Promise<{ name: string; url: string }>((resolve, reject) => {
+            new Promise<ReleaseAsset>((resolve, reject) => {
                 const reqOpts = preConfigDownloadRequestOptions(fileName);
 
                 const req = https.request(reqOpts, (res) =>
@@ -153,10 +147,11 @@ const downloadFile = async <T>(url: string, response: ResponseCallback<T>): Prom
 /**
  * Download latest validator
  */
-async function downloadVNU(releaseAssets: ReleaseAsset[]): Promise<string> {
-    const [{ archive, archiveHash }, warFileChecksum] = await Promise.all(
-        releaseAssets.map(async ({ name, url }) => downloadFile(url, assets[name])) as AssetDownloadTasks
-    );
+async function downloadVNU([file, checksum]: ReleaseAsset[]): Promise<string> {
+    const [{ archive, archiveHash }, warFileChecksum] = await Promise.all([
+        downloadFile(file.url, getArchive),
+        downloadFile(checksum.url, getPlainText),
+    ]);
 
     // Validate a file
     if (archiveHash !== warFileChecksum) throw new Error("The downloaded file is invalid.");
