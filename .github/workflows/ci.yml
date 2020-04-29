@@ -9,34 +9,34 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install JDK for build
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Install Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - name: Get npm cache directory
-        id: npm-cache
-        run: echo "::set-output name=dir::$(npm config get cache)"
-      - name: Cache Node.js modules
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.npm-cache.outputs.dir }}
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - run: npm ci
-      - name: Install JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 8
-          java-package: jre
-      - name: Run headless test
-        uses: GabrielBB/xvfb-action@v1.0
-        with:
-          run: npm test
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install JDK for build
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Get npm cache directory
+      id: npm-cache
+      run: echo "::set-output name=dir::$(npm config get cache)"
+    - name: Cache Node.js modules
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.npm-cache.outputs.dir }}
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
+          ${{ runner.OS }}-
+    - run: npm ci
+    - name: Install JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 8
+        java-package: jre
+    - name: Run headless test
+      uses: GabrielBB/xvfb-action@v1.0
+      with:
+        run: npm test
