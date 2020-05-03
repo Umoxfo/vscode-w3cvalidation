@@ -71,7 +71,7 @@
         "json-perf-loader": "file:build/json-perf-loader",
         "prettier": "^2.0.5",
         "ts-build-clean-webpack-plugin": "file:build/ts-build-clean-webpack-plugin",
-        "ts-loader": "^7.0.1",
+        "ts-loader": "^7.0.2",
         "tslint": "^6.1.2",
         "typescript": "^3.8.3",
         "typescript-tslint-plugin": "^0.5.5",
