@@ -43,8 +43,8 @@ async function genQuickstartWeb(warFilePath: string): Promise<void> {
 
 /**
  * Updates the Jetty server and the Nu Html Checker
- * @param {string} token A GitHub OAuth token
- * @returns {Promise<void>} Returns the resolved `Promise` with no arguments upon the success.
+ * @param token A GitHub OAuth token
+ * @returns Returns the resolved `Promise` with no arguments upon the success.
  */
 export async function update(token = ""): Promise<void> {
     const [, [warFilePath]] = await Promise.all([updateJetty(), updateVNU(token)]);
@@ -53,8 +53,8 @@ export async function update(token = ""): Promise<void> {
 
 /**
  * Updates the Nu Html Checker
- * @param {string} token A GitHub OAuth token
- * @returns {Promise<void>} Returns the resolved `Promise` with no arguments upon the success.
+ * @param token A GitHub OAuth token
+ * @returns Returns the resolved `Promise` with no arguments upon the success.
  */
 export async function updateValidator(token = ""): Promise<void> {
     const [warFilePath] = await updateVNU(token);
