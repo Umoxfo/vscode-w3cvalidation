@@ -1,3 +1,6 @@
+## 2.6.3
+* Update vnu.war to v20.5.20
+
 ## 2.6.2
 * Update vnu.war to v20.3.18
 * Drop support version 1.39.x  
