@@ -1,5 +1,4 @@
 # VS Code W3C Validation extention
-![Test](https://github.com/Umoxfo/vscode-w3cvalidation/workflows/Test/badge.svg?branch=develop)
 
 The extension to enable W3C validation support by the [Nu Html Checker](http://validator.github.io/validator/) library.
 
