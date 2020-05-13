@@ -21,9 +21,9 @@ const javaDirectories: readonly (string | undefined)[] = [
     process.env.JDK_HOME,
 ];
 
-javaDirectories.forEach((javadir) => {
+for (const javadir of javaDirectories) {
     if (javadir) process.env.PATH += path.delimiter + path.join(javadir, "bin");
-});
+}
 
 /**
  * Checks JRE version

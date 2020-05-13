@@ -7,11 +7,10 @@
 
 import { promises as fs } from "fs";
 import { promisify } from "util";
-import { execFile } from "child_process"
+import { execFile } from "child_process";
 const execFilePromise = promisify(execFile);
 import * as Message from "./Message.json";
 
-// eslint-disable-next-line prettier/prettier
 import type { Compiler, Stats, compilation as compilationType } from "webpack";
 type Compilation = compilationType.Compilation;
 
@@ -68,7 +67,8 @@ export class CleanWebpackPlugin {
         this.cleanStaleWebpackAssets = options?.cleanStaleWebpackAssets ?? true;
 
         this.cleanAfterEveryBuildPatterns = Array.isArray(options?.cleanAfterEveryBuildPatterns)
-            ? options.cleanAfterEveryBuildPatterns : [];
+            ? options.cleanAfterEveryBuildPatterns
+            : [];
 
         /*
          * Store webpack build assets
@@ -166,14 +166,14 @@ export class CleanWebpackPlugin {
         }
 
         // if (removePatterns.length !== 0) return this.removeFiles();
-    }// handleDonePromise
+    } // handleDonePromise
 
     async removeFiles(): Promise<void> {
         await Promise.all([
             fs.unlink(`./${this.configName}/tsconfig.tsbuildinfo`),
             fs.rmdir(this.outputPath, { recursive: true }),
         ]).catch(async (err) =>
-            (err.code !== "ENOENT")
+            err.code !== "ENOENT"
                 ? execFilePromise("npx", ["tsc", "-b", "--clean", this.configName], { shell: true })
                 : Promise.resolve()
         );
@@ -184,7 +184,6 @@ export class CleanWebpackPlugin {
         if (this.verbose) {
             // deleted.forEach((file) => {
             //     const filename = path.relative(process.cwd(), file);
-
             //     /**
             //      * Use console.warn over .log
             //      * https://github.com/webpack/webpack/issues/1904

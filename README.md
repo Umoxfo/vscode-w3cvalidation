@@ -26,4 +26,4 @@ The path to the JDK requires to be set in the environment.
 1. Click **OK** and also click **OK**
 
 ### Disclaimer
-It takes time to process immediately after startup VC Code.
+After launching the VC code, it will take some time for the results to be displayed if the HTML is invalid.

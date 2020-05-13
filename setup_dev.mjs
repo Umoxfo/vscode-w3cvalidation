@@ -5,7 +5,6 @@
 
 // @ts-check
 
-/** @typedef {import("readline").Interface} ReadLine */
 "use strict";
 
 import { spawn, execFile } from "child_process";
