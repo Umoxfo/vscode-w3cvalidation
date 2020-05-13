@@ -48,7 +48,7 @@ connection.onInitialize((params: InitializeParams) => {
 });
 
 // Shutdown the validation server.
-connection.onShutdown((): void => validationService.kill("SIGINT"));
+connection.onShutdown(() => validationService.kill() as never);
 
 /*
  * Validation for HTML document
