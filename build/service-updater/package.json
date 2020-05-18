@@ -15,7 +15,7 @@
     "tar": "^6.0.2"
   },
   "devDependencies": {
-    "@types/jsdom": "^16.2.1",
+    "@types/jsdom": "^16.2.3",
     "@types/tar": "^4.0.3"
   }
 }
