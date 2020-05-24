@@ -122,7 +122,7 @@ async function downloadVNU(): Promise<string> {
 
 async function initServerArgs(jettyHome: string, jettyBase: string): Promise<string> {
     const tmp = (
-        await execFilePromise("java", ["-jar", `${jettyHome}/start.jar`, "--dry-run"], { cwd: jettyBase })
+        await execFilePromise("java", ["-jar", `${path.join(jettyHome, "start.jar")}`, "--dry-run"], { cwd: jettyBase })
     ).stdout.split(" ");
     return tmp[tmp.indexOf("-cp") + 1];
 }
@@ -130,6 +130,8 @@ async function initServerArgs(jettyHome: string, jettyBase: string): Promise<str
 async function updateValidator(jettyHome: string, jettyBase: string): Promise<void> {
     try {
         const [warFilePath, jettyClasspath] = await Promise.all([downloadVNU(), initServerArgs(jettyHome, jettyBase)]);
+
+        await fs.rmdir(path.join(jettyBase, "webapps", "vnu"), { recursive: true });
 
         return new Promise((resolve, reject) => {
             const jettyPreconfWar = spawn("java", [
