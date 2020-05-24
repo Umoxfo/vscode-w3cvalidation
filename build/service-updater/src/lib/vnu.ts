@@ -164,7 +164,9 @@ async function downloadVNU([file, checksum]: ReleaseAsset[]): Promise<string> {
 }
 
 async function updateValidatorToken(token: string): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const pkg = JSON.parse(await fs.readFile("./package.json", "utf8"));
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     pkg.contributes.configuration.properties["vscode-w3cvalidation.validator-token"].default = token;
 
     return fs.writeFile("./package.json", JSON.stringify(pkg, null, 4));
