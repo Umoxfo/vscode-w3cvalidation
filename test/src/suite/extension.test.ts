@@ -1,23 +1,29 @@
-import * as assert from "assert";
+import { strict as assert } from "assert";
 import { before } from "mocha";
-import { getDocUri, activate } from "../helper";
+import { activate } from "../helper";
+
+// import { promisify } from "util";
+// const setTimeoutPromise = promisify(setTimeout);
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from "vscode";
 
-async function testDiagnostic(docUri: vscode.Uri, severity?: vscode.DiagnosticSeverity): Promise<void> {
-    await activate(docUri);
+async function testDiagnostic(fileName: string, severity?: vscode.DiagnosticSeverity): Promise<void> {
+    const res = await activate(fileName);
 
-    assert.equal(vscode.languages.getDiagnostics(docUri)[0].severity, severity);
+    assert.equal(res, severity);
 }
 
-before(async () => await vscode.extensions.getExtension("Umoxfo.vscode-w3cvalidation")?.activate());
-
 suite("Extension Test Suite", () => {
-    test("Testing Passed HTML files", async () => assert.doesNotReject(activate(getDocUri("test.html"))));
-    test("Testing Warning HTML files", async () =>
-        await testDiagnostic(getDocUri("warning.html"), vscode.DiagnosticSeverity.Warning));
-    test("Testing Error HTML file", async () =>
-        await testDiagnostic(getDocUri("error.html"), vscode.DiagnosticSeverity.Error));
+    before(async () => {
+        const ext = vscode.extensions.getExtension("Umoxfo.vscode-w3cvalidation");
+        if (!ext) assert.fail("Extension not found.");
+
+        await ext.activate();
+    });
+
+    test("Testing Passed HTML files", async () => testDiagnostic("test.html", undefined));
+    test("Testing Warning HTML files", async () => testDiagnostic("warning.html", vscode.DiagnosticSeverity.Warning));
+    test("Testing Error HTML file", async () => testDiagnostic("error.html", vscode.DiagnosticSeverity.Error));
 });

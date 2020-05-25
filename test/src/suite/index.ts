@@ -6,7 +6,7 @@ const globPromise = promisify(glob);
 
 export async function run(): Promise<void> {
     // Create the mocha test
-    const mocha = new Mocha({ ui: "tdd", color: true, timeout: (Math.random() + 1) * 20000 });
+    const mocha = new Mocha({ ui: "tdd", color: true, timeout: "30s" });
 
     const testsRoot = path.resolve(__dirname, "..");
 
@@ -16,12 +16,6 @@ export async function run(): Promise<void> {
         files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
 
         // Run the mocha test
-        mocha.run((failures) => {
-            if (failures > 0) {
-                e(new Error(`${failures} tests failed.`));
-            } else {
-                c();
-            }
-        });
+        mocha.run((failures) => (failures > 0 ? e(new Error(`${failures} tests failed.`)) : c()));
     });
 }

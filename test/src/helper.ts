@@ -1,33 +1,22 @@
-import * as vscode from "vscode";
+import { window, workspace, languages, Uri, DiagnosticSeverity } from "vscode";
 import * as path from "path";
-import { promisify } from "util";
-const setTimeoutPromise = promisify(setTimeout);
 
-export let doc: vscode.TextDocument;
-export let editor: vscode.TextEditor;
-export let documentEol: string;
-export let platformEol: string;
+const ROOT_PATH = workspace.workspaceFolders
+    ? workspace.workspaceFolders[0].uri.fsPath
+    : path.resolve(__dirname, "../resource");
 
 /**
  * Activates the Umoxfo.vscode-w3cvalidation extension
  */
-export async function activate(docUri: vscode.Uri): Promise<void> {
-    try {
-        doc = await vscode.workspace.openTextDocument(docUri);
-        editor = await vscode.window.showTextDocument(doc);
+export async function activate(fileName: string): Promise<DiagnosticSeverity | undefined> {
+    const docUri = Uri.file(`${ROOT_PATH}/${fileName}`);
+    await window.showTextDocument(docUri);
 
-        // Wait for server activation
-        await new Promise((c) => vscode.languages.onDidChangeDiagnostics(c));
-
-        return new Promise((resolve, reject) => {
-            vscode.languages.onDidChangeDiagnostics(() => resolve());
-            setTimeoutPromise(20000).then(reject);
-        });
-    } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
-    }
+    let count = 0;
+    return new Promise((resolve) =>
+        languages.onDidChangeDiagnostics(() => {
+            const dig = languages.getDiagnostics(docUri);
+            if (dig.length || ++count === 2) resolve(dig[0]?.severity);
+        })
+    );
 }
-
-export const getDocPath = (p: string): string => path.resolve(__dirname, "../resource", p);
-export const getDocUri = (p: string): vscode.Uri => vscode.Uri.file(getDocPath(p));
