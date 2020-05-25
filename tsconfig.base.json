@@ -1,11 +1,6 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "plugins": [
-            {
-                "name": "typescript-tslint-plugin"
-            }
-        ],
         /* Basic Options */
         "incremental": true,
         "target": "ES2017",
