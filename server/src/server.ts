@@ -35,6 +35,7 @@ documents.listen(connection);
 
 // After the server has started the client sends an initialize request.
 connection.onInitialize((params: InitializeParams) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const [JETTY_HOME, JETTY_BASE]: string = params.initializationOptions;
 
     // Start the validation server
@@ -89,7 +90,7 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     } catch (error) {
         await setTimeoutPromise((Math.random() + 1) * 1000);
-        validateHtmlDocument(textDocument);
+        void validateHtmlDocument(textDocument);
     } // try-catch
 } // validateHtmlDocument
 
