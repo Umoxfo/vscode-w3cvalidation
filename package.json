@@ -2,7 +2,7 @@
     "name": "vscode-w3cvalidation",
     "displayName": "W3C Validation",
     "description": "Adds W3C validation support to Visual Studio Code.",
-    "version": "2.6.4",
+    "version": "2.6.5",
     "publisher": "Umoxfo",
     "author": {
         "name": "Makoto Sakaguchi"
@@ -37,7 +37,7 @@
                 "vscode-w3cvalidation.validator-token": {
                     "type": "string",
                     "scope": "machine",
-                    "default": "Thu, 07 May 2020 14:51:50 GMT",
+                    "default": "Thu, 21 May 2020 15:35:20 GMT",
                     "description": "Last-Modified, a timestamp, for the last release of war tag in the Nu Html Checker repository."
                 }
             }
@@ -47,7 +47,7 @@
     "scripts": {
         "postinstall": "node --experimental-modules setup_dev.mjs install && npm run service-updater",
         "update:subprojects": "node --experimental-modules setup_dev.mjs update",
-        "service-updater": "tsc -b build/service-updater && node ./build/service-updater service -p ./build/GitHub_token.txt",
+        "service-updater:update": "tsc -b build/service-updater && node ./build/service-updater service -p ./build/GitHub_token.txt",
         "service-updater:validator": "tsc -b build/service-updater && node ./build/service-updater validator -p ./build/GitHub_token.txt",
         "service-updater:server": "tsc -b build/service-updater && node ./build/service-updater server",
         "pretest": "tsc -b test client server",
