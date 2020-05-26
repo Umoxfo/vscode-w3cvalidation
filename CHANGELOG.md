@@ -1,3 +1,6 @@
+## 2.6.5
+* Update Jetty to v9.4.29
+
 ## 2.6.3
 * Update vnu.war to v20.5.20
 

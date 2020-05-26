@@ -2,7 +2,7 @@
     "name": "vscode-w3cvalidation",
     "displayName": "W3C Validation",
     "description": "Adds W3C validation support to Visual Studio Code.",
-    "version": "2.6.4",
+    "version": "2.6.5",
     "publisher": "Umoxfo",
     "author": {
         "name": "Makoto Sakaguchi"
@@ -37,7 +37,7 @@
                 "vscode-w3cvalidation.validator-token": {
                     "type": "string",
                     "scope": "machine",
-                    "default": "Thu, 07 May 2020 14:51:50 GMT",
+                    "default": "Thu, 21 May 2020 15:35:20 GMT",
                     "description": "Last-Modified, a timestamp, for the last release of war tag in the Nu Html Checker repository."
                 }
             }
