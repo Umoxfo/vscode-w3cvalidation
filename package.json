@@ -52,9 +52,10 @@
         "service-updater:server": "tsc -b build/service-updater && node ./build/service-updater server",
         "pretest": "tsc -b test client server",
         "test": "node ./test/out/runTest.js",
+        "test:dev": "npm run webpack-dev && tsc -b test",
         "compile:build": "tsc -b build/service-updater build/ts-build-clean-webpack-plugin build/json-perf-loader",
-        "webpack-dev": "npm run compile:build && webpack --env.development",
-        "webpack:client": "npm run compile:build && webpack --env.development --config-name client --progress",
+        "webpack-dev": "npm run compile:build && webpack --env.development --progress",
+        "webpack:client": "npm run compile:build && webpack --env.development --config-name client",
         "webpack:server": "npm run compile:build && webpack --env.development --config-name server",
         "vscode:prepublish": "npm run compile:build && node ./build/service-updater service -p ./build/GitHub_token.txt && webpack"
     },
