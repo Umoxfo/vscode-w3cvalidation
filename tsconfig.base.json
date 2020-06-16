@@ -20,6 +20,7 @@
         /* Source Map Options */
         /* Experimental Options */
         /* Advanced Options */
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "importsNotUsedAsValues": "preserve"
     }
 }
