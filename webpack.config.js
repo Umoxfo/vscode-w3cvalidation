@@ -12,19 +12,7 @@
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const path = require("path");
-const { merge } = require("./build/merge");
 const { CleanWebpackPlugin } = require("./build/ts-build-clean-webpack-plugin");
-
-/** @type WebpackConfig */
-const ClientAdditionalConfig = {
-	module: {
-		rules: [{
-			test: require.resolve('./client/src/Message.json'),
-			type: 'javascript/auto',
-			use: 'json-perf-loader'
-		}]
-	}
-};
 
 /** @type {(development: boolean, configName: string, filename?: string) => WebpackConfig} */
 const preConfig = (development = false, configName, filename = configName) => ({
@@ -72,7 +60,7 @@ const preConfig = (development = false, configName, filename = configName) => ({
 /** @type WebpackConfigFactory */
 module.exports = (env = {}) => {
 	return [
-		merge(preConfig(env["development"], "client", "extension"), ClientAdditionalConfig),
+		preConfig(env["development"], "client", "extension"),
 		preConfig(env["development"], "server")
 	];
 };
