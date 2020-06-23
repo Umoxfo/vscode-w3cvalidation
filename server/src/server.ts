@@ -90,7 +90,7 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     } catch (error) {
         await setTimeoutPromise((Math.random() + 1) * 1000);
-        void validateHtmlDocument(textDocument);
+        await validateHtmlDocument(textDocument);
     } // try-catch
 } // validateHtmlDocument
 

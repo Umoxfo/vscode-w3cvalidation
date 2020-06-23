@@ -28,8 +28,9 @@ async function genQuickstartWeb(warFilePath: string): Promise<void> {
         await execFilePromise("java", ["-jar", `${JETTY_HOME}/start.jar`, "--dry-run"], { cwd: JETTY_BASE })
     ).stdout.split(" ");
     const jettyClasspath = tmp[tmp.indexOf("-cp") + 1];
+    const webappPath = path.join(JETTY_BASE, "webapps", "vnu");
 
-    await fs.rmdir(path.join(JETTY_BASE, "webapps", "vnu"), { recursive: true });
+    await fs.rmdir(webappPath, { recursive: true });
 
     return new Promise((resolve, reject) => {
         const jettyPreconfWar = spawn("java", [
@@ -37,10 +38,10 @@ async function genQuickstartWeb(warFilePath: string): Promise<void> {
             jettyClasspath,
             "org.eclipse.jetty.quickstart.PreconfigureQuickStartWar",
             warFilePath,
-            path.join(process.cwd(), "server", "service", "vnu", "webapps", "vnu"),
+            webappPath,
         ]);
 
-        jettyPreconfWar.on("close", (code) => (code === 0 ? resolve() : reject()));
+        jettyPreconfWar.on("exit", (code) => (code === 0 ? resolve() : reject()));
     });
 }
 
