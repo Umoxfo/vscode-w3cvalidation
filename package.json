@@ -39,6 +39,17 @@
                     "scope": "machine",
                     "default": "Thu, 21 May 2020 15:35:20 GMT",
                     "description": "Last-Modified, a timestamp, for the last release of war tag in the Nu Html Checker repository."
+                },
+                "vscode-w3cvalidation.trace.server": {
+                    "scope": "window",
+                    "type": "string",
+                    "enum": [
+                        "off",
+                        "messages",
+                        "verbose"
+                    ],
+                    "default": "off",
+                    "description": "Traces the communication between VS Code and the HTML validation language server."
                 }
             }
         }
