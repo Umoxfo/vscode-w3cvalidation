@@ -22,7 +22,7 @@
         "vscode": "^1.42.0"
     },
     "activationEvents": [
-        "*"
+        "onLanguage:html"
     ],
     "contributes": {
         "configuration": {
