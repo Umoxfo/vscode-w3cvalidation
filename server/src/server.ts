@@ -8,21 +8,17 @@ import {
     createConnection,
     Diagnostic,
     DiagnosticSeverity,
-    IConnection,
-    InitializeParams,
     ProposedFeatures,
     TextDocuments,
     TextDocumentSyncKind,
 } from "vscode-languageserver";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
-import { ChildProcess, spawn } from "child_process";
 import { promisify } from "util";
 const setTimeoutPromise = promisify(setTimeout);
 import { sendDocument } from "./validator";
 
-// Start a HTML validation server.
-let validationService: ChildProcess;
+import type { IConnection } from "vscode-languageserver";
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
 const connection: IConnection = createConnection(ProposedFeatures.all);
@@ -34,22 +30,14 @@ const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 documents.listen(connection);
 
 // After the server has started the client sends an initialize request.
-connection.onInitialize((params: InitializeParams) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const [JETTY_HOME, JETTY_BASE]: string = params.initializationOptions;
-
-    // Start the validation server
-    validationService = spawn("java", ["-jar", `${JETTY_HOME}/start.jar`], { cwd: JETTY_BASE });
-
-    return {
-        capabilities: {
-            textDocumentSync: TextDocumentSyncKind.Full,
-        },
-    };
-});
+connection.onInitialize(() => ({
+    capabilities: {
+        textDocumentSync: TextDocumentSyncKind.Full,
+    },
+}));
 
 // Shutdown the validation server.
-connection.onShutdown(() => validationService.kill() as never);
+// connection.onShutdown(() => {});
 
 /*
  * Validation for HTML document
