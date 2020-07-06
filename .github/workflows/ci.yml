@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
@@ -30,9 +30,9 @@ jobs:
       with:
         path: ${{ steps.npm-cache.outputs.dir }}
         key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.OS }}-node-
-          ${{ runner.OS }}-
+        # restore-keys: |
+        #   ${{ runner.OS }}-node-
+        #   ${{ runner.OS }}-
     - run: npm ci
     - name: Install JDK
       uses: actions/setup-java@v1
