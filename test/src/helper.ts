@@ -12,11 +12,12 @@ export async function activate(fileName: string): Promise<DiagnosticSeverity | u
     const docUri = Uri.file(`${ROOT_PATH}/${fileName}`);
     await window.showTextDocument(docUri);
 
-    let count = 0;
-    return new Promise((resolve) =>
+    return new Promise((resolve) => {
+        let count = 0;
+
         languages.onDidChangeDiagnostics(() => {
             const dig = languages.getDiagnostics(docUri);
             if (dig.length || ++count === 2) resolve(dig[0]?.severity);
-        })
-    );
+        });
+    });
 }

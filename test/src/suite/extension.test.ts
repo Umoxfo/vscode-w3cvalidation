@@ -17,7 +17,7 @@ suite("Extension Test Suite", () => {
         const ext = vscode.extensions.getExtension("Umoxfo.vscode-w3cvalidation");
         if (!ext) assert.fail("Extension not found.");
 
-        await ext.activate();
+        return ext.activate();
     });
 
     test("Testing Passed HTML files", async () => testDiagnostic("test.html", undefined));
