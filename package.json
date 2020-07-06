@@ -37,7 +37,7 @@
                 "vscode-w3cvalidation.validator-token": {
                     "type": "string",
                     "scope": "machine",
-                    "default": "Thu, 21 May 2020 15:35:20 GMT",
+                    "default": "Mon, 06 Jul 2020 17:20:07 GMT",
                     "description": "Last-Modified, a timestamp, for the last release of war tag in the Nu Html Checker repository."
                 },
                 "vscode-w3cvalidation.trace.server": {
