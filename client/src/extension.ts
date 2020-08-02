@@ -4,7 +4,7 @@
  */
 "use strict";
 
-import { commands, env, ExtensionContext, Uri, window } from "vscode";
+import { commands, env, ExtensionContext, Uri, window, workspace } from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
 
 import * as path from "path";
@@ -27,23 +27,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         await window.showErrorMessage(Message.JavaMissingErrorText, Message.GetJavaButtonText);
         await env.openExternal(Uri.parse(Message.OracleJavaDownloadUrl));
 
-        const item = await window.showInformationMessage(
-            Message.JavaInstallInfoText,
-            Message.UserSettingsButtonText,
-            Message.WorkspaceSettingsButtonText
-        );
-
-        let commandID = "";
-        switch (item) {
-            case Message.UserSettingsButtonText:
-                commandID = "workbench.action.openGlobalSettings";
-                break;
-            case Message.WorkspaceSettingsButtonText:
-                commandID = "workbench.action.openWorkspaceSettings";
-                break;
-        } // switch
-
-        await commands.executeCommand(commandID);
+        void configVSCodeSetting();
     } // try-catch
 
     const JETTY_HOME = context.asAbsolutePath(path.join("server", "service", "jetty-home"));
@@ -99,4 +83,33 @@ export function deactivate(): Thenable<void> {
     validationService.kill("SIGINT");
 
     return client?.stop();
+}
+
+async function configVSCodeSetting() {
+    const item = await window.showInformationMessage(
+        Message.JavaInstallInfoText,
+        Message.UserSettingsButtonText,
+        Message.WorkspaceSettingsButtonText
+    );
+
+    let commandID = "";
+    switch (item) {
+        case Message.UserSettingsButtonText:
+            commandID = "workbench.action.openGlobalSettings";
+            break;
+        case Message.WorkspaceSettingsButtonText:
+            commandID = "workbench.action.openWorkspaceSettings";
+            break;
+        default:
+            return restartVSCode();
+    } // switch
+
+    await commands.executeCommand(commandID);
+
+    workspace.onDidChangeConfiguration(async () => restartVSCode());
+}
+
+async function restartVSCode() {
+    await window.showInformationMessage(Message.AskRestartVSCode, Message.RestartVSCode);
+    return commands.executeCommand("workbench.action.reloadWindow");
 }
