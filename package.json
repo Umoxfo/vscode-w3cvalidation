@@ -71,19 +71,19 @@
         "vscode:prepublish": "npm run compile:build && node ./build/service-updater service -p ./build/GitHub_token.txt && webpack"
     },
     "devDependencies": {
-        "@types/node": "^12.12.53",
+        "@types/node": "^12.12.54",
         "@types/webpack": "^4.41.21",
-        "@typescript-eslint/eslint-plugin": "^3.7.1",
-        "@typescript-eslint/parser": "^3.7.1",
-        "eslint": "^7.6.0",
+        "@typescript-eslint/eslint-plugin": "^3.10.0",
+        "@typescript-eslint/parser": "^3.10.0",
+        "eslint": "^7.7.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.22.0",
         "eslint-plugin-prettier": "^3.1.4",
-        "fork-ts-checker-webpack-plugin": "^5.0.13",
-        "prettier": "^2.0.5",
+        "fork-ts-checker-webpack-plugin": "^5.1.0",
+        "prettier": "^2.1.0",
         "ts-build-clean-webpack-plugin": "file:build/ts-build-clean-webpack-plugin",
-        "ts-loader": "^8.0.2",
-        "typescript": "^3.9.7",
+        "ts-loader": "^8.0.3",
+        "typescript": "^4.0.2",
         "webpack": "^4.44.1",
         "webpack-cli": "^3.3.12"
     }
