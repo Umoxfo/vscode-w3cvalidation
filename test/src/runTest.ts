@@ -1,6 +1,6 @@
 import * as path from "path";
 
-import { runTests, downloadAndUnzipVSCode } from "vscode-test";
+import { runTests } from "vscode-test";
 
 async function main(): Promise<void> {
     try {
@@ -10,13 +10,11 @@ async function main(): Promise<void> {
         // The path to the extension test runner script
         const extensionTestsPath = path.resolve(__dirname, "./suite/index");
 
-        // The path to the executable VSCode
-        const vscodeExecutablePath = await downloadAndUnzipVSCode("1.42.0");
-
         // Run the extension test
         await runTests({
-            // Use the specified `code` executable
-            vscodeExecutablePath,
+            version: "1.42.0",
+            // Use win64 instead of win32 for testing Windows
+            platform: process.platform === "win32" ? "win32-x64-archive" : undefined,
             extensionDevelopmentPath,
             extensionTestsPath,
             launchArgs: ["--disable-extensions", path.resolve(__dirname, "../resource")],
@@ -30,4 +28,4 @@ async function main(): Promise<void> {
     }
 }
 
-main();
+void main();

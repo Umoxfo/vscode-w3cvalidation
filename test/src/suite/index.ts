@@ -1,27 +1,17 @@
 import * as path from "path";
-import { promisify } from "util";
+import { promises as fs } from "fs";
 import Mocha from "mocha";
-import glob from "glob";
-const globPromise = promisify(glob);
 
 export async function run(): Promise<void> {
     // Create the mocha test
-    const mocha = new Mocha({ ui: "tdd", color: true, timeout: (Math.random() + 1) * 200000 });
+    const mocha = new Mocha({ ui: "tdd", color: true, timeout: "30s" });
 
-    const testsRoot = path.resolve(__dirname, "..");
+    for (const file of await fs.readdir(__dirname)) {
+        if (file.endsWith(".test.js")) mocha.addFile(path.join(__dirname, file));
+    }
 
-    const files = await globPromise("**/**.test.js", { cwd: testsRoot });
-
-    return new Promise((c, e) => {
-        files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
-
-        // Run the mocha test
-        mocha.run((failures) => {
-            if (failures > 0) {
-                e(new Error(`${failures} tests failed.`));
-            } else {
-                c();
-            }
-        });
-    });
+    // Run the mocha test
+    return new Promise((c, e) =>
+        mocha.run((failures) => (failures > 0 ? e(new Error(`${failures} tests failed.`)) : c()))
+    );
 }

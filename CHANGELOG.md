@@ -1,3 +1,7 @@
+## 2.7.0
+* Update Jetty to v9.4.31
+* Improved extension start-up process
+
 ## 2.6.5
 * Update Jetty to v9.4.29
 

@@ -1,4 +1,8 @@
 # VS Code W3C Validation extention
+![Test](https://github.com/Umoxfo/vscode-w3cvalidation/workflows/Test/badge.svg?branch=develop)
+
+<!-- Temporary alternative badge -->
+<!-- ![](https://img.shields.io/github/workflow/status/Umoxfo/vscode-w3cvalidation/Test/develop.svg?label=Test&logo=github&logoColor=lightgray) -->
 
 The extension to enable W3C validation support by the [Nu Html Checker](http://validator.github.io/validator/) library.
 
@@ -6,7 +10,7 @@ The extension to enable W3C validation support by the [Nu Html Checker](http://v
 This extention works using Java applications. You must have Java 8 or later on your local environment.
 If you don't have them installed, download and install a latest Java Development Kit (latest Java 8 is the minimum requirement).
 
-After installing (or installed) the JDK, you would need to configure your environment for Java execution.
+After installing (or installed) the JDK, you would need to configure the Java execution path for your environment.
 **Please restart the VS Code** in order to load reliably the changed environment variables.
 
 Then open your HTML document(s).

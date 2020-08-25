@@ -8,7 +8,8 @@
             "runtimeExecutable": "${execPath}",
             "args": [
                 "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}"
+                "--extensionDevelopmentPath=${workspaceRoot}",
+                "${workspaceRoot}/test/resource"
             ],
             "outFiles": [
                 "${workspaceRoot}/client/out/**/*.js",
@@ -40,11 +41,7 @@
             "outFiles": [
                 "${workspaceRoot}/test/out/**/*.js"
             ],
-            "preLaunchTask": {
-                "task": "compile: Test",
-                "type": "typescript",
-                "tsconfig": "test/tsconfig.json",
-            }
+            "preLaunchTask": "npm: test:dev"
         }
     ]
 }

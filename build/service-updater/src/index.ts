@@ -45,4 +45,4 @@ export default async function main(): Promise<void> {
     if (!process.argv.slice(2)?.length) program.help();
 }
 
-if (require.main === module) main();
+if (require.main === module) void main();

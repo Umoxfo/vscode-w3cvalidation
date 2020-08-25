@@ -16,6 +16,7 @@ import { promisify } from "util";
 const execFilePromise = promisify(execFile);
 
 import type { IncomingMessage } from "http";
+import type { ChildProcessWithoutNullStreams } from "child_process";
 
 const enum Status {
     UP_TO_DATE = 304,
@@ -122,43 +123,55 @@ async function downloadVNU(): Promise<string> {
 
 async function initServerArgs(jettyHome: string, jettyBase: string): Promise<string> {
     const tmp = (
-        await execFilePromise("java", ["-jar", `${jettyHome}/start.jar`, "--dry-run"], { cwd: jettyBase })
+        await execFilePromise("java", ["-jar", `${path.join(jettyHome, "start.jar")}`, "--dry-run"], { cwd: jettyBase })
     ).stdout.split(" ");
     return tmp[tmp.indexOf("-cp") + 1];
 }
 
 async function updateValidator(jettyHome: string, jettyBase: string): Promise<void> {
-    try {
-        const [warFilePath, jettyClasspath] = await Promise.all([downloadVNU(), initServerArgs(jettyHome, jettyBase)]);
+    const [warFilePath, jettyClasspath] = await Promise.all([downloadVNU(), initServerArgs(jettyHome, jettyBase)]);
+    const webappPath = path.join(jettyBase, "webapps", "vnu");
 
-        return new Promise((resolve, reject) => {
-            const jettyPreconfWar = spawn("java", [
-                "-cp",
-                jettyClasspath,
-                "org.eclipse.jetty.quickstart.PreconfigureQuickStartWar",
-                warFilePath,
-                path.join(jettyBase, "webapps/vnu"),
-            ]);
+    await fs.rmdir(webappPath, { recursive: true });
 
-            jettyPreconfWar.on("close", (code) => (code === 0 ? resolve() : reject()));
-        });
-    } catch (error) {
-        // Ignore any errors
+    return new Promise((resolve, reject) => {
+        const jettyPreconfWar = spawn("java", [
+            "-cp",
+            jettyClasspath,
+            "org.eclipse.jetty.quickstart.PreconfigureQuickStartWar",
+            warFilePath,
+            webappPath,
+        ]);
+
+        jettyPreconfWar.on("exit", (code) => (code === 0 ? resolve() : reject()));
+    });
+}
+
+async function checkValidator(jettyHome: string, jettyBase: string): Promise<void> {
+    const { status, token } = await getLatestVersionInfo();
+    if (status === Status.HAVE_UPDATE) {
+        await Promise.all([
+            workspace
+                .getConfiguration("vscode-w3cvalidation")
+                .update("validator-token", token, ConfigurationTarget.Global),
+            updateValidator(jettyHome, jettyBase),
+        ]);
     }
 }
 
-export async function checkValidator(jettyHome: string, jettyBase: string): Promise<void> {
-    try {
-        const { status, token } = await getLatestVersionInfo();
-        if (status === Status.HAVE_UPDATE) {
-            await Promise.all([
-                workspace
-                    .getConfiguration("vscode-w3cvalidation")
-                    .update("validator-token", token, ConfigurationTarget.Global),
-                updateValidator(jettyHome, jettyBase),
-            ]);
-        }
-    } catch (error) {
-        // Ignore any errors (e.g. exceed the GitHub API rate limit)
-    }
+export async function runValidator(jettyHome: string, jettyBase: string): Promise<ChildProcessWithoutNullStreams> {
+    await checkValidator(jettyHome, jettyBase);
+
+    return new Promise((resolve, reject) => {
+        // Start the validation server
+        const service = spawn("java", ["-jar", `${jettyHome}/start.jar`], { cwd: jettyBase });
+
+        service.stderr.on("data", (data: Buffer) => {
+            if (data.includes("INFO:oejs.Server:main: Started")) resolve(service);
+        });
+
+        service.on("exit", (exitCode) => {
+            if (exitCode !== 0) reject(new Error("Failed to start validation server."));
+        });
+    });
 }

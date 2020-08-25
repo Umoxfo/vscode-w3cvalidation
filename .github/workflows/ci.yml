@@ -1,13 +1,18 @@
 name: Test
 
-on: [push]
+on:
+  push:
+    branches:
+      - develop
 
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -16,21 +21,21 @@ jobs:
       with:
         java-version: 11
     - name: Install Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
-        node-version: '12.x'
+        node-version: '12'
     - name: Get npm cache directory
       id: npm-cache
       run: echo "::set-output name=dir::$(npm config get cache)"
     - name: Cache Node.js modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ${{ steps.npm-cache.outputs.dir }}
         key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.OS }}-node-
-          ${{ runner.OS }}-
-    - run: npm ci
+        # restore-keys: |
+        #   ${{ runner.OS }}-node-
+        #   ${{ runner.OS }}-
+    - run: npm install
     - name: Install JDK
       uses: actions/setup-java@v1
       with:

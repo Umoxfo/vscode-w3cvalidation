@@ -4,5 +4,7 @@
     "OracleJavaDownloadUrl": "http://www.oracle.com/technetwork/java/javase/downloads/index.html",
     "JavaInstallInfoText": "Install it and set its location using 'vscode-w3cvalidation.javaHome' variable in VS Code settings.",
     "UserSettingsButtonText": "Open User Settings",
-    "WorkspaceSettingsButtonText": "Open Workspace Settings"
+    "WorkspaceSettingsButtonText": "Open Workspace Settings",
+    "AskRestartVSCode": "Please restart VS Code after set the Java execution path for your environment.",
+    "RestartVSCode": "Restart VS Code"
 }
