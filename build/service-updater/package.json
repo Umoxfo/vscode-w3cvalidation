@@ -10,12 +10,12 @@
   "bin": "bin/server-updater.js",
   "main": "./out/index.js",
   "dependencies": {
-    "commander": "^6.0.0",
+    "commander": "^6.1.0",
     "jsdom": "^16.4.0",
     "tar": "^6.0.5"
   },
   "devDependencies": {
-    "@types/jsdom": "^16.2.3",
+    "@types/jsdom": "^16.2.4",
     "@types/tar": "^4.0.3"
   }
 }
