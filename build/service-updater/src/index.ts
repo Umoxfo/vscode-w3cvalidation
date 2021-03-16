@@ -5,11 +5,13 @@
 
 "use strict";
 
-import commander from "commander";
+import { Command } from "commander";
 import { promises as fs } from "fs";
 import { updateAppServer, updateValidator, update } from "./lib/updater";
 
-const program = new commander.Command("service-updater");
+const program = new Command("service-updater");
+
+const GITHUB_OAUTH_TOKEN_PATTERN = /^[0-9a-f]{40}$/;
 
 async function getGitHubOAuthToken(filePath = ""): Promise<string> {
     try {
@@ -28,14 +30,14 @@ export default async function main(): Promise<void> {
     program
         .command("validator")
         .description("Updates the Nu Html Checker")
-        .option("-t, --token <token>", "A GitHub OAuth token", /^[0-9a-f]{40}$/)
+        .option("-t, --token <token>", "A GitHub OAuth token", GITHUB_OAUTH_TOKEN_PATTERN.test)
         .option("-p, --path <token_path>", "A file path of a GitHub OAuth token")
         .action(async (opts) => await updateValidator(await (opts.token ?? getGitHubOAuthToken(opts.path))));
 
     program
         .command("service")
         .description("Updates the Jetty server and the Nu Html Checker")
-        .option("-t, --token <token>", "A GitHub OAuth token", /^[0-9a-f]{40}$/)
+        .option("-t, --token <token>", "A GitHub OAuth token", GITHUB_OAUTH_TOKEN_PATTERN.test)
         .option("-p, --path <token_path>", "A file path of a GitHub OAuth token")
         .action(async (opts) => await update(await (opts.token ?? getGitHubOAuthToken(opts.path))));
 

@@ -1,5 +1,12 @@
 {
     "recommendations": [
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "kisstkondoros.vscode-codemetrics",
+        "salbert.comment-ts",
+        "wix.vscode-import-cost",
+        "xabikos.javascriptsnippets",
+        "snyk-security.vscode-vuln-cost",
+        "eg2.vscode-npm-script",
+        "ymotongpoo.licenser"
     ]
 }

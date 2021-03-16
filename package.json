@@ -37,7 +37,7 @@
                 "vscode-w3cvalidation.validator-token": {
                     "type": "string",
                     "scope": "machine",
-                    "default": "Thu, 30 Jul 2020 16:40:45 GMT",
+                    "default": "Thu, 25 Feb 2021 03:33:48 GMT",
                     "description": "Last-Modified, a timestamp, for the last release of war tag in the Nu Html Checker repository."
                 },
                 "vscode-w3cvalidation.trace.server": {
@@ -65,9 +65,9 @@
         "test": "node ./test/out/runTest.js",
         "test:dev": "npm run webpack-dev && tsc -b test",
         "compile:build": "tsc -b build/service-updater build/ts-build-clean-webpack-plugin",
-        "webpack-dev": "npm run compile:build && webpack --env.development --progress",
-        "webpack:client": "npm run compile:build && webpack --env.development --config-name client",
-        "webpack:server": "npm run compile:build && webpack --env.development --config-name server",
+        "webpack-dev": "npm run compile:build && webpack --mode development --progress",
+        "webpack:client": "npm run compile:build && webpack --mode development --config-name client",
+        "webpack:server": "npm run compile:build && webpack --mode development --config-name server",
         "vscode:prepublish": "npm run compile:build && node ./build/service-updater service -p ./build/GitHub_token.txt && webpack"
     },
     "devDependencies": {

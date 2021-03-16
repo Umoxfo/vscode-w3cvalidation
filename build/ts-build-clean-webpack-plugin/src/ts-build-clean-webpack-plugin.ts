@@ -11,8 +11,7 @@ import { execFile } from "child_process";
 const execFilePromise = promisify(execFile);
 import * as Message from "./Message.json";
 
-import type { Compiler, Stats, compilation as compilationType } from "webpack";
-type Compilation = compilationType.Compilation;
+import type { Compiler, Stats, Compilation } from "webpack";
 
 const PLUGIN_NAME = "ts-build-clean-webpack-plugin";
 
@@ -138,7 +137,7 @@ export class CleanWebpackPlugin {
         /*
          * Fetch Webpack's output asset files
          */
-        const assets = stats.toJson({ assets: true, assetsSort: "name" }, true)?.assets ?? [];
+        const assets = stats.toJson({ assets: true, assetsSort: "name" })?.assets ?? [];
         const assetList = assets.map((asset: { name: string }) => asset.name);
 
         /*

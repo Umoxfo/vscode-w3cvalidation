@@ -14,15 +14,17 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const path = require("path");
 const { CleanWebpackPlugin } = require("./build/ts-build-clean-webpack-plugin");
 
-/** @type {(development: boolean, configName: string, filename?: string) => WebpackConfig} */
-const preConfig = (development = false, configName, filename = configName) => ({
-	mode: development ? 'development' : 'production',
+/** @type {(configName: string, filename?: string) => WebpackConfig} */
+const preConfig = (configName, filename = configName) => ({
+	mode: 'production',
+	devtool: "source-map",
 	name: configName,
 	context: path.join(__dirname, configName),
-	devtool: development ? 'source-map' : false,
-	target: 'node', // extensions run in a node context
+	// Extensions run in a node context
+	target: 'async-node',
 	node: {
-		__dirname: false // leave the __dirname-behaviour intact
+		// Leave the __dirname-behaviour intact
+		__dirname: false
 	},
 	entry: {
 		[filename]: `./src/${filename}.ts`
@@ -40,16 +42,27 @@ const preConfig = (development = false, configName, filename = configName) => ({
 		}]
 	},
 	resolve: {
-		extensions: ['.ts', '.js'], // support ts-files and js-files
+		// Support ts- and js-files
+		extensions: ['.ts', '.js'],
 		symlinks: false
 	},
 	output: {
 		path: path.join(__dirname, configName, 'out'),
 		filename: '[name].js',
-		libraryTarget: 'commonjs',
+		libraryTarget: 'commonjs2',
 	},
 	externals: {
-		vscode: 'commonjs vscode', // ignored because it doesn't exist
+		// The vscode-module is created on-the-fly and must be excluded.
+		vscode: 'commonjs vscode',
+	},
+	externalsPresets: {
+		node: true,
+	},
+	optimization: {
+		splitChunks: {
+			chunks: 'all',
+		},
+		runtimeChunk: 'single',
 	},
 	plugins: [
 		new CleanWebpackPlugin(),
@@ -58,9 +71,14 @@ const preConfig = (development = false, configName, filename = configName) => ({
 });
 
 /** @type WebpackConfigFactory */
-module.exports = (env = {}) => {
+module.exports = (env, argv) => {
+	if (argv.mode === "development") {
+		argv.devtool = "source-map";
+		// config.devtool = "eval-source-map";
+	}
+
 	return [
-		preConfig(env["development"], "client", "extension"),
-		preConfig(env["development"], "server")
+		preConfig("client", "extension"),
+		preConfig("server"),
 	];
 };

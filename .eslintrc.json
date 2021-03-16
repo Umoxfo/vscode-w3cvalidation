@@ -26,7 +26,7 @@
             "./build/**/tsconfig.json",
             "./test/tsconfig.json"
         ],
-        "ecmaVersion": 2017,
+        "ecmaVersion": 2019,
         "sourceType": "module"
     },
     "plugins": [

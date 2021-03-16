@@ -18,9 +18,10 @@
         "javascript",
         "typescript"
     ],
-    "licenser.license": "MIT",
-    "tslint.configFile": "tslint.json",
-    "files.associations": {
-        "tslint.json": "jsonc"
+    "eslint.options": {
+        "reportUnusedDisableDirectives": true
     },
+    "eslint.lintTask.enable": true,
+    "licenser.license": "MIT",
+    "npm.enableRunFromFolder": true,
 }

@@ -5,7 +5,7 @@
 "use strict";
 
 import { commands, env, ExtensionContext, Uri, window, workspace } from "vscode";
-import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
+import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient/node";
 
 import * as path from "path";
 import { promises as fs } from "fs";

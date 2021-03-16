@@ -3,10 +3,10 @@
     "compilerOptions": {
         /* Basic Options */
         "incremental": true,
-        "target": "ES2017",
+        "target": "ES2019",
         "module": "CommonJS",
         "lib": [
-            "ES2017"
+            "ES2019"
         ],
         "sourceMap": true,
         "strict": true,
