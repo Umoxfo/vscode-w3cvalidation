@@ -58,9 +58,10 @@
     "scripts": {
         "postinstall": "node --experimental-modules setup_dev.mjs install && npm run service-updater",
         "update:subprojects": "node --experimental-modules setup_dev.mjs update",
-        "service-updater": "tsc -b build/service-updater && node ./build/service-updater service -p ./build/GitHub_token.txt",
-        "service-updater:validator": "tsc -b build/service-updater && node ./build/service-updater validator -p ./build/GitHub_token.txt",
-        "service-updater:server": "tsc -b build/service-updater && node ./build/service-updater server",
+        "compile:updater": "tsc -b build/service-updater",
+        "service-updater": "npm run compile:updater && node ./build/service-updater service -p ./build/GitHub_token.txt",
+        "service-updater:validator": "npm run compile:updater && node ./build/service-updater validator -p ./build/GitHub_token.txt",
+        "service-updater:server": "npm run compile:updater && node ./build/service-updater server",
         "pretest": "tsc -b test client server",
         "test": "node ./test/out/runTest.js",
         "test:dev": "npm run webpack-dev && tsc -b test",
