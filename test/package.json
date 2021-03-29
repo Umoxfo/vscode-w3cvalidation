@@ -7,9 +7,9 @@
         "vscode": "^1.42.0"
     },
     "devDependencies": {
-        "@types/mocha": "^8.2.1",
+        "@types/mocha": "^8.2.2",
         "@types/vscode": "1.42.0",
         "mocha": "^8.3.2",
-        "vscode-test": "^1.5.1"
+        "vscode-test": "^1.5.2"
     }
 }
