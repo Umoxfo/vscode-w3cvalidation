@@ -56,11 +56,12 @@
     },
     "main": "./client/out/extension",
     "scripts": {
-        "postinstall": "node --experimental-modules setup_dev.mjs install && npm run service-updater",
-        "update:subprojects": "node --experimental-modules setup_dev.mjs update",
+        "postinstall": "node setup_dev.mjs install && npm run service-updater",
+        "update:subprojects": "node setup_dev.mjs update",
         "compile:updater": "tsc -b build/service-updater",
-        "service-updater": "npm run compile:updater && node ./build/service-updater service -p ./build/GitHub_token.txt",
-        "service-updater:validator": "npm run compile:updater && node ./build/service-updater validator -p ./build/GitHub_token.txt",
+        "updater:service": "node ./build/service-updater service -p ./build/GitHub_token.txt",
+        "service-updater": "npm run compile:updater && npm run updater:service",
+        "service-updater:validator": "npm run compile:updater && npm run updater:service",
         "service-updater:server": "npm run compile:updater && node ./build/service-updater server",
         "pretest": "tsc -b test client server",
         "test": "node ./test/out/runTest.js",
@@ -69,7 +70,7 @@
         "webpack-dev": "npm run compile:build && webpack --mode development --progress",
         "webpack:client": "npm run compile:build && webpack --mode development --config-name client",
         "webpack:server": "npm run compile:build && webpack --mode development --config-name server",
-        "vscode:prepublish": "npm run compile:build && node ./build/service-updater service -p ./build/GitHub_token.txt && webpack"
+        "vscode:prepublish": "npm run compile:build && npm run updater:service && webpack --mode production"
     },
     "devDependencies": {
         "@types/node": "^12.20.7",
