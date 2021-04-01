@@ -65,7 +65,7 @@
         "arrow-parens": "warn",
         "camelcase": "error",
         // "capitalized-comments": "error",
-        "dot-notation": "warn",
+        // "dot-notation": "warn",
         "eqeqeq": [
             "error",
             "smart"
