@@ -11,8 +11,7 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:import/typescript",
         // "plugin:jsdoc/recommended",
-        "prettier",
-        "prettier/@typescript-eslint"
+        "prettier"
     ],
     "globals": {
         "Atomics": "readonly",
