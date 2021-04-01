@@ -7,7 +7,7 @@ export async function run(): Promise<void> {
     const mocha = new Mocha({ ui: "tdd", color: true, timeout: "30s" });
 
     // Add files to the test suite
-    for await (const file of await fs.readdir(__dirname)) {
+    for (const file of await fs.readdir(__dirname)) {
         if (file.endsWith(".test.js")) mocha.addFile(path.join(__dirname, file));
     }
 
