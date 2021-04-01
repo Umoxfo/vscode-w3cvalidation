@@ -38,6 +38,7 @@ function merger(/** @type Object | Array */ baseObj = {}, /** @type Object */ ob
     return target;
 };
 
-exports.merge = (/** @type Object */ baseOption, /** @type Array */ ...options) =>
-    // Loop through each object and merge into an object
-    options.reduce((acc, currentVal) => merger(acc, currentVal), baseOption);
+// Loop through each object and merge into an object
+export function merge(/** @type Object */ baseOption, /** @type Array */ ...options) {
+    return options.reduce((acc, currentVal) => merger(acc, currentVal), baseOption);
+}
