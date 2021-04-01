@@ -25,17 +25,17 @@ jobs:
       with:
         node-version: '14'
     - name: Get npm cache directory
-      id: npm-cache
+      id: npm-cache-dir
       run: echo "::set-output name=dir::$(npm config get cache)"
     - name: Cache Node.js modules
       uses: actions/cache@v2
+      id: npm-cache
       with:
-        path: ${{ steps.npm-cache.outputs.dir }}
-        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-        # restore-keys: |
-        #   ${{ runner.OS }}-node-
-        #   ${{ runner.OS }}-
+        path: ${{ steps.npm-cache-dir.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
     - run: npm install
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
     - name: Install JDK
       uses: actions/setup-java@v1
       with:
