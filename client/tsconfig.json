@@ -1,9 +1,11 @@
 {
     "extends": "../tsconfig.base",
     "compilerOptions": {
-        "allowJs": true,
         "resolveJsonModule": true,
         "rootDir": "src",
         "outDir": "out"
-    }
+    },
+    "include": [
+        "src"
+    ],
 }

@@ -4,23 +4,27 @@
         /* Basic Options */
         "incremental": true,
         "target": "ES2019",
-        "module": "CommonJS",
+        "module": "ES2015",
         "lib": [
             "ES2019"
         ],
         "sourceMap": true,
         "strict": true,
+        /* Advanced Options */
+        "forceConsistentCasingInFileNames": true,
+        "importsNotUsedAsValues": "preserve",
         /* Additional Checks */
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "noPropertyAccessFromIndexSignature": true,
         /* Module Resolution Options */
+        "moduleResolution": "Node",
         "esModuleInterop": true,
-        /* Source Map Options */
-        /* Experimental Options */
-        /* Advanced Options */
-        "forceConsistentCasingInFileNames": true,
-        "importsNotUsedAsValues": "preserve"
-    }
+    },
+    "exclude": [
+        "node_modules"
+    ]
 }

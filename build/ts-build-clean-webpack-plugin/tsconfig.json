@@ -1,12 +1,11 @@
 {
     "extends": "../tsconfig.dev",
-    "compileOnSave": true,
     "compilerOptions": {
         "resolveJsonModule": true,
         "outDir": "out",
-        "rootDir": "src",
-        "types": [
-            "node"
-        ]
-    }
+        "rootDir": "src"
+    },
+    "include": [
+        "src"
+    ],
 }

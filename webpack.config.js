@@ -5,7 +5,6 @@
 
 // @ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig */
-/** @typedef {import('webpack').MultiConfigurationFactory} WebpackConfigFactory */
 
 "use strict";
 
@@ -21,7 +20,7 @@ const preConfig = (configName, filename = configName) => ({
 	name: configName,
 	context: path.join(__dirname, configName),
 	// Extensions run in a node context
-	target: 'async-node',
+	target: 'node',
 	node: {
 		// Leave the __dirname-behaviour intact
 		__dirname: false
@@ -49,7 +48,13 @@ const preConfig = (configName, filename = configName) => ({
 	output: {
 		path: path.join(__dirname, configName, 'out'),
 		filename: '[name].js',
-		libraryTarget: 'commonjs2',
+		strictModuleErrorHandling: true,
+		library: {
+			type: 'commonjs2',
+		},
+		clean: {
+			dry: true,
+		},
 	},
 	externals: {
 		// The vscode-module is created on-the-fly and must be excluded.
@@ -58,11 +63,18 @@ const preConfig = (configName, filename = configName) => ({
 	externalsPresets: {
 		node: true,
 	},
+	performance: {
+		hints: 'warning',
+	},
 	optimization: {
 		splitChunks: {
 			chunks: 'all',
+			// hidePathInfo: true,
 		},
-		runtimeChunk: 'single',
+		mergeDuplicateChunks: true,
+		removeEmptyChunks: true,
+		flagIncludedChunks: true,
+		// runtimeChunk: 'single',
 	},
 	plugins: [
 		new CleanWebpackPlugin(),
@@ -70,15 +82,10 @@ const preConfig = (configName, filename = configName) => ({
 	]
 });
 
-/** @type WebpackConfigFactory */
 module.exports = (env, argv) => {
-	if (argv.mode === "development") {
-		argv.devtool = "source-map";
-		// config.devtool = "eval-source-map";
-	}
-
 	return [
 		preConfig("client", "extension"),
 		preConfig("server"),
 	];
 };
+module.exports.parallelism = 2;
