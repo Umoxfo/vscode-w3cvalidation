@@ -6,13 +6,13 @@
 "use strict";
 
 import { JSDOM } from "jsdom";
-import * as tar from "tar";
+import tar from "tar";
 
-import * as http2 from "http2";
+import http2 from "http2";
 import { Duplex } from "stream";
-import * as zlib from "zlib";
+import zlib from "zlib";
 import { promises as fs } from "fs";
-import * as path from "path";
+import path from "path";
 import { getArchive, getPlainText } from "./downloader";
 
 import type { OutgoingHttpHeaders, ClientHttp2Session, ClientHttp2Stream } from "http2";

@@ -6,24 +6,26 @@
 
 import { workspace, ConfigurationTarget } from "vscode";
 
-import * as https from "https";
+import https from "https";
 import { promises as fs } from "fs";
-import * as path from "path";
-import * as crypto from "crypto";
-import * as os from "os";
+import path from "path";
+import crypto from "crypto";
+import os from "os";
 import { spawn, execFile } from "child_process";
 import { promisify } from "util";
 const execFilePromise = promisify(execFile);
 
+import type { RequestOptions as HttpsRequestOptions } from "https";
 import type { IncomingMessage } from "http";
 import type { ChildProcessWithoutNullStreams } from "child_process";
 
+// eslint-disable-next-line no-shadow
 const enum Status {
     UP_TO_DATE = 304,
     HAVE_UPDATE = 200,
 }
 
-const RequestOptions: https.RequestOptions = {
+const RequestOptions: HttpsRequestOptions = {
     host: "api.github.com",
     method: "HEAD",
     path: "/repos/validator/validator/releases/tags/war",
@@ -34,7 +36,7 @@ const RequestOptions: https.RequestOptions = {
     },
 };
 
-async function getLatestVersionInfo(): Promise<{ status: Status; token?: string }> {
+async function getLatestVersionInfo(): Promise<{ status: number; token?: string }> {
     return new Promise((resolve, reject) => {
         const req = https.request(RequestOptions, (response) => {
             switch (response.statusCode) {
@@ -56,9 +58,10 @@ interface WarFileResponse {
     warFile: Buffer;
     warFileHash: string;
 }
+
 type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => void) => void;
 
-const preConfigDownloadRequestOptions = (fileName: string): https.RequestOptions => ({
+const preConfigDownloadRequestOptions = (fileName: string): HttpsRequestOptions => ({
     host: "github.com",
     method: "HEAD",
     path: `/validator/validator/releases/download/war/${fileName}`,
@@ -122,10 +125,13 @@ async function downloadVNU(): Promise<string> {
 }
 
 async function initServerArgs(jettyHome: string, jettyBase: string): Promise<string> {
-    const tmp = (
-        await execFilePromise("java", ["-jar", `${path.join(jettyHome, "start.jar")}`, "--dry-run"], { cwd: jettyBase })
-    ).stdout.split(" ");
-    return tmp[tmp.indexOf("-cp") + 1];
+    return (
+        await execFilePromise("java", ["-jar", `${jettyHome}/start.jar`, "--dry-run=path"], {
+            cwd: jettyBase,
+        })
+    ).stdout
+        .substring(4)
+        .trim();
 }
 
 async function updateValidator(jettyHome: string, jettyBase: string): Promise<void> {
@@ -135,13 +141,18 @@ async function updateValidator(jettyHome: string, jettyBase: string): Promise<vo
     await fs.rmdir(webappPath, { recursive: true });
 
     return new Promise((resolve, reject) => {
-        const jettyPreconfWar = spawn("java", [
-            "-cp",
-            jettyClasspath,
-            "org.eclipse.jetty.quickstart.PreconfigureQuickStartWar",
-            warFilePath,
-            webappPath,
-        ]);
+        const jettyPreconfWar = spawn(
+            "java",
+            [
+                "-cp",
+                jettyClasspath,
+                "org.eclipse.jetty.quickstart.PreconfigureQuickStartWar",
+                warFilePath,
+                webappPath,
+                path.join(jettyBase, "webapps", "vnu.xml"),
+            ],
+            { cwd: jettyBase }
+        );
 
         jettyPreconfWar.on("exit", (code) => (code === 0 ? resolve() : reject()));
     });

@@ -4,7 +4,9 @@
  */
 "use strict";
 
-import * as http from "http";
+import { request as httpRequest } from "http";
+
+import type { RequestOptions as HttpRequestOptions } from "http";
 
 /**
  * Message object of the validation result
@@ -61,7 +63,7 @@ interface Message {
 
     readonly hiliteStart?: number;
     readonly hiliteLength?: number;
-} // Message
+}
 
 /**
  * Validation result format
@@ -94,9 +96,9 @@ interface ValidationResult {
      * See https://github.com/validator/validator/wiki/Output-»-JSON#the-language-string
      */
     readonly language?: string;
-} // ValidationResult
+}
 
-const RequestOptions: http.RequestOptions = {
+const RequestOptions: HttpRequestOptions = {
     host: "localhost",
     port: 8888,
     method: "POST",
@@ -123,7 +125,7 @@ export async function sendDocument(document: string): Promise<Message[]> {
         // Set the request headers
         // RequestOptions.headers["Content-Type"] = `${MediaTypes[document.languageId as keyof typeof MediaTypes]}; charset=utf-8`;
 
-        const request = http.request(RequestOptions, (response) => {
+        const request = httpRequest(RequestOptions, (response) => {
             // handle http errors
             response.statusCode = response.statusCode ?? 0;
             if (response.statusCode < 200 || response.statusCode > 299) reject();
@@ -145,4 +147,4 @@ export async function sendDocument(document: string): Promise<Message[]> {
         // write data to request body
         request.end(document);
     });
-} // sendDocument
+}

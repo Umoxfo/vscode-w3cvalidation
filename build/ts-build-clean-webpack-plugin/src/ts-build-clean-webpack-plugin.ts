@@ -9,7 +9,7 @@ import { promises as fs } from "fs";
 import { promisify } from "util";
 import { execFile } from "child_process";
 const execFilePromise = promisify(execFile);
-import * as Message from "./Message.json";
+import Message from "./Message.json";
 
 import type { Compiler, Stats, Compilation } from "webpack";
 
@@ -46,6 +46,7 @@ export interface Options {
 function isPlainObject(value: unknown): boolean {
     if (Object.prototype.toString.call(value) !== "[object Object]") return false;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const prototype = Object.getPrototypeOf(value);
     return prototype === null || prototype === Object.getPrototypeOf({});
 }
@@ -172,6 +173,7 @@ export class CleanWebpackPlugin {
             fs.unlink(`./${this.configName}/tsconfig.tsbuildinfo`),
             fs.rmdir(this.outputPath, { recursive: true }),
         ]).catch(async (err) =>
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             err.code !== "ENOENT"
                 ? execFilePromise("npx", ["tsc", "-b", "--clean", this.configName], { shell: true })
                 : Promise.resolve()

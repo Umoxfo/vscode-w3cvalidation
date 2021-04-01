@@ -6,18 +6,25 @@
 "use strict";
 
 import { Command } from "commander";
-import { promises as fs } from "fs";
+import { readFile } from "fs/promises";
 import { updateAppServer, updateValidator, update } from "./lib/updater";
 
 const program = new Command("service-updater");
 
-const GITHUB_OAUTH_TOKEN_PATTERN = /^[0-9a-f]{40}$/;
+const GITHUB_OAUTH_TOKEN_PATTERN = /^[0-9a-f]{40}$/i;
+
+const validateTokenPattern = (value: string) => GITHUB_OAUTH_TOKEN_PATTERN.test(value);
+
+interface Options {
+    token?: string;
+    path?: string;
+}
 
 async function getGitHubOAuthToken(filePath = ""): Promise<string> {
     try {
-        return (await fs.readFile(filePath, "utf8")).trim();
+        return (await readFile(filePath, "utf8")).trim();
     } catch (error) {
-        return "";
+        return process.env["GITHUB_TOKEN"] ?? "";
     }
 }
 
@@ -30,16 +37,16 @@ export default async function main(): Promise<void> {
     program
         .command("validator")
         .description("Updates the Nu Html Checker")
-        .option("-t, --token <token>", "A GitHub OAuth token", GITHUB_OAUTH_TOKEN_PATTERN.test)
+        .option("-t, --token <token>", "A GitHub OAuth token", validateTokenPattern)
         .option("-p, --path <token_path>", "A file path of a GitHub OAuth token")
-        .action(async (opts) => await updateValidator(await (opts.token ?? getGitHubOAuthToken(opts.path))));
+        .action(async (opts: Options) => await updateValidator(opts.token ?? (await getGitHubOAuthToken(opts.path))));
 
     program
         .command("service")
         .description("Updates the Jetty server and the Nu Html Checker")
-        .option("-t, --token <token>", "A GitHub OAuth token", GITHUB_OAUTH_TOKEN_PATTERN.test)
+        .option("-t, --token <token>", "A GitHub OAuth token", validateTokenPattern)
         .option("-p, --path <token_path>", "A file path of a GitHub OAuth token")
-        .action(async (opts) => await update(await (opts.token ?? getGitHubOAuthToken(opts.path))));
+        .action(async (opts: Options) => await update(opts.token ?? (await getGitHubOAuthToken(opts.path))));
 
     await program.parseAsync(process.argv);
 

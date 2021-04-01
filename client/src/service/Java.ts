@@ -10,7 +10,7 @@ import { workspace } from "vscode";
 import { execFile } from "child_process";
 import { promisify } from "util";
 const execFilePromise = promisify(execFile);
-import * as path from "path";
+import path from "path";
 
 if (process.platform === "darwin") {
     execFile("/usr/libexec/java_home", (_, stdout): string => (process.env["JAVA_HOME"] = stdout));

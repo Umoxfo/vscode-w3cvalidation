@@ -14,6 +14,8 @@ import {
 } from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
+import { promisify } from "util";
+const setTimeoutPromise = promisify(setTimeout);
 import { sendDocument } from "./validator";
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
@@ -73,12 +75,10 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
         // Send the computed diagnostics to VSCode.
         connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     } catch (error) {
-        const setTimeoutPromise = (await import("util")).promisify(setTimeout);
-
         await setTimeoutPromise((Math.random() + 1) * 1000);
         await validateHtmlDocument(textDocument);
-    } // try-catch
-} // validateHtmlDocument
+    }
+}
 
 // The content of a text document has changed.
 documents.onDidChangeContent(async (change): Promise<void> => await validateHtmlDocument(change.document));
