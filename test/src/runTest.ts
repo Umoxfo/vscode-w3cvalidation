@@ -12,7 +12,7 @@ async function main(): Promise<void> {
 
         // Run the extension test
         await runTests({
-            version: "1.42.0",
+            version: "1.55.0",
             // Use win64 instead of win32 for testing Windows
             platform: process.platform === "win32" ? "win32-x64-archive" : undefined,
             extensionDevelopmentPath,

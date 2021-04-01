@@ -4,11 +4,11 @@
     "description": "Test for W3C validation",
     "version": "1.0.0",
     "engines": {
-        "vscode": "^1.42.0"
+        "vscode": "^1.55.0"
     },
     "devDependencies": {
         "@types/mocha": "^8.2.2",
-        "@types/vscode": "1.42.0",
+        "@types/vscode": "^1.55.0",
         "mocha": "^8.3.2",
         "vscode-test": "^1.5.2"
     }

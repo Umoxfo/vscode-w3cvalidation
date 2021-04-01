@@ -19,7 +19,7 @@
         "Linters"
     ],
     "engines": {
-        "vscode": "^1.54.0"
+        "vscode": "^1.55.0"
     },
     "activationEvents": [
         "onLanguage:html"
