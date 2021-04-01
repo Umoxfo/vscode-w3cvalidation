@@ -1,3 +1,8 @@
+## 2.9.0
+* Update Jetty to v9.4.39
+* Drop support version 1.42.x  
+  It is support VSCode version 1.55.0 or later now.
+
 ## 2.7.0
 * Update Jetty to v9.4.31
 * Improved extension start-up process
