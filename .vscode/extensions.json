@@ -5,7 +5,6 @@
         "salbert.comment-ts",
         "xabikos.javascriptsnippets",
         "snyk-security.vscode-vuln-cost",
-        "eg2.vscode-npm-script",
         "ymotongpoo.licenser"
     ]
 }

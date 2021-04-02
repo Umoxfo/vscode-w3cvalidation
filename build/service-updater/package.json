@@ -7,7 +7,6 @@
   "engines": {
     "node": ">=12.16.0"
   },
-  "bin": "bin/server-updater.js",
   "main": "./out/index",
   "dependencies": {
     "commander": "^7.2.0",

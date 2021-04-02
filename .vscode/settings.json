@@ -23,5 +23,4 @@
     },
     "eslint.lintTask.enable": true,
     "licenser.license": "MIT",
-    "npm.enableRunFromFolder": true,
 }
