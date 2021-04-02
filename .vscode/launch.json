@@ -41,7 +41,7 @@
             "outFiles": [
                 "${workspaceRoot}/test/out/**/*.js"
             ],
-            "preLaunchTask": "npm: test:dev"
+            "preLaunchTask": "npm: pretest"
         }
     ]
 }
