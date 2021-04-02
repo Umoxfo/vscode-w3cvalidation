@@ -5,7 +5,7 @@
 
 "use strict";
 
-import { JSDOM } from "jsdom";
+import { DOMParser } from "xmldom";
 import tar from "tar";
 
 import http2 from "http2";
@@ -28,10 +28,13 @@ let clientSession: ClientHttp2Session;
  * @returns The latest version string of Jetty-Home
  */
 function parseXML(xmlDoc: string): string {
-    const { document } = new JSDOM(xmlDoc, { contentType: "text/xml" }).window;
+    const document = new DOMParser().parseFromString(xmlDoc, "text/xml");
 
     const versions = Array.from(document.getElementsByTagName("version")).reverse();
-    return versions.find(({ textContent }) => JETTY_VERSION_PATTERN.test(textContent ?? ""))?.textContent ?? "";
+    return (
+        versions.find(({ firstChild }) => JETTY_VERSION_PATTERN.test(firstChild?.nodeValue ?? ""))?.firstChild
+            ?.nodeValue ?? ""
+    );
 }
 
 const preConfigReqOpts = (urlPath: string): OutgoingHttpHeaders => ({
