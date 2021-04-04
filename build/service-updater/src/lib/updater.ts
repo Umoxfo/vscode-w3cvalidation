@@ -5,7 +5,7 @@
 
 "use strict";
 
-import * as path from "path";
+import path from "path";
 import { spawn, execFile } from "child_process";
 import { promisify } from "util";
 const execFilePromise = promisify(execFile);

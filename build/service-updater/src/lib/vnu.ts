@@ -7,7 +7,7 @@
 
 import { request as httpsRequest, get as httpsGet } from "https";
 import { promises as fs } from "fs";
-import * as path from "path";
+import path from "path";
 import os from "os";
 import { getArchive, getPlainText } from "./downloader";
 

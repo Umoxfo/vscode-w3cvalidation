@@ -21,6 +21,8 @@ type ResponseFunc<T> = (response: ClientHttp2Stream, resolve: (value: T) => void
 const MAVEN_CENTRAL_REPOSITORY = "https://repo1.maven.org";
 const JETTY_VERSION_PATTERN = /(\d+\.){3}v\d+/;
 
+const isLatestJetty = ({ firstChild }: Element): boolean => JETTY_VERSION_PATTERN.test(firstChild?.nodeValue ?? "");
+
 let clientSession: ClientHttp2Session;
 
 /**
@@ -28,13 +30,9 @@ let clientSession: ClientHttp2Session;
  * @returns The latest version string of Jetty-Home
  */
 function parseXML(xmlDoc: string): string {
-    const document = new DOMParser().parseFromString(xmlDoc, "text/xml");
+    const versions = new DOMParser().parseFromString(xmlDoc, "text/xml").getElementsByTagName("version");
 
-    const versions = Array.from(document.getElementsByTagName("version")).reverse();
-    return (
-        versions.find(({ firstChild }) => JETTY_VERSION_PATTERN.test(firstChild?.nodeValue ?? ""))?.firstChild
-            ?.nodeValue ?? ""
-    );
+    return Array.from(versions).reverse().find(isLatestJetty)?.firstChild?.nodeValue ?? "";
 }
 
 const preConfigReqOpts = (urlPath: string): OutgoingHttpHeaders => ({

@@ -6,7 +6,6 @@
 
 import {
     createConnection,
-    Diagnostic,
     DiagnosticSeverity,
     ProposedFeatures,
     TextDocuments,
@@ -17,6 +16,8 @@ import { TextDocument } from "vscode-languageserver-textdocument";
 import { promisify } from "util";
 const setTimeoutPromise = promisify(setTimeout);
 import { sendDocument } from "./validator";
+
+import type { Diagnostic } from "vscode-languageserver/node";
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
 const connection = createConnection(ProposedFeatures.all);
