@@ -11,7 +11,8 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:import/typescript",
         // "plugin:jsdoc/recommended",
-        "prettier"
+        "prettier",
+        "prettier/@typescript-eslint"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -25,7 +26,7 @@
             "./build/**/tsconfig.json",
             "./test/tsconfig.json"
         ],
-        "ecmaVersion": 2019,
+        "ecmaVersion": 2017,
         "sourceType": "module"
     },
     "plugins": [
@@ -65,7 +66,7 @@
         "arrow-parens": "warn",
         "camelcase": "error",
         // "capitalized-comments": "error",
-        // "dot-notation": "warn",
+        "dot-notation": "warn",
         "eqeqeq": [
             "error",
             "smart"

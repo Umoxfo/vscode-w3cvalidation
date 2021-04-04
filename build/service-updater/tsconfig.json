@@ -1,14 +1,12 @@
 {
   "extends": "../tsconfig.dev",
+  "compileOnSave": true,
   "compilerOptions": {
     "lib": [
-      "ES2019",
+      "ES2017",
       "DOM"
     ],
     "outDir": "out",
     "rootDir": "src",
-  },
-  "include": [
-    "src"
-  ],
+  }
 }

@@ -1,4 +1,4 @@
-import { PerformanceObserver, performance } from 'perf_hooks';
+const { PerformanceObserver, performance } = require('perf_hooks')
 
 const median = (arr, fn) => {
     const half = (arr.length / 2) | 0;
@@ -22,7 +22,9 @@ function measure(fn, loop = 100) {
         obs.observe({ entryTypes: ['function'], buffered: true });
         const f = performance.timerify(fn);
 
-        for (let i = 0; i < loop; i++) f();
+        for (let i = 0; i < loop; i++) {
+            f();
+        }
     });
 };
 

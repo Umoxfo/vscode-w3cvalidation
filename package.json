@@ -19,7 +19,7 @@
         "Linters"
     ],
     "engines": {
-        "vscode": "^1.55.0"
+        "vscode": "^1.42.0"
     },
     "activationEvents": [
         "onLanguage:html"
@@ -37,7 +37,7 @@
                 "vscode-w3cvalidation.validator-token": {
                     "type": "string",
                     "scope": "machine",
-                    "default": "Sun, 21 Mar 2021 02:44:38 GMT",
+                    "default": "Thu, 30 Jul 2020 16:40:45 GMT",
                     "description": "Last-Modified, a timestamp, for the last release of war tag in the Nu Html Checker repository."
                 },
                 "vscode-w3cvalidation.trace.server": {
@@ -56,35 +56,35 @@
     },
     "main": "./client/out/extension",
     "scripts": {
-        "postinstall": "node setup_dev.mjs install && npm run service-updater",
-        "update:subprojects": "node setup_dev.mjs update",
-        "compile:updater": "tsc -b build/service-updater",
-        "updater:service": "node ./build/service-updater service -p ./build/GitHub_token.txt",
-        "service-updater": "npm run compile:updater && npm run updater:service",
-        "service-updater:server": "npm run compile:updater && node ./build/service-updater server",
-        "pretest": "npm run webpack-dev && tsc -b test",
+        "postinstall": "node --experimental-modules setup_dev.mjs install && npm run service-updater",
+        "update:subprojects": "node --experimental-modules setup_dev.mjs update",
+        "service-updater": "tsc -b build/service-updater && node ./build/service-updater service -p ./build/GitHub_token.txt",
+        "service-updater:validator": "tsc -b build/service-updater && node ./build/service-updater validator -p ./build/GitHub_token.txt",
+        "service-updater:server": "tsc -b build/service-updater && node ./build/service-updater server",
+        "pretest": "tsc -b test client server",
         "test": "node ./test/out/runTest.js",
+        "test:dev": "npm run webpack-dev && tsc -b test",
         "compile:build": "tsc -b build/service-updater build/ts-build-clean-webpack-plugin",
-        "webpack-dev": "npm run compile:build && webpack --mode development --progress",
-        "webpack:client": "npm run compile:build && webpack --mode development --config-name client",
-        "webpack:server": "npm run compile:build && webpack --mode development --config-name server",
-        "vscode:prepublish": "npm run compile:build && npm run updater:service && webpack --mode production"
+        "webpack-dev": "npm run compile:build && webpack --env.development --progress",
+        "webpack:client": "npm run compile:build && webpack --env.development --config-name client",
+        "webpack:server": "npm run compile:build && webpack --env.development --config-name server",
+        "vscode:prepublish": "npm run compile:build && node ./build/service-updater service -p ./build/GitHub_token.txt && webpack"
     },
     "devDependencies": {
-        "@types/node": "^12.20.7",
-        "@types/webpack": "^5.28.0",
-        "@typescript-eslint/eslint-plugin": "^4.20.0",
-        "@typescript-eslint/parser": "^4.20.0",
-        "eslint": "^7.23.0",
-        "eslint-config-prettier": "^8.1.0",
-        "eslint-plugin-import": "^2.22.1",
-        "eslint-plugin-prettier": "^3.3.1",
-        "fork-ts-checker-webpack-plugin": "^6.2.0",
-        "prettier": "^2.2.1",
+        "@types/node": "^12.12.53",
+        "@types/webpack": "^4.41.21",
+        "@typescript-eslint/eslint-plugin": "^3.7.1",
+        "@typescript-eslint/parser": "^3.7.1",
+        "eslint": "^7.6.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-prettier": "^3.1.4",
+        "fork-ts-checker-webpack-plugin": "^5.0.13",
+        "prettier": "^2.0.5",
         "ts-build-clean-webpack-plugin": "file:build/ts-build-clean-webpack-plugin",
-        "ts-loader": "^8.1.0",
-        "typescript": "^4.2.3",
-        "webpack": "^5.30.0",
-        "webpack-cli": "^4.6.0"
+        "ts-loader": "^8.0.2",
+        "typescript": "^3.9.7",
+        "webpack": "^4.44.1",
+        "webpack-cli": "^3.3.12"
     }
 }

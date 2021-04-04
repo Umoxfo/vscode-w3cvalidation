@@ -1,4 +1,4 @@
-import path from "path";
+import * as path from "path";
 import { promises as fs } from "fs";
 import Mocha from "mocha";
 
@@ -6,7 +6,6 @@ export async function run(): Promise<void> {
     // Create the mocha test
     const mocha = new Mocha({ ui: "tdd", color: true, timeout: "30s" });
 
-    // Add files to the test suite
     for (const file of await fs.readdir(__dirname)) {
         if (file.endsWith(".test.js")) mocha.addFile(path.join(__dirname, file));
     }

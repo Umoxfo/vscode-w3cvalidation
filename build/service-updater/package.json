@@ -7,14 +7,15 @@
   "engines": {
     "node": ">=12.16.0"
   },
-  "main": "./out/index",
+  "bin": "bin/server-updater.js",
+  "main": "./out/index.js",
   "dependencies": {
-    "commander": "^7.2.0",
-    "tar": "^6.1.0",
-    "xmldom": "^0.5.0"
+    "commander": "^6.0.0",
+    "jsdom": "^16.3.0",
+    "tar": "^6.0.2"
   },
   "devDependencies": {
-    "@types/tar": "^4.0.4",
-    "@types/xmldom": "^0.1.30"
+    "@types/jsdom": "^16.2.3",
+    "@types/tar": "^4.0.3"
   }
 }

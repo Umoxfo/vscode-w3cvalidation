@@ -5,13 +5,12 @@
 
 "use strict";
 
-import { request as httpsRequest, get as httpsGet } from "https";
+import * as https from "https";
 import { promises as fs } from "fs";
-import path from "path";
-import os from "os";
+import * as path from "path";
+import * as os from "os";
 import { getArchive, getPlainText } from "./downloader";
 
-import type { RequestOptions } from "https";
 import type { IncomingMessage } from "http";
 
 interface VnuQueryResponse {
@@ -29,12 +28,10 @@ interface VnuQueryResponse {
         };
     };
 }
-
 interface ReleaseAsset {
     name: string;
     url: string;
 }
-
 type VnuReleaseQueryResponse = [ReleaseAsset[], string];
 type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => void) => void;
 
@@ -73,7 +70,7 @@ function getAsset(queryResponse: VnuQueryResponse): VnuReleaseQueryResponse {
     return [releaseAssets, new Date(updatedAt).toUTCString()];
 }
 
-const preConfigRequestOptions = (token: string): RequestOptions => ({
+const preConfigRequestOptions = (token: string): https.RequestOptions => ({
     host: "api.github.com",
     method: "POST",
     path: "/graphql",
@@ -85,7 +82,7 @@ const preConfigRequestOptions = (token: string): RequestOptions => ({
 
 async function getLatestVersionInfo(token: string): Promise<VnuReleaseQueryResponse> {
     return new Promise((resolve, reject) => {
-        const req = httpsRequest(preConfigRequestOptions(token), (response) => {
+        const req = https.request(preConfigRequestOptions(token), (response) => {
             response.setEncoding("utf8");
             let body = "";
 
@@ -99,7 +96,7 @@ async function getLatestVersionInfo(token: string): Promise<VnuReleaseQueryRespo
     });
 }
 
-const preConfigDownloadRequestOptions = (fileName: string): RequestOptions => ({
+const preConfigDownloadRequestOptions = (fileName: string): https.RequestOptions => ({
     host: "github.com",
     method: "HEAD",
     path: `/validator/validator/releases/download/war/${fileName}`,
@@ -114,7 +111,7 @@ function getDownloadUrls(): Promise<ReleaseAsset>[] {
             new Promise<ReleaseAsset>((resolve, reject) => {
                 const reqOpts = preConfigDownloadRequestOptions(fileName);
 
-                const req = httpsRequest(reqOpts, (res) =>
+                const req = https.request(reqOpts, (res) =>
                     resolve({ name: fileName, url: res.headers?.location ?? "" })
                 );
                 req.on("error", (err) => reject(err));
@@ -123,7 +120,7 @@ function getDownloadUrls(): Promise<ReleaseAsset>[] {
     );
 }
 
-const RESTRequestOptions: RequestOptions = {
+const RESTRequestOptions: https.RequestOptions = {
     host: "api.github.com",
     method: "HEAD",
     path: "/repos/validator/validator/releases/tags/war",
@@ -134,7 +131,7 @@ const RESTRequestOptions: RequestOptions = {
 
 async function getLastUpdateDate(): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-        const req = httpsRequest(RESTRequestOptions, (res) => resolve(res.headers["last-modified"] ?? ""));
+        const req = https.request(RESTRequestOptions, (res) => resolve(res.headers["last-modified"] ?? ""));
 
         req.on("error", (err) => reject(err));
         req.end();
@@ -145,7 +142,7 @@ const getLatestVersionInfoREST = async (): Promise<VnuReleaseQueryResponse> =>
     Promise.all([Promise.all(getDownloadUrls()), getLastUpdateDate()]);
 
 const downloadFile = async <T>(url: string, response: ResponseCallback<T>): Promise<T> =>
-    new Promise((resolve, reject) => httpsGet(url, (res) => response(res, resolve)).on("error", (err) => reject(err)));
+    new Promise((resolve, reject) => https.get(url, (res) => response(res, resolve)).on("error", (err) => reject(err)));
 
 /**
  * Download latest validator

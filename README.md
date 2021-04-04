@@ -1,6 +1,9 @@
 # VS Code W3C Validation extention
 ![Test](https://github.com/Umoxfo/vscode-w3cvalidation/workflows/Test/badge.svg?branch=develop)
 
+<!-- Temporary alternative badge -->
+<!-- ![](https://img.shields.io/github/workflow/status/Umoxfo/vscode-w3cvalidation/Test/develop.svg?label=Test&logo=github&logoColor=lightgray) -->
+
 The extension to enable W3C validation support by the [Nu Html Checker](http://validator.github.io/validator/) library.
 
 ## Getting Started

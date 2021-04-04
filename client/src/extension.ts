@@ -2,21 +2,18 @@
  * Copyright (c) Makoto Sakaguchi. All rights reserved.
  * Licensed under the MIT License. See LICENSE in the project root for license information.
  */
-
 "use strict";
 
-import { commands, env, Uri, window, workspace } from "vscode";
-import { LanguageClient, TransportKind } from "vscode-languageclient/node";
+import { commands, env, ExtensionContext, Uri, window, workspace } from "vscode";
+import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
 
-import path from "path";
+import * as path from "path";
 import { promises as fs } from "fs";
 import { spawn } from "child_process";
-import { checkJava } from "./service/Java";
+import { checkJava } from "./Java";
 import { runValidator } from "./service/vnu";
-import Message from "./Message.json";
+import * as Message from "./Message.json";
 
-import type { ExtensionContext } from "vscode";
-import type { LanguageClientOptions, ServerOptions } from "vscode-languageclient/node";
 import type { ChildProcessWithoutNullStreams } from "child_process";
 
 let validationService: ChildProcessWithoutNullStreams;
@@ -31,16 +28,16 @@ export async function activate(context: ExtensionContext): Promise<void> {
         await env.openExternal(Uri.parse(Message.OracleJavaDownloadUrl));
 
         void configVSCodeSetting();
-    }
+    } // try-catch
 
-    const SERVICE = context.asAbsolutePath(path.join("server", "service"));
-    const JETTY_HOME = path.join(SERVICE, "jetty-home");
-    const JETTY_BASE = path.join(SERVICE, "vnu");
+    const JETTY_HOME = context.asAbsolutePath(path.join("server", "service", "jetty-home"));
+    const JETTY_BASE = context.asAbsolutePath(path.join("server", "service", "vnu"));
     try {
         // Run validation server
         validationService = await runValidator(JETTY_HOME, JETTY_BASE);
     } catch (error) {
         const logDir = path.join(JETTY_BASE, "logs");
+
         try {
             for (const file of await fs.readdir(logDir)) await fs.unlink(path.join(logDir, file));
         } catch (_) {
@@ -84,6 +81,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
 export function deactivate(): Thenable<void> {
     validationService.kill("SIGINT");
+
     return client?.stop();
 }
 
@@ -104,7 +102,7 @@ async function configVSCodeSetting() {
             break;
         default:
             return restartVSCode();
-    }
+    } // switch
 
     await commands.executeCommand(commandID);
 

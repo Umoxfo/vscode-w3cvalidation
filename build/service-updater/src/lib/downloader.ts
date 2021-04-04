@@ -5,7 +5,7 @@
 
 "use strict";
 
-import crypto from "crypto";
+import * as crypto from "crypto";
 
 import type { IncomingMessage } from "http";
 import type { ClientHttp2Stream } from "http2";

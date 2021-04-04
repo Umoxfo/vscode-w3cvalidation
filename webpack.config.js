@@ -5,6 +5,7 @@
 
 // @ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig */
+/** @typedef {import('webpack').MultiConfigurationFactory} WebpackConfigFactory */
 
 "use strict";
 
@@ -13,17 +14,15 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const path = require("path");
 const { CleanWebpackPlugin } = require("./build/ts-build-clean-webpack-plugin");
 
-/** @type {(configName: string, filename?: string) => WebpackConfig} */
-const preConfig = (configName, filename = configName) => ({
-	mode: 'production',
-	devtool: "source-map",
+/** @type {(development: boolean, configName: string, filename?: string) => WebpackConfig} */
+const preConfig = (development = false, configName, filename = configName) => ({
+	mode: development ? 'development' : 'production',
 	name: configName,
 	context: path.join(__dirname, configName),
-	// Extensions run in a node context
-	target: 'node',
+	devtool: development ? 'source-map' : false,
+	target: 'node', // extensions run in a node context
 	node: {
-		// Leave the __dirname-behaviour intact
-		__dirname: false
+		__dirname: false // leave the __dirname-behaviour intact
 	},
 	entry: {
 		[filename]: `./src/${filename}.ts`
@@ -41,40 +40,16 @@ const preConfig = (configName, filename = configName) => ({
 		}]
 	},
 	resolve: {
-		// Support ts- and js-files
-		extensions: ['.ts', '.js'],
+		extensions: ['.ts', '.js'], // support ts-files and js-files
 		symlinks: false
 	},
 	output: {
 		path: path.join(__dirname, configName, 'out'),
 		filename: '[name].js',
-		strictModuleErrorHandling: true,
-		library: {
-			type: 'commonjs2',
-		},
-		clean: {
-			dry: true,
-		},
+		libraryTarget: 'commonjs',
 	},
 	externals: {
-		// The vscode-module is created on-the-fly and must be excluded.
-		vscode: 'commonjs vscode',
-	},
-	externalsPresets: {
-		node: true,
-	},
-	performance: {
-		hints: 'warning',
-	},
-	optimization: {
-		splitChunks: {
-			chunks: 'all',
-			// hidePathInfo: true,
-		},
-		mergeDuplicateChunks: true,
-		removeEmptyChunks: true,
-		flagIncludedChunks: true,
-		// runtimeChunk: 'single',
+		vscode: 'commonjs vscode', // ignored because it doesn't exist
 	},
 	plugins: [
 		new CleanWebpackPlugin(),
@@ -82,10 +57,10 @@ const preConfig = (configName, filename = configName) => ({
 	]
 });
 
-module.exports = (env, argv) => {
+/** @type WebpackConfigFactory */
+module.exports = (env = {}) => {
 	return [
-		preConfig("client", "extension"),
-		preConfig("server"),
+		preConfig(env["development"], "client", "extension"),
+		preConfig(env["development"], "server")
 	];
 };
-module.exports.parallelism = 2;

@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-extensionHost",
+            "type": "extensionHost",
             "request": "launch",
             "name": "Launch Client",
             "runtimeExecutable": "${execPath}",
@@ -29,7 +29,7 @@
         },
         {
             "name": "Extension Tests",
-            "type": "pwa-extensionHost",
+            "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
@@ -41,7 +41,7 @@
             "outFiles": [
                 "${workspaceRoot}/test/out/**/*.js"
             ],
-            "preLaunchTask": "npm: pretest"
+            "preLaunchTask": "npm: test:dev"
         }
     ]
 }

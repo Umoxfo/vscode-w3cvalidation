@@ -5,14 +5,14 @@
 
 "use strict";
 
-import { DOMParser } from "xmldom";
-import tar from "tar";
+import { JSDOM } from "jsdom";
+import * as tar from "tar";
 
-import http2 from "http2";
+import * as http2 from "http2";
 import { Duplex } from "stream";
-import zlib from "zlib";
+import * as zlib from "zlib";
 import { promises as fs } from "fs";
-import path from "path";
+import * as path from "path";
 import { getArchive, getPlainText } from "./downloader";
 
 import type { OutgoingHttpHeaders, ClientHttp2Session, ClientHttp2Stream } from "http2";
@@ -21,8 +21,6 @@ type ResponseFunc<T> = (response: ClientHttp2Stream, resolve: (value: T) => void
 const MAVEN_CENTRAL_REPOSITORY = "https://repo1.maven.org";
 const JETTY_VERSION_PATTERN = /(\d+\.){3}v\d+/;
 
-const isLatestJetty = ({ firstChild }: Element): boolean => JETTY_VERSION_PATTERN.test(firstChild?.nodeValue ?? "");
-
 let clientSession: ClientHttp2Session;
 
 /**
@@ -30,9 +28,10 @@ let clientSession: ClientHttp2Session;
  * @returns The latest version string of Jetty-Home
  */
 function parseXML(xmlDoc: string): string {
-    const versions = new DOMParser().parseFromString(xmlDoc, "text/xml").getElementsByTagName("version");
+    const { document } = new JSDOM(xmlDoc, { contentType: "text/xml" }).window;
 
-    return Array.from(versions).reverse().find(isLatestJetty)?.firstChild?.nodeValue ?? "";
+    const versions = Array.from(document.getElementsByTagName("version")).reverse();
+    return versions.find(({ textContent }) => JETTY_VERSION_PATTERN.test(textContent ?? ""))?.textContent ?? "";
 }
 
 const preConfigReqOpts = (urlPath: string): OutgoingHttpHeaders => ({

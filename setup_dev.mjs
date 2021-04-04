@@ -84,8 +84,6 @@ async function update() {
 
         if (ans !== "" && (ans !== "yes" && ans !== "y")) continue;
         await runWithCWD("update", project);
-
-        process.stdout.write("\n");
     }
 }
 

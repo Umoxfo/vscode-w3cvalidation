@@ -1,8 +1,6 @@
 {
   "extends": "../tsconfig.base",
   "compilerOptions": {
-    "module": "CommonJS",
-    "noUncheckedIndexedAccess": false,
     "declaration": true,
     "sourceMap": false,
     "inlineSourceMap": true

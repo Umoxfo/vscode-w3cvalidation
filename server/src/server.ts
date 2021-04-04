@@ -6,21 +6,22 @@
 
 import {
     createConnection,
+    Diagnostic,
     DiagnosticSeverity,
     ProposedFeatures,
     TextDocuments,
     TextDocumentSyncKind,
-} from "vscode-languageserver/node";
+} from "vscode-languageserver";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { promisify } from "util";
 const setTimeoutPromise = promisify(setTimeout);
 import { sendDocument } from "./validator";
 
-import type { Diagnostic } from "vscode-languageserver/node";
+import type { IConnection } from "vscode-languageserver";
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
-const connection = createConnection(ProposedFeatures.all);
+const connection: IConnection = createConnection(ProposedFeatures.all);
 
 // Create a simple text document manager.
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
@@ -78,8 +79,8 @@ async function validateHtmlDocument(textDocument: TextDocument): Promise<void> {
     } catch (error) {
         await setTimeoutPromise((Math.random() + 1) * 1000);
         await validateHtmlDocument(textDocument);
-    }
-}
+    } // try-catch
+} // validateHtmlDocument
 
 // The content of a text document has changed.
 documents.onDidChangeContent(async (change): Promise<void> => await validateHtmlDocument(change.document));
