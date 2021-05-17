@@ -11,7 +11,7 @@
   "dependencies": {
     "commander": "^7.2.0",
     "tar": "^6.1.0",
-    "xmldom": "^0.5.0"
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@types/tar": "^4.0.4",
