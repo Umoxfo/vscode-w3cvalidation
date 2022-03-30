@@ -9,6 +9,8 @@ import { DOMParser } from "@xmldom/xmldom";
 import tar from "tar";
 
 import http2 from "http2";
+const { HTTP2_HEADER_METHOD, HTTP2_HEADER_PATH, HTTP2_HEADER_USER_AGENT } = http2.constants;
+
 import { Duplex } from "stream";
 import zlib from "zlib";
 import { promises as fs } from "fs";
@@ -36,9 +38,9 @@ function parseXML(xmlDoc: string): string {
 }
 
 const preConfigReqOpts = (urlPath: string): OutgoingHttpHeaders => ({
-    ":method": "GET",
-    ":path": `/maven2/org/eclipse/jetty/jetty-home/${urlPath}`,
-    "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
+    [HTTP2_HEADER_METHOD]: "GET",
+    [HTTP2_HEADER_PATH]: `/maven2/org/eclipse/jetty/jetty-home/${urlPath}`,
+    [HTTP2_HEADER_USER_AGENT]: "VSCode/umoxfo.vscode-w3cvalidation",
 });
 
 async function getLatestVersionInfo(): Promise<string> {
