@@ -5,7 +5,7 @@
 
 "use strict";
 
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 import tar from "tar";
 
 import http2 from "http2";
