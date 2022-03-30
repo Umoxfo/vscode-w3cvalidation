@@ -5,12 +5,22 @@
 
 "use strict";
 
+import http2 from "http2";
+/* eslint-disable prettier/prettier */
+const {
+    HTTP2_HEADER_METHOD,
+    HTTP2_HEADER_PATH,
+    HTTP2_HEADER_USER_AGENT,
+} = http2.constants;
+/* eslint-enable prettier/prettier */
+
 import { request as httpsRequest, get as httpsGet } from "https";
 import { promises as fs } from "fs";
 import path from "path";
 import os from "os";
 import { getArchive, getPlainText } from "./downloader";
 
+import type { OutgoingHttpHeaders, ClientHttp2Session } from "http2";
 import type { RequestOptions } from "https";
 import type { IncomingMessage } from "http";
 
@@ -102,28 +112,25 @@ async function getLatestVersionInfo(token: string): Promise<VnuReleaseQueryRespo
 
 /* REST API */
 
-const preConfigDownloadRequestOptions = (fileName: string): RequestOptions => ({
-    host: "github.com",
-    method: "HEAD",
-    path: `/validator/validator/releases/download/latest/${fileName}`,
-    headers: {
-        "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
-    },
+const preConfigDownloadRequestOptions = (fileName: string): OutgoingHttpHeaders => ({
+    [HTTP2_HEADER_METHOD]: "HEAD",
+    [HTTP2_HEADER_PATH]: `/validator/validator/releases/download/latest/${fileName}`,
+    [HTTP2_HEADER_USER_AGENT]: "VSCode/umoxfo.vscode-w3cvalidation",
 });
 
-function getDownloadUrls(): Promise<ReleaseAsset>[] {
-    return assetNames.map(
-        async (fileName) =>
-            new Promise<ReleaseAsset>((resolve, reject) => {
-                const reqOpts = preConfigDownloadRequestOptions(fileName);
+function getDownloadUrls(client: ClientHttp2Session): Promise<ReleaseAsset>[] {
+    return assetNames.map(async (fileName) => getDownloadUri(fileName));
 
-                const req = httpsRequest(reqOpts, (res) =>
-                    resolve({ name: fileName, url: res.headers?.location ?? "" })
-                );
-                req.on("error", (err) => reject(err));
-                req.end();
-            })
-    );
+    async function getDownloadUri(fileName: string): Promise<ReleaseAsset> {
+        return new Promise<ReleaseAsset>((resolve, reject) => {
+            const req = client.request(preConfigDownloadRequestOptions(fileName));
+
+            req.on("response", (headers) => resolve({ name: fileName, url: headers?.location ?? "" }));
+
+            req.on("error", (err) => reject(err));
+            req.end();
+        });
+    }
 }
 
 const RESTRequestOptions: RequestOptions = {
@@ -144,8 +151,13 @@ async function getLastUpdateDate(): Promise<string> {
     });
 }
 
-const getLatestVersionInfoREST = async (): Promise<VnuReleaseQueryResponse> =>
-    Promise.all([Promise.all(getDownloadUrls()), getLastUpdateDate()]);
+async function getLatestVersionInfoREST(): Promise<VnuReleaseQueryResponse> {
+    const client = http2.connect("https://github.com");
+    const results = await Promise.all([Promise.all(getDownloadUrls(client)), getLastUpdateDate()]);
+
+    client.close();
+    return results;
+}
 
 const downloadFile = async <T>(url: string, response: ResponseCallback<T>): Promise<T> =>
     new Promise((resolve, reject) => httpsGet(url, (res) => response(res, resolve)).on("error", (err) => reject(err)));

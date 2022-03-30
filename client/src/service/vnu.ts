@@ -6,6 +6,17 @@
 
 import { workspace, ConfigurationTarget } from "vscode";
 
+import http2 from "http2";
+/* eslint-disable prettier/prettier */
+const {
+    HTTP2_HEADER_METHOD,
+    HTTP2_HEADER_PATH,
+    HTTP2_HEADER_USER_AGENT,
+    HTTP2_HEADER_IF_MODIFIED_SINCE,
+    HTTP_STATUS_NOT_MODIFIED
+} = http2.constants;
+/* eslint-enable prettier/prettier */
+
 import https from "https";
 import { promises as fs } from "fs";
 import path from "path";
@@ -15,38 +26,32 @@ import { spawn, execFile } from "child_process";
 import { promisify } from "util";
 const execFilePromise = promisify(execFile);
 
-import type { RequestOptions as HttpsRequestOptions } from "https";
+import type { OutgoingHttpHeaders, ClientHttp2Session } from "http2";
 import type { IncomingMessage } from "http";
 import type { ChildProcessWithoutNullStreams } from "child_process";
 
-// eslint-disable-next-line no-shadow
-const enum Status {
-    UP_TO_DATE = 304,
-    HAVE_UPDATE = 200,
-}
+const files: readonly string[] = ["vnu.war", "vnu.war.sha1"];
 
-const RequestOptions: HttpsRequestOptions = {
-    host: "api.github.com",
-    method: "HEAD",
-    path: "/repos/validator/validator/releases/tags/latest",
-    headers: {
-        Accept: "application/vnd.github+json",
-        "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
-        "If-Modified-Since": workspace.getConfiguration("vscode-w3cvalidation").get("validator-token"),
-    },
+const RequestOptions: OutgoingHttpHeaders = {
+    [HTTP2_HEADER_METHOD]: "HEAD",
+    [HTTP2_HEADER_PATH]: "/repos/validator/validator/releases/tags/latest",
+    [HTTP2_HEADER_USER_AGENT]: "VSCode/umoxfo.vscode-w3cvalidation",
+    [HTTP2_HEADER_IF_MODIFIED_SINCE]: workspace.getConfiguration("vscode-w3cvalidation").get("validator-token"),
 };
 
-async function getLatestVersionInfo(): Promise<{ status: number; token?: string }> {
+async function getLatestVersionInfo(): Promise<{ status: number; token: string | undefined }> {
+    const clientSession = http2.connect("https://api.github.com");
+
     return new Promise((resolve, reject) => {
-        const req = https.request(RequestOptions, (response) => {
-            switch (response.statusCode) {
-                case Status.UP_TO_DATE:
-                    return resolve({ status: Status.UP_TO_DATE });
-                case Status.HAVE_UPDATE:
-                    return resolve({ status: Status.HAVE_UPDATE, token: response.headers["last-modified"] });
-                default:
-                    return reject(new Error(response.statusMessage));
-            }
+        const req = clientSession.request(RequestOptions);
+
+        req.on("response", (headers) => {
+            clientSession.close();
+
+            resolve({
+                status: headers[":status"] ?? -1,
+                token: headers["last-modified"],
+            });
         });
 
         req.on("error", (err) => reject(err));
@@ -61,26 +66,36 @@ interface WarFileResponse {
 
 type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => void) => void;
 
-const preConfigDownloadRequestOptions = (fileName: string): HttpsRequestOptions => ({
-    host: "github.com",
-    method: "HEAD",
-    path: `/validator/validator/releases/download/latest/${fileName}`,
-    headers: {
-        "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
-    },
+const preConfigDownloadRequestOptions = (fileName: string): OutgoingHttpHeaders => ({
+    [HTTP2_HEADER_METHOD]: "HEAD",
+    [HTTP2_HEADER_PATH]: `/validator/validator/releases/download/latest/${fileName}`,
+    [HTTP2_HEADER_USER_AGENT]: "VSCode/umoxfo.vscode-w3cvalidation",
 });
 
-async function downloadFile<T>(fileName: string, response: ResponseCallback<T>): Promise<T> {
-    const url: string = await new Promise((resolve, reject) => {
-        const req = https.request(preConfigDownloadRequestOptions(fileName), (res) =>
-            resolve(res.headers.location ?? "")
-        );
+async function getLocation(client: ClientHttp2Session, fileName: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const req = client.request(preConfigDownloadRequestOptions(fileName));
+
+        req.on("response", (headers) => resolve(headers.location ?? ""));
+
         req.on("error", (err) => reject(err));
         req.end();
     });
+}
 
+async function getDownloadUri() {
+    const client = http2.connect("https://github.com");
+
+    const responses = files.map(async (file) => getLocation(client, file));
+    const locations = await Promise.all(responses);
+
+    client.close();
+    return locations;
+}
+
+async function downloadFile<T>(uri: string, response: ResponseCallback<T>): Promise<T> {
     return new Promise((resolve, reject) =>
-        https.get(url, (res) => response(res, resolve)).on("error", (err) => reject(err))
+        https.get(uri, (res) => response(res, resolve)).on("error", (err) => reject(err))
     );
 }
 
@@ -112,9 +127,11 @@ function getHash(response: IncomingMessage, resolve: (value: string) => void): v
  * Download latest validator
  */
 async function downloadVNU(): Promise<string> {
+    const [warUri, hashUri] = await getDownloadUri();
+
     const [{ warFile, warFileHash }, warFileChecksum] = await Promise.all([
-        downloadFile("vnu.war", getVNU),
-        downloadFile("vnu.war.sha1", getHash),
+        downloadFile(warUri ?? "", getVNU),
+        downloadFile(hashUri ?? "", getHash),
     ]);
 
     // Validate a file
@@ -163,7 +180,7 @@ async function updateValidator(jettyHome: string, jettyBase: string): Promise<vo
 
 async function checkValidator(jettyHome: string, jettyBase: string): Promise<void> {
     const { status, token } = await getLatestVersionInfo();
-    if (status === Status.HAVE_UPDATE) {
+    if (status === HTTP_STATUS_NOT_MODIFIED) {
         await Promise.all([
             workspace
                 .getConfiguration("vscode-w3cvalidation")
