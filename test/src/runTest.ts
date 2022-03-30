@@ -2,7 +2,7 @@ import path from "path";
 
 import { runTests } from "@vscode/test-electron";
 
-const VSCODE_VERSION = "1.55.2";
+const VSCODE_VERSION = "1.65.2";
 // Use win64 instead of win32 for testing Windows
 const platform = process.platform === "win32" ? "win32-x64-archive" : "win32-archive";
 

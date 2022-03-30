@@ -1,7 +1,7 @@
 {
     "root": true,
     "env": {
-        "es2017": true,
+        "es2020": true,
         "node": true
     },
     "extends": [
@@ -25,7 +25,7 @@
             "./build/**/tsconfig.json",
             "./test/tsconfig.json"
         ],
-        "ecmaVersion": 2019,
+        "ecmaVersion": 2020,
         "sourceType": "module"
     },
     "plugins": [

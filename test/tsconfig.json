@@ -1,11 +1,12 @@
 {
   "extends": "../tsconfig.base",
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "commonjs",
     "rootDir": "src",
-    "outDir": "out"
+    "outDir": "out",
+    "exactOptionalPropertyTypes": true
   },
-  "include": [
-    "src"
-  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -4,9 +4,9 @@
     /* Projects */
     "incremental": true,
     /* Language and Environment */
-    "target": "ES2019",
+    "target": "es2020",
     "lib": [
-      "ES2019"
+      "es2020"
     ],
     /* Modules */
     "module": "ES2015",
