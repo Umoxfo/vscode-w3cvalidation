@@ -7,6 +7,7 @@
 
 "use strict";
 
+import { fileURLToPath } from 'url';
 import { spawn, execFile } from "child_process";
 import { promisify } from "util";
 const execFilePromise = promisify(execFile);
@@ -15,28 +16,7 @@ const execFilePromise = promisify(execFile);
  * Working directory where the NPM command is executed
  * @readonly
  */
-const projects = ["./build/service-updater", "./test", "./client", "./server"];
-
-/**
- * NPM command runner
- *
- * @param {string} command NPM command to be executed
- * @yields Resolved the `Promise` with no arguments upon success.
- */
-async function* run(command) {
-    for (const project of projects) {
-        yield new Promise((resolve, reject) => {
-            process.stdout.write(`${project}\n`);
-            const runner = spawn("npm", [command], { cwd: project, shell: true });
-
-            runner.stdout.pipe(process.stdout);
-            runner.stderr.pipe(process.stderr);
-
-            runner.on("close", (code) => (code === 0) ? resolve() : reject());
-            runner.on("error", (err) => reject(err));
-        });
-    }
-}
+const projects = ["./test", "./client", "./server"];
 
 /**
  * NPM command runner
@@ -47,17 +27,22 @@ async function* run(command) {
  */
 async function runWithCWD(command, cwd) {
     return new Promise((resolve, reject) => {
-        const runner = spawn("npm", [command], { cwd, shell: true });
-
-        runner.stdout.pipe(process.stdout);
-        runner.stderr.pipe(process.stderr);
+        const runner = spawn("npm", [command], { cwd, shell: true, stdio: "inherit" });
 
         runner.on("close", (code) => ((code === 0) ? resolve() : reject()));
         runner.on("error", (err) => reject(err));
     });
 }
 
-const postinstall = async () => { for await (const _project of run("install")) { } };
+async function postinstall() {
+    for (const project of projects) {
+        process.stdout.write(`${project}\n`);
+
+        await runWithCWD("install", project);
+
+        process.stdout.write(`\n`);
+    }
+}
 
 /** @type {(cwd: string) => Promise<{ stdout: string }>} */
 const outdate = async (cwd) => execFilePromise("npm", ["outdate"], { cwd, shell: true })
@@ -69,8 +54,7 @@ function prompt(message) {
     process.stdin.resume();
     process.stdin.setEncoding("utf8");
 
-    return new Promise((r) => process.stdin.once("data", r))
-        .finally(() => process.stdin.pause());
+    return new Promise((r) => process.stdin.once("data", r)).finally(() => process.stdin.pause());
 }
 
 async function update() {
@@ -97,4 +81,5 @@ async function main(/** @type string */ command) {
     }
 }
 
-if (process.mainModule === undefined) main(process.argv[2]);
+// @ts-ignore
+if (process.argv[1] === fileURLToPath(import.meta.url)) main(process.argv[2]);
