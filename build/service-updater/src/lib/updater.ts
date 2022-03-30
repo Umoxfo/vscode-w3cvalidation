@@ -45,11 +45,8 @@ async function configQuickstart(warFilePath: string): Promise<void> {
                 WEBAPP_VNU,
                 path.join(JETTY_BASE, "webapps", "vnu.xml"),
             ],
-            { cwd: JETTY_BASE }
+            { cwd: JETTY_BASE, stdio: "inherit" }
         );
-
-        jettyPreconfWar.stdout.pipe(process.stdout);
-        jettyPreconfWar.stderr.pipe(process.stderr);
 
         jettyPreconfWar.on("exit", (code) => (code === 0 ? resolve() : reject()));
     });
