@@ -25,15 +25,12 @@ const WEBAPP_VNU = path.join(JETTY_BASE, "webapps", "vnu");
  */
 async function configQuickstart(warFilePath: string): Promise<void> {
     // Get the Jetty Quickstart classpath
-    const jettyClasspath = (
-        await execFilePromise(
-            "java",
-            ["-jar", `${path.join(SERVER_SERVICE, "jetty-home", "start.jar")}`, "--dry-run=path"],
-            { cwd: JETTY_BASE }
-        )
-    ).stdout
-        .substring(4)
-        .trim();
+    const { stdout } = await execFilePromise(
+        "java",
+        ["-jar", `${path.join(SERVER_SERVICE, "jetty-home", "start.jar")}`, "--dry-run=path"],
+        { cwd: JETTY_BASE }
+    );
+    const jettyClasspath = stdout.substring(12).trim();
 
     await fs.rmdir(WEBAPP_VNU, { recursive: true });
 

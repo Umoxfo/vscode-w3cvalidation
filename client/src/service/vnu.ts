@@ -152,7 +152,7 @@ async function initServerArgs(jettyHome: string, jettyBase: string): Promise<str
             cwd: jettyBase,
         })
     ).stdout
-        .substring(4)
+        .substring(12)
         .trim();
 }
 
