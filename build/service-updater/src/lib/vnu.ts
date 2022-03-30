@@ -43,8 +43,8 @@ type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => vo
 const VNU_QUERY = `\
 query {
   repository(name: "validator", owner: "validator") {
-    release(tagName: "war") {
-      releaseAssets(last: 6) {
+    release(tagName: "latest") {
+      releaseAssets(first: 32) {
         nodes {
           name
           url
@@ -105,7 +105,7 @@ async function getLatestVersionInfo(token: string): Promise<VnuReleaseQueryRespo
 const preConfigDownloadRequestOptions = (fileName: string): RequestOptions => ({
     host: "github.com",
     method: "HEAD",
-    path: `/validator/validator/releases/download/war/${fileName}`,
+    path: `/validator/validator/releases/download/latest/${fileName}`,
     headers: {
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
     },
@@ -129,7 +129,7 @@ function getDownloadUrls(): Promise<ReleaseAsset>[] {
 const RESTRequestOptions: RequestOptions = {
     host: "api.github.com",
     method: "HEAD",
-    path: "/repos/validator/validator/releases/tags/war",
+    path: "/repos/validator/validator/releases/tags/latest",
     headers: {
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
     },

@@ -28,7 +28,7 @@ const enum Status {
 const RequestOptions: HttpsRequestOptions = {
     host: "api.github.com",
     method: "HEAD",
-    path: "/repos/validator/validator/releases/tags/war",
+    path: "/repos/validator/validator/releases/tags/latest",
     headers: {
         Accept: "application/vnd.github+json",
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
@@ -64,7 +64,7 @@ type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => vo
 const preConfigDownloadRequestOptions = (fileName: string): HttpsRequestOptions => ({
     host: "github.com",
     method: "HEAD",
-    path: `/validator/validator/releases/download/war/${fileName}`,
+    path: `/validator/validator/releases/download/latest/${fileName}`,
     headers: {
         "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
     },
