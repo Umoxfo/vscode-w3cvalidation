@@ -86,12 +86,15 @@ async function downloadFile<T>(fileName: string, response: ResponseCallback<T>):
 
 function getVNU(response: IncomingMessage, resolve: (value: WarFileResponse) => void): void {
     const buffs: Buffer[] = [];
+    // deepcode ignore InsecureHash: Only SHA-1 and MD5 are provided as file hashes.
     const hash = crypto.createHash("sha1");
 
+    /* eslint-disable @typescript-eslint/no-unsafe-argument */
     response.on("data", (chunk) => {
         buffs.push(chunk);
         hash.update(chunk);
     });
+    /*  eslint-enable @typescript-eslint/no-unsafe-argument */
 
     response.on("end", () => resolve({ warFile: Buffer.concat(buffs), warFileHash: hash.digest("hex") }));
 }
