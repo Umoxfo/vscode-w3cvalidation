@@ -1,6 +1,10 @@
 import path from "path";
 
-import { runTests } from "vscode-test";
+import { runTests } from "@vscode/test-electron";
+
+const VSCODE_VERSION = "1.55.2";
+// Use win64 instead of win32 for testing Windows
+const platform = process.platform === "win32" ? "win32-x64-archive" : "win32-archive";
 
 async function main(): Promise<void> {
     try {
@@ -12,9 +16,8 @@ async function main(): Promise<void> {
 
         // Run the extension test
         await runTests({
-            version: "1.55.0",
-            // Use win64 instead of win32 for testing Windows
-            platform: process.platform === "win32" ? "win32-x64-archive" : undefined,
+            version: VSCODE_VERSION,
+            platform,
             extensionDevelopmentPath,
             extensionTestsPath,
             launchArgs: ["--disable-extensions", path.resolve(__dirname, "../resource")],
