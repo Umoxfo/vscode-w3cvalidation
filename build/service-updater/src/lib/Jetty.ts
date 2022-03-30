@@ -37,13 +37,13 @@ function parseXML(xmlDoc: string): string {
 
 const preConfigReqOpts = (urlPath: string): OutgoingHttpHeaders => ({
     ":method": "GET",
-    ":path": `/maven2/org/eclipse/jetty/jetty-home${urlPath}`,
+    ":path": `/maven2/org/eclipse/jetty/jetty-home/${urlPath}`,
     "User-Agent": "VSCode/umoxfo.vscode-w3cvalidation",
 });
 
 async function getLatestVersionInfo(): Promise<string> {
     return new Promise((resolve, reject) => {
-        const req = clientSession.request(preConfigReqOpts("/maven-metadata.xml"));
+        const req = clientSession.request(preConfigReqOpts("maven-metadata.xml"));
 
         req.setEncoding("utf8");
         let data = "";
@@ -67,7 +67,8 @@ async function downloadFile<T>(reqOpts: OutgoingHttpHeaders, resFunc: ResponseFu
     });
 }
 
-const JETTY_HOME = path.join(process.cwd(), "service", "jetty-home");
+const serverRootDir = path.join(process.cwd(), "service");
+const JETTY_HOME = path.join(serverRootDir, "jetty-home");
 
 async function installJetty({ archive, versionInfo }: { archive: Buffer; versionInfo: string }): Promise<void> {
     const toStream = (buffer: Buffer): Duplex => {
@@ -80,7 +81,6 @@ async function installJetty({ archive, versionInfo }: { archive: Buffer; version
     await fs.rmdir(JETTY_HOME, { recursive: true });
 
     // Decompress data and write in a file
-    const serverRootDir = path.join(process.cwd(), "service");
     const originJettyPath = path.join(serverRootDir, `jetty-home-${versionInfo}`);
 
     return new Promise((resolve, reject) =>
@@ -100,8 +100,8 @@ async function downloadJetty(): Promise<{ archive: Buffer; versionInfo: string }
     const version = await getLatestVersionInfo();
 
     const [{ archive, archiveHash }, archiveChecksum] = await Promise.all([
-        downloadFile(preConfigReqOpts(`/${version}/jetty-home-${version}.tar.gz`), getArchive),
-        downloadFile(preConfigReqOpts(`/${version}/jetty-home-${version}.tar.gz.sha1`), getPlainText),
+        downloadFile(preConfigReqOpts(`${version}/jetty-home-${version}.tar.gz`), getArchive),
+        downloadFile(preConfigReqOpts(`${version}/jetty-home-${version}.tar.gz.sha1`), getPlainText),
     ]);
     clientSession.close();
 
