@@ -21,9 +21,6 @@ import type { OutgoingHttpHeaders, ClientHttp2Session, ClientHttp2Stream } from 
 type ResponseFunc<T> = (response: ClientHttp2Stream, resolve: (value: T) => void) => void;
 
 const MAVEN_CENTRAL_REPOSITORY = "https://repo1.maven.org";
-const JETTY_VERSION_PATTERN = /(\d+\.){3}v\d+/;
-
-const isLatestJetty = ({ firstChild }: Element): boolean => JETTY_VERSION_PATTERN.test(firstChild?.nodeValue ?? "");
 
 let clientSession: ClientHttp2Session;
 
@@ -34,7 +31,10 @@ let clientSession: ClientHttp2Session;
 function parseXML(xmlDoc: string): string {
     const versions = new DOMParser().parseFromString(xmlDoc, "text/xml").getElementsByTagName("version");
 
-    return Array.from(versions).reverse().find(isLatestJetty)?.firstChild?.nodeValue ?? "";
+    return Array.from(versions).reduceRight((acc, curVal) => {
+        const version = curVal.textContent ?? "";
+        return version < "11" && acc < version ? version : acc;
+    }, "");
 }
 
 const preConfigReqOpts = (urlPath: string): OutgoingHttpHeaders => ({
