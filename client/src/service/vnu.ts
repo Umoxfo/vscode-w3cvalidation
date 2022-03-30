@@ -160,7 +160,7 @@ async function updateValidator(jettyHome: string, jettyBase: string): Promise<vo
     const [warFilePath, jettyClasspath] = await Promise.all([downloadVNU(), initServerArgs(jettyHome, jettyBase)]);
     const webappPath = path.join(jettyBase, "webapps", "vnu");
 
-    await fs.rmdir(webappPath, { recursive: true });
+    await fs.rm(webappPath, { recursive: true });
 
     return new Promise((resolve, reject) => {
         const jettyPreconfWar = spawn(

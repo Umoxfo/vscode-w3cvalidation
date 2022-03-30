@@ -32,7 +32,7 @@ async function configQuickstart(warFilePath: string): Promise<void> {
     );
     const jettyClasspath = stdout.substring(12).trim();
 
-    await fs.rmdir(WEBAPP_VNU, { recursive: true });
+    await fs.rm(WEBAPP_VNU, { recursive: true });
 
     return new Promise((resolve, reject) => {
         const jettyPreconfWar = spawn(
