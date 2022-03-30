@@ -1,12 +1,13 @@
 {
-    "private": true,
-    "name": "server",
-    "version": "1.5.0",
-    "engines": {
-        "node": "*"
-    },
-    "dependencies": {
-        "vscode-languageserver": "^7.0.0",
-        "vscode-languageserver-textdocument": "^1.0.1"
-    }
+  "private": true,
+  "name": "server",
+  "version": "1.5.0",
+  "description": "W3C validation language server",
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "vscode-languageserver": "latest",
+    "vscode-languageserver-textdocument": "latest"
+  }
 }
