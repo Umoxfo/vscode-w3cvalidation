@@ -4,6 +4,8 @@
 tsconfig.base.json
 **/tsconfig.json
 **/*.tsbuildinfo
+.dccache
+.dcignore
 .eslintrc.json
 .prettierrc.json
 setup_dev.mjs

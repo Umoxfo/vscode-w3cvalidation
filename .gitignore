@@ -6,3 +6,4 @@ server/service/jetty-home/
 **/*.tsbuildinfo
 build/GitHub_token.txt
 .vscode-test
+.dccache

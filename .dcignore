@@ -1,0 +1,21 @@
+# Write glob rules for ignored files.
+# Check syntax on https://deepcode.freshdesk.com/support/solutions/articles/60000531055-how-can-i-ignore-files-or-directories-
+# Check examples on https://github.com/github/gitignore
+
+# Hidden directories
+.*/
+
+# Java
+hs_err_pid*
+
+# Node
+logs
+pids
+lib-cov
+coverage
+bower_components
+build/Release
+node_modules/
+jspm_packages/
+out
+dist

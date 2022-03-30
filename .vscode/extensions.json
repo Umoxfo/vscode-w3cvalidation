@@ -4,7 +4,7 @@
         "kisstkondoros.vscode-codemetrics",
         "salbert.comment-ts",
         "xabikos.javascriptsnippets",
-        "snyk-security.vscode-vuln-cost",
+        "snyk-security.snyk-vulnerability-scanner",
         "ymotongpoo.licenser"
     ]
 }
