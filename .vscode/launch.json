@@ -2,22 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-extensionHost",
-            "request": "launch",
-            "name": "Launch Client",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}",
-                "${workspaceRoot}/test/resource"
-            ],
-            "outFiles": [
-                "${workspaceRoot}/client/out/**/*.js",
-                "${workspaceRoot}/server/out/**/*.js"
-            ],
-            "preLaunchTask": "npm: webpack-dev"
-        },
-        {
             "type": "node",
             "request": "attach",
             "name": "Attach to Language Server",
@@ -29,7 +13,7 @@
         },
         {
             "name": "Extension Tests",
-            "type": "pwa-extensionHost",
+            "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [

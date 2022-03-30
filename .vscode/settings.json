@@ -19,8 +19,8 @@
         "typescript"
     ],
     "eslint.options": {
-        "reportUnusedDisableDirectives": true
+        "reportUnusedDisableDirectives": "warn"
     },
     "eslint.lintTask.enable": true,
-    "licenser.license": "MIT",
+    "licenser.license": "MIT"
 }
