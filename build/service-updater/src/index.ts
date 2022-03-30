@@ -28,7 +28,7 @@ async function getGitHubOAuthToken(filePath = ""): Promise<string> {
     }
 }
 
-export default async function main(): Promise<void> {
+export default function main() {
     program
         .command("server")
         .description("Updates the Jetty server")
@@ -48,7 +48,7 @@ export default async function main(): Promise<void> {
         .option("-p, --path <token_path>", "A file path of a GitHub OAuth token")
         .action(async (opts: Options) => await update(opts.token ?? (await getGitHubOAuthToken(opts.path))));
 
-    await program.parseAsync(process.argv);
+    program.parse(process.argv);
 
     // For default, show help
     if (!process.argv.slice(2)?.length) program.help();
