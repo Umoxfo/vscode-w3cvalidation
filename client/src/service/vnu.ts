@@ -32,11 +32,13 @@ import type { ChildProcessWithoutNullStreams } from "child_process";
 
 const files: readonly string[] = ["vnu.war", "vnu.war.sha1"];
 
+const extensionConfiguration = workspace.getConfiguration("vscode-w3cvalidation");
+
 const RequestOptions: OutgoingHttpHeaders = {
     [HTTP2_HEADER_METHOD]: "HEAD",
     [HTTP2_HEADER_PATH]: "/repos/validator/validator/releases/tags/latest",
     [HTTP2_HEADER_USER_AGENT]: "VSCode/umoxfo.vscode-w3cvalidation",
-    [HTTP2_HEADER_IF_MODIFIED_SINCE]: workspace.getConfiguration("vscode-w3cvalidation").get("validator-token"),
+    [HTTP2_HEADER_IF_MODIFIED_SINCE]: extensionConfiguration.get("validator-token"),
 };
 
 async function getLatestVersionInfo(): Promise<{ status: number; token: string | undefined }> {
@@ -182,9 +184,7 @@ async function checkValidator(jettyHome: string, jettyBase: string): Promise<voi
     const { status, token } = await getLatestVersionInfo();
     if (status === HTTP_STATUS_NOT_MODIFIED) {
         await Promise.all([
-            workspace
-                .getConfiguration("vscode-w3cvalidation")
-                .update("validator-token", token, ConfigurationTarget.Global),
+            extensionConfiguration.update("validator-token", token, ConfigurationTarget.Global),
             updateValidator(jettyHome, jettyBase),
         ]);
     }
