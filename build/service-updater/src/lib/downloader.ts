@@ -28,7 +28,7 @@ export function getArchive(response: Response, resolve: (value: ArchiveResponse)
 }
 
 export function getPlainText(response: Response, resolve: (value: string) => void): void {
-    response.setEncoding("utf-8");
+    response.setEncoding("utf8");
     let body = "";
 
     response.on("data", (chunk) => (body += chunk));

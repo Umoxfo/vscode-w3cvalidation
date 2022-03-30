@@ -20,7 +20,7 @@ const WEBAPP_VNU = path.join(JETTY_BASE, "webapps", "vnu");
 
 /**
  * Pre-generate the quickstart-web.xml file
- * @param {string} _warFilePath The path to the war file
+ * @param {string} warFilePath The path to the war file
  * @returns {Promise<void>}
  */
 async function configQuickstart(warFilePath: string): Promise<void> {
