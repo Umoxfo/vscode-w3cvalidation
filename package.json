@@ -71,21 +71,21 @@
     "vscode:prepublish": "npm run compile:build && npm run updater:service && webpack --mode production"
   },
   "devDependencies": {
-    "@types/node": "^14.14.45",
-    "@types/webpack": "^5.28.0",
-    "@typescript-eslint/eslint-plugin": "^4.23.0",
-    "@typescript-eslint/parser": "^4.23.0",
-    "eslint": "^7.26.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.2",
-    "eslint-plugin-prettier": "^3.4.0",
-    "fork-ts-checker-webpack-plugin": "^6.2.9",
-    "prettier": "^2.3.0",
+    "@types/node": "^14",
+    "@types/webpack": "latest",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "eslint": "latest",
+    "eslint-config-prettier": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-prettier": "latest",
+    "fork-ts-checker-webpack-plugin": "latest",
+    "prettier": "latest",
     "ts-build-clean-webpack-plugin": "file:build/ts-build-clean-webpack-plugin",
-    "ts-loader": "^9.1.2",
-    "typescript": "^4.2.4",
-    "webpack": "^5.37.0",
-    "webpack-cli": "^4.7.0"
+    "ts-loader": "latest",
+    "typescript": "latest",
+    "webpack": "latest",
+    "webpack-cli": "latest"
   },
   "workspaces": [
     "build/*"
