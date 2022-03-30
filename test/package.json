@@ -1,15 +1,15 @@
 {
-    "private": true,
-    "name": "test",
-    "description": "Test for W3C validation",
-    "version": "1.0.0",
-    "engines": {
-        "vscode": "^1.55.0"
-    },
-    "devDependencies": {
-        "@types/mocha": "^8.2.2",
-        "@types/vscode": "^1.55.0",
-        "mocha": "^8.4.0",
-        "vscode-test": "^1.5.2"
-    }
+  "private": true,
+  "name": "test",
+  "description": "Test for W3C validation",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.55.0"
+  },
+  "devDependencies": {
+    "@types/mocha": "latest",
+    "@types/vscode": "^1.55.0",
+    "@vscode/test-electron": "latest",
+    "mocha": "latest"
+  }
 }
