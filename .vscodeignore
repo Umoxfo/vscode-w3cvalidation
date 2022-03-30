@@ -16,3 +16,8 @@ test
 **/*.ts
 **/*.map
 **/node_modules
+
+# Service - Jetty
+service/jetty-home/NOTICE.txt
+service/jetty-home/README.adoc
+service/jetty-home/VERSION.txt

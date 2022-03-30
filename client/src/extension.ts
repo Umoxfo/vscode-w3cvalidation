@@ -33,7 +33,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         void configVSCodeSetting();
     }
 
-    const SERVICE = context.asAbsolutePath(path.join("server", "service"));
+    const SERVICE = context.asAbsolutePath("service");
     const JETTY_HOME = path.join(SERVICE, "jetty-home");
     const JETTY_BASE = path.join(SERVICE, "vnu");
     try {

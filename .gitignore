@@ -1,7 +1,7 @@
 **/out
 **/node_modules
-server/service/vnu/webapps/vnu/
-server/service/jetty-home/
+service/vnu/webapps/vnu/
+service/jetty-home/
 .vscode/cSpell.json
 **/*.tsbuildinfo
 build/GitHub_token.txt

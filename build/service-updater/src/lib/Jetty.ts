@@ -67,7 +67,7 @@ async function downloadFile<T>(reqOpts: OutgoingHttpHeaders, resFunc: ResponseFu
     });
 }
 
-const JETTY_HOME = path.join(process.cwd(), "server", "service", "jetty-home");
+const JETTY_HOME = path.join(process.cwd(), "service", "jetty-home");
 
 async function installJetty({ archive, versionInfo }: { archive: Buffer; versionInfo: string }): Promise<void> {
     const toStream = (buffer: Buffer): Duplex => {
@@ -80,7 +80,7 @@ async function installJetty({ archive, versionInfo }: { archive: Buffer; version
     await fs.rmdir(JETTY_HOME, { recursive: true });
 
     // Decompress data and write in a file
-    const serverRootDir = path.join(process.cwd(), "server", "service");
+    const serverRootDir = path.join(process.cwd(), "service");
     const originJettyPath = path.join(serverRootDir, `jetty-home-${versionInfo}`);
 
     return new Promise((resolve, reject) =>
