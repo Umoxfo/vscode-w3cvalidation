@@ -14,7 +14,7 @@ import { promises as fs } from "fs";
 import { updateVNU } from "./vnu";
 import { updateJetty } from "./Jetty";
 
-const SERVER_SERVICE = path.join(process.cwd(), "server", "service");
+const SERVER_SERVICE = path.join(process.cwd(), "service");
 const JETTY_BASE = path.join(SERVER_SERVICE, "vnu");
 const WEBAPP_VNU = path.join(JETTY_BASE, "webapps", "vnu");
 
