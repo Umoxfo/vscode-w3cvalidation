@@ -14,6 +14,8 @@ import { getArchive, getPlainText } from "./downloader";
 import type { RequestOptions } from "https";
 import type { IncomingMessage } from "http";
 
+/* GraphQL API */
+
 interface VnuQueryResponse {
     data: {
         repository: {
@@ -38,21 +40,20 @@ interface ReleaseAsset {
 type VnuReleaseQueryResponse = [ReleaseAsset[], string];
 type ResponseCallback<T> = (response: IncomingMessage, resolve: (value: T) => void) => void;
 
-const VNU_QUERY = {
-    query: `query {
-            repository(name: "validator", owner: "validator") {
-                release(tagName: "war") {
-                    releaseAssets(last: 6) {
-                        nodes {
-                            name
-                            url
-                        }
-                    }
-                    updatedAt
-                }
-            }
-        }`.replace(/\s{2,}/gm, " "),
-};
+const VNU_QUERY = `\
+query {
+  repository(name: "validator", owner: "validator") {
+    release(tagName: "war") {
+      releaseAssets(last: 6) {
+        nodes {
+          name
+          url
+        }
+      }
+      updatedAt
+    }
+  }
+}`.replace(/\s{2,}/gm, " ");
 
 const assetNames: readonly string[] = ["vnu.war", "vnu.war.sha1"];
 
@@ -95,9 +96,11 @@ async function getLatestVersionInfo(token: string): Promise<VnuReleaseQueryRespo
         });
 
         req.on("error", (err) => reject(err));
-        req.end(JSON.stringify(VNU_QUERY));
+        req.end(JSON.stringify({ query: VNU_QUERY }));
     });
 }
+
+/* REST API */
 
 const preConfigDownloadRequestOptions = (fileName: string): RequestOptions => ({
     host: "github.com",
@@ -152,8 +155,8 @@ const downloadFile = async <T>(url: string, response: ResponseCallback<T>): Prom
  */
 async function downloadVNU([file, checksum]: ReleaseAsset[]): Promise<string> {
     const [{ archive, archiveHash }, warFileChecksum] = await Promise.all([
-        downloadFile(file.url, getArchive),
-        downloadFile(checksum.url, getPlainText),
+        downloadFile(file?.url ?? "", getArchive),
+        downloadFile(checksum?.url ?? "", getPlainText),
     ]);
 
     // Validate a file
@@ -172,10 +175,10 @@ async function updateValidatorToken(token: string): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     pkg.contributes.configuration.properties["vscode-w3cvalidation.validator-token"].default = token;
 
-    return fs.writeFile("./package.json", JSON.stringify(pkg, null, 4));
+    return fs.writeFile("./package.json", JSON.stringify(pkg, null, 2));
 }
 
 export async function updateVNU(token = ""): Promise<[string, void]> {
     const [releaseAssets, updatedAt] = await (token ? getLatestVersionInfo(token) : getLatestVersionInfoREST());
-    return Promise.all([downloadVNU(releaseAssets ?? []), updateValidatorToken(updatedAt)]);
+    return Promise.all([downloadVNU(releaseAssets), updateValidatorToken(updatedAt)]);
 }
