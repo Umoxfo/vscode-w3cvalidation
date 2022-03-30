@@ -1,30 +1,30 @@
 {
-    "compileOnSave": true,
-    "compilerOptions": {
-        /* Basic Options */
-        "incremental": true,
-        "target": "ES2019",
-        "module": "ES2015",
-        "lib": [
-            "ES2019"
-        ],
-        "sourceMap": true,
-        "strict": true,
-        /* Advanced Options */
-        "forceConsistentCasingInFileNames": true,
-        "importsNotUsedAsValues": "preserve",
-        /* Additional Checks */
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "noUncheckedIndexedAccess": true,
-        "noPropertyAccessFromIndexSignature": true,
-        /* Module Resolution Options */
-        "moduleResolution": "Node",
-        "esModuleInterop": true,
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compileOnSave": true,
+  "compilerOptions": {
+    /* Basic Options */
+    "incremental": true,
+    "target": "ES2019",
+    "module": "ES2015",
+    "lib": [
+      "ES2019"
+    ],
+    "sourceMap": true,
+    "strict": true,
+    /* Advanced Options */
+    "forceConsistentCasingInFileNames": true,
+    "importsNotUsedAsValues": "preserve",
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    /* Module Resolution Options */
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
