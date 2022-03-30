@@ -2,13 +2,13 @@
   "extends": "../tsconfig.dev",
   "compilerOptions": {
     "lib": [
-      "ES2019",
+      "es2021",
       "DOM"
     ],
-    "outDir": "out",
     "rootDir": "src",
+    "outDir": "out"
   },
   "include": [
     "src"
-  ],
+  ]
 }
