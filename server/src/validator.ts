@@ -11,7 +11,7 @@ import type { RequestOptions as HttpRequestOptions } from "http";
 /**
  * Message object of the validation result
  */
-interface Message {
+export interface Message {
     /*
      * "info" is an informational message or warning that does not affect the validity of the document being checked.
      * "error" signifies a problem that causes the validation/checking to fail.
