@@ -9,19 +9,20 @@
       "es2020"
     ],
     /* Modules */
-    "module": "ES2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     /* Emit */
     "sourceMap": true,
     "importsNotUsedAsValues": "error",
     /* Interop Constraints */
+    "isolatedModules": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     /* Type Checking */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "exactOptionalPropertyTypes": true,
+    // "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,

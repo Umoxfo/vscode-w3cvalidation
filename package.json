@@ -56,38 +56,30 @@
   },
   "main": "./client/out/extension",
   "scripts": {
-    "postinstall": "node setup_dev.mjs install && npm run service-updater",
+    "postinstall": "node setup_dev.mjs install",
     "update:subprojects": "node setup_dev.mjs update",
     "compile:updater": "tsc -b build/service-updater",
-    "updater:service": "node ./build/service-updater service -p ./build/GitHub_token.txt",
-    "service-updater": "npm run compile:updater && npm run updater:service",
-    "service-updater:server": "npm run compile:updater && node ./build/service-updater server",
-    "pretest": "npm run webpack-dev && tsc -b test",
+    "updater:server": "npm run compile:updater && node build/service-updater server",
+    "updater:webapp": "npm run compile:updater && node build/service-updater validator -p ./build/GitHub_token.txt",
+    "updater:service": "npm run compile:updater && node build/service-updater service -p ./build/GitHub_token.txt",
+    "esbuild-dev": "node builder.mjs",
+    "pretest": "npm run esbuild-dev && tsc -b test",
     "test": "node ./test/out/runTest.js",
-    "compile:build": "tsc -b build/service-updater build/ts-build-clean-webpack-plugin",
-    "webpack-dev": "npm run compile:build && webpack --mode development --progress",
-    "webpack:client": "npm run compile:build && webpack --mode development --config-name client",
-    "webpack:server": "npm run compile:build && webpack --mode development --config-name server",
-    "vscode:prepublish": "npm run compile:build && npm run updater:service && webpack --mode production"
+    "vscode:prepublish": "npm run compile:updater && npm run updater:service && npm run esbuild-dev"
   },
   "devDependencies": {
     "@types/node": "^14",
-    "@types/webpack": "latest",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
+    "esbuild": "latest",
     "eslint": "latest",
     "eslint-config-prettier": "latest",
     "eslint-plugin-import": "latest",
     "eslint-plugin-prettier": "latest",
-    "fork-ts-checker-webpack-plugin": "latest",
     "prettier": "latest",
-    "ts-build-clean-webpack-plugin": "file:build/ts-build-clean-webpack-plugin",
-    "ts-loader": "latest",
-    "typescript": "latest",
-    "webpack": "latest",
-    "webpack-cli": "latest"
+    "typescript": "latest"
   },
   "workspaces": [
-    "build/*"
+    "build/service-updater"
   ]
 }
