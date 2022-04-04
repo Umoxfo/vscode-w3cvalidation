@@ -12,6 +12,8 @@ import { promisify } from "util";
 const execFilePromise = promisify(execFile);
 import path from "path";
 
+const JAVA_VERSION_STRING_FORMAT = /\d+\.\d+\.\d+/g;
+
 if (process.platform === "darwin") {
     execFile("/usr/libexec/java_home", (_, stdout): string => (process.env["JAVA_HOME"] = stdout));
 }
@@ -32,8 +34,9 @@ for (const javadir of javaDirectories) {
  * @returns Resolved promise
  */
 export async function checkJava(): Promise<void> {
-    const { stderr } = await execFilePromise("java", ["-version"]);
-    const currentVersion = stderr.substring(stderr.indexOf('"') + 1, stderr.lastIndexOf('"'));
+    const { stdout } = await execFilePromise("java", ["--version"]);
+    const versions = stdout?.match(JAVA_VERSION_STRING_FORMAT);
 
-    return currentVersion >= "1.8" ? Promise.resolve() : Promise.reject();
+    let curVer;
+    return versions && (curVer = versions[0]) && curVer >= "17" ? Promise.resolve() : Promise.reject();
 }
