@@ -80,7 +80,7 @@ async function installJetty({ archive, versionInfo }: { archive: Buffer; version
         return stream;
     };
 
-    await fs.rm(JETTY_HOME, { recursive: true });
+    await fs.rm(JETTY_HOME, { force: true, recursive: true });
 
     // Decompress data and write in a file
     const originJettyPath = path.join(serverRootDir, `jetty-home-${versionInfo}`);
