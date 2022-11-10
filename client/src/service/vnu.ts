@@ -197,7 +197,6 @@ export async function runValidator(jettyHome: string, jettyBase: string): Promis
         // Start the validation server
         const service = spawn("java", ["-jar", `${jettyHome}/start.jar`], { cwd: jettyBase });
 
-        service.stderr.setEncoding("utf8");
         service.stderr.on("data", (data: string) => {
             if (data.includes("INFO :oejs.Server:main: Started Server")) resolve(service);
         });
